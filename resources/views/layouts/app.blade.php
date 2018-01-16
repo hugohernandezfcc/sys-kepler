@@ -11,8 +11,14 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('inspinia/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('inspinia/font-awesome/css/font-awesome.css')}}" rel="stylesheet">
+
+    <link href="{{ asset('inspinia/css/animate.css')}}" rel="stylesheet">
+    <link href="{{ asset('inspinia/css/style.css')}}" rel="stylesheet">
 </head>
+
+
 <body>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
