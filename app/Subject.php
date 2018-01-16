@@ -8,6 +8,10 @@ class Subject extends Model
 {
     protected $table = 'subjects';
 
+    protected $fillable = [
+        'name', 'created_by', 'area_id',
+    ];
+
     public function tasks()
     {
         return $this->hasMany('App\Task');
@@ -30,11 +34,11 @@ class Subject extends Model
 
     public function area()
     {
-        return $this->belongsTo('App\Area');
+        return $this->belongsTo('App\Area', 'area_id');
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'created_by');
     }
 }

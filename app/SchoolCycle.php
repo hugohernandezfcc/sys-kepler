@@ -8,6 +8,10 @@ class SchoolCycle extends Model
 {
     protected $table = 'school_cycles';
 
+    protected $fillable = [
+        'name', 'created_by',
+    ];
+
     public function areas()
     {
         return $this->hasMany('App\Area');
@@ -15,6 +19,6 @@ class SchoolCycle extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'created_by');
     }
 }
