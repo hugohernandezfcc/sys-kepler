@@ -12,6 +12,10 @@ class Subject extends Model
         'name', 'created_by', 'area_id',
     ];
 
+    public function groups() {
+        return $this->belongsToMany('App\Group', 'apply_to', 'subject_id', 'group_id');
+    }
+
     public function tasks()
     {
         return $this->hasMany('App\Task');
