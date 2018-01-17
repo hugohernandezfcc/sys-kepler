@@ -18,3 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/* Ruta de prueba del template */
+Route::get('/template', function () {
+    return view('template');
+});
