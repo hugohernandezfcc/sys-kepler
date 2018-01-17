@@ -20,22 +20,15 @@
         <div class="row">
 
             <div class="col-md-6">
-                <h2 class="font-bold">Welcome to IN+</h2>
+                <br/>
+                <h2 class="font-bold">Bienvenido a Kepler</h2>
 
                 <p>
-                    Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
+                    <b>La plataforma perfecta donde no hay distintivos, todos estamos conectados.</b>
                 </p>
 
                 <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                </p>
-
-                <p>
-                    When an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                </p>
-
-                <p>
-                    <small>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</small>
+                    Integra actividades con foros y artículos creados por la comunidad que tu controlas.
                 </p>
             </div>
             <div class="col-md-6">
