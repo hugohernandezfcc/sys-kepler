@@ -53,19 +53,19 @@
                                 </span>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+                        <button type="submit" class="btn btn-primary block full-width m-b">Iniciar sesión</button>
 
                         <a href="{{ route('password.request') }}">
-                            <small>Forgot password?</small>
+                            <small>¿Olvidaste tu contraseña?</small>
                         </a>
 
                         <p class="text-muted text-center">
-                            <small>Do not have an account?</small>
+                            <small>¿Aun no tienes una cuenta?</small>
                         </p>
-                        <a class="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>
+                        <a class="btn btn-sm btn-white btn-block" href="{{ route('register') }}">Crear una cuenta</a>
                     </form>
                     <p class="m-t">
-                        <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small>
+                        <small>Kepler systems </small>
                     </p>
                 </div>
 
