@@ -28,18 +28,22 @@
 
                 @yield('content')
 
-                <div class="footer">
-                    <div class="pull-right">
-                        10GB of <strong>250GB</strong> Free.
-                    </div>
-                    <div>
-                        <strong>Copyright</strong> Kepler &copy; 2017-2018
-                    </div>
-                </div>
+                @include('footer')
+            </div>
         </div>
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <!-- Scripts Menú -->
+    <script src="{{ asset('inspinia/js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('inspinia/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('inspinia/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+    <script src="{{ asset('inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{{ asset('inspinia/js/inspinia.js') }}"></script>
+    <script src="{{ asset('inspinia/js/plugins/pace/pace.min.js') }}"></script>
 </body>
 </html>

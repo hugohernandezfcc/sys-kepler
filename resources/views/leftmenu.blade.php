@@ -18,7 +18,7 @@
                         </ul>
                     </div>
                     <div class="logo-element">
-                        IN+
+                        Kepler
                     </div>
                 </li>
                 <li class="active">
