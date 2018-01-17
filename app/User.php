@@ -27,6 +27,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function groups() {
+        return $this->belongsToMany('App\Group', 'access_to', 'user_id', 'group_id');
+    }
+
     public function rolloflists()
     {
         return $this->hasMany('App\RollOfList');
