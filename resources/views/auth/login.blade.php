@@ -12,7 +12,7 @@
     <link href="{{ asset('inspinia/css/style.css')}}" rel="stylesheet">
 </head>
 
-@section('content')
+
 
 <body class="gray-bg">
 
@@ -55,10 +55,10 @@
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <input type="password" class="form-control" placeholder="Contraseña" required="">
                             @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
                         </div>
                         <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
 
@@ -93,4 +93,4 @@
     <script src="{{ asset('inspinia/js/plugins/pace/pace.min.js') }}"></script>
 </body>
 
-@endsection
+
