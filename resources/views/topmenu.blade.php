@@ -110,7 +110,7 @@
                 </li>
             </ul>
 
-            @guest
+           <!--  @guest
                 <ul class="dropdown-menu">
                     <li class="dropdown">
                         <a href="{{ route('login') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">Login</a>
@@ -144,7 +144,7 @@
                         </li>
                     </ul>
                 </li>
-            @endguest
+            @endguest -->
 
         </nav>
         </div>

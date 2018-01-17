@@ -38,7 +38,7 @@
                 <li><a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Ciclos escolares</span></a></li>
                 <li><a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Areas</span></a></li>
                 <li>
-                    <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Asignaturas</span></a>
+                    <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Asignaturas</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li class="active"><a href="index.html">Tareas</a></li>
                         <li><a href="dashboard_2.html">Pase de lista</a></li>
