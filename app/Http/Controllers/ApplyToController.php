@@ -37,7 +37,7 @@ class ApplyToController extends Controller
     {
         $applyTo = new ApplyTo();
 
-        $applyTo->name $request->get('name');
+        $applyTo->name = $request->get('name');
         $applyTo->created_by = $request->user()->id;
         $accessTo->user_id = $request->users()->id;
         $accessTo->subject_id = $request->subjects()->id;

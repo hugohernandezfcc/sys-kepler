@@ -37,7 +37,7 @@ class AccessToController extends Controller
     {
         $accessTo = new AccessTo();
 
-        $accessTo->name $request->get('name');
+        $accessTo->name = $request->get('name');
         $accessTo->created_by = $request->user()->id;
         $accessTo->user_id = $request->users()->id;
         $accessTo->group_id = $request->groups()->id;

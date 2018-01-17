@@ -39,7 +39,7 @@ class ModulesController extends Controller
     {
         $module = new Module();
 
-        $module->name $request->get('name');
+        $module->name = $request->get('name');
         $module->created_by = $request->user()->id;
         $module->subject_id = $request->subject()->id;
 

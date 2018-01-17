@@ -38,7 +38,7 @@ class ExamsController extends Controller
     {
         $exam = new Exam();
 
-        $exam->name $request->get('name');
+        $exam->name = $request->get('name');
         $exam->created_by = $request->user()->id;
         $exam->subject_id = $request->subject()->id;
 

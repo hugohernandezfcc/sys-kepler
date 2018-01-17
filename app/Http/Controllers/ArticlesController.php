@@ -12,19 +12,36 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function read() {
+        $articles = Article::all();
+
+        return $articles;
+    }
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        $article = new Article();
+
+        $article->name = $request->get('name');
+        $article->description = $request->get('description');
+        $article->created_by = $request->user()->id;
+        $article->module_id = $request->module()->id;
+
+        $article->save();
     }
 
     /**
@@ -33,53 +50,53 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Article  $article
+     * @param  \App\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
-    {
+    public function show(Article $article) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Article  $article
+     * @param  \App\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article)
-    {
-        //
+    public function edit(Article $article) {
+        return view('nombre_vista')->with(['article', $article])
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Article  $article
+     * @param  \App\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Article $article)
-    {
-        //
+    public function update(Request $request, Article $article) {
+        $article->name = $request->get('name');
+        $article->description = $request->get('description');
+
+        $article->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Article  $article
+     * @param  \App\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
-    {
-        //
+    public function destroy(Article $article) {
+        $article->delete();
+
+        return redirect()->route('nombre_ruta_destino');
     }
 }

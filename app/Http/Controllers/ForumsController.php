@@ -12,19 +12,36 @@ class ForumsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function read() {
+        $forums = Forum::all();
+
+        return $forums;
+    }
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        $forum = new Forum();
+
+        $forum->name = $request->get('name');
+        $forum->description = $request->get('description');
+        $forum->created_by = $request->user()->id;
+        $forum->module_id = $request->module()->id;
+
+        $forum->save();
     }
 
     /**
@@ -33,53 +50,53 @@ class ForumsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Forum  $forum
+     * @param  \App\forum  $forum
      * @return \Illuminate\Http\Response
      */
-    public function show(Forum $forum)
-    {
+    public function show(Forum $forum) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Forum  $forum
+     * @param  \App\forum  $forum
      * @return \Illuminate\Http\Response
      */
-    public function edit(Forum $forum)
-    {
-        //
+    public function edit(Forum $forum) {
+        return view('nombre_vista')->with(['forum', $forum])
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Forum  $forum
+     * @param  \App\forum  $forum
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Forum $forum)
-    {
-        //
+    public function update(Request $request, Forum $forum) {
+        $forum->name = $request->get('name');
+        $forum->description = $request->get('description');
+
+        $forum->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Forum  $forum
+     * @param  \App\forum  $forum
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Forum $forum)
-    {
-        //
+    public function destroy(Forum $forum) {
+        $forum->delete();
+
+        return redirect()->route('nombre_ruta_destino');
     }
 }

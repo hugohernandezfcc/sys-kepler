@@ -38,7 +38,7 @@ class GroupsController extends Controller
     {
         $group = new Group();
 
-        $group->name $request->get('name');
+        $group->name = $request->get('name');
         $group->created_by = $request->user()->id;
 
         $group->save();

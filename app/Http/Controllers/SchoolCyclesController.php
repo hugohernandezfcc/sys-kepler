@@ -38,7 +38,7 @@ class SchoolCyclesController extends Controller
     {
         $schoolCycle = new SchoolCycle();
 
-        $schoolCycle->name $request->get('name');
+        $schoolCycle->name = $request->get('name');
         $schoolCycle->created_by = $request->user()->id;
 
         $schoolCycle->save();
