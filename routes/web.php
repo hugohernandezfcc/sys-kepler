@@ -11,11 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
+Route::redirect('/', '/login', 301);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
