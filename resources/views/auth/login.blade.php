@@ -58,7 +58,7 @@
                         <a href="{{ route('password.request') }}">
                             <small>¿Olvidaste tu contraseña?</small>
                         </a>
-
+                        <br/>
                         <p class="text-muted text-center">
                             <small>¿Aun no tienes una cuenta?</small>
                         </p>
