@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Group;
 use Illuminate\Http\Request;
 
-class GroupsController extends Controller
+class ApplyToController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,9 +23,9 @@ class GroupsController extends Controller
      */
     public function read()
     {
-        $groups = Group::all();
+        $applyTo = ApplyTo::all();
 
-        return $groups;
+        return $applyTo;
     }
 
     /**
@@ -36,12 +35,14 @@ class GroupsController extends Controller
      */
     public function create()
     {
-        $group = new Group();
+        $applyTo = new ApplyTo();
 
-        $group->name $request->get('name');
-        $group->created_by = $request->user()->id;
+        $applyTo->name $request->get('name');
+        $applyTo->created_by = $request->user()->id;
+        $accessTo->user_id = $request->users()->id;
+        $accessTo->subject_id = $request->subjects()->id;
 
-        $group->save();
+        $applyTo->save();
     }
 
     /**
@@ -58,10 +59,10 @@ class GroupsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Group  $group
+     * @param  \App\ApplyTo  $applyTo
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show(ApplyTo $applyTo)
     {
         //
     }
@@ -69,37 +70,37 @@ class GroupsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Group  $group
+     * @param  \App\ApplyTo  $applyTo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Group $group)
+    public function edit(ApplyTo $applyTo)
     {
-        return view('nombre_vista')->with(['group', $group])
+        return view('nombre_vista')->with(['applyTo', $applyTo])
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Group  $group
+     * @param  \App\ApplyTo  $applyTo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, ApplyTo $applyTo)
     {
-        $group->name = $request->get('name');
+        $applyTo->name = $request->get('name');
 
-        $group->save();
+        $applyTo->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Group  $group
+     * @param  \App\ApplyTo  $applyTo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group)
+    public function destroy(ApplyTo $applyTo)
     {
-        $group->delete();
+        $applyTo->delete();
 
         return redirect()->route('nombre_ruta_destino');
     }

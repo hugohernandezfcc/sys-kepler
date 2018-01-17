@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Group;
 use Illuminate\Http\Request;
 
-class GroupsController extends Controller
+class AccessToController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,9 +23,9 @@ class GroupsController extends Controller
      */
     public function read()
     {
-        $groups = Group::all();
+        $accessTo = AccessTo::all();
 
-        return $groups;
+        return $accessTo;
     }
 
     /**
@@ -36,12 +35,14 @@ class GroupsController extends Controller
      */
     public function create()
     {
-        $group = new Group();
+        $accessTo = new AccessTo();
 
-        $group->name $request->get('name');
-        $group->created_by = $request->user()->id;
+        $accessTo->name $request->get('name');
+        $accessTo->created_by = $request->user()->id;
+        $accessTo->user_id = $request->users()->id;
+        $accessTo->group_id = $request->groups()->id;
 
-        $group->save();
+        $accessTo->save();
     }
 
     /**
@@ -58,10 +59,10 @@ class GroupsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Group  $group
+     * @param  \App\AccessTo  $accessTo
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show(AccessTo $accessTo)
     {
         //
     }
@@ -69,37 +70,37 @@ class GroupsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Group  $group
+     * @param  \App\AccessTo  $accessTo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Group $group)
+    public function edit(AccessTo $accessTo)
     {
-        return view('nombre_vista')->with(['group', $group])
+        return view('nombre_vista')->with(['accessTo', $accessTo])
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Group  $group
+     * @param  \App\AccessTo  $accessTo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, AccessTo $accessTo)
     {
-        $group->name = $request->get('name');
+        $accessTo->name = $request->get('name');
 
-        $group->save();
+        $accessTo->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Group  $group
+     * @param  \App\AccessTo  $accessTo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group)
+    public function destroy(AccessTo $accessTo)
     {
-        $group->delete();
+        $accessTo->delete();
 
         return redirect()->route('nombre_ruta_destino');
     }
