@@ -1,4 +1,16 @@
-@extends('layouts.app')
+<head>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Styles -->
+    <link href="{{ asset('inspinia/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('inspinia/font-awesome/css/font-awesome.css')}}" rel="stylesheet">
+
+    <link href="{{ asset('inspinia/css/animate.css')}}" rel="stylesheet">
+    <link href="{{ asset('inspinia/css/style.css')}}" rel="stylesheet">
+</head>
 
 @section('content')
 
@@ -67,6 +79,18 @@
             </div>
         </div>
     </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+
+    <!-- Scripts Menú -->
+    <script src="{{ asset('inspinia/js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('inspinia/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('inspinia/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+    <script src="{{ asset('inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{{ asset('inspinia/js/inspinia.js') }}"></script>
+    <script src="{{ asset('inspinia/js/plugins/pace/pace.min.js') }}"></script>
 </body>
 
 @endsection
