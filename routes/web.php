@@ -95,7 +95,13 @@ Route::group(['prefix' => 'subjects'], function(){
 	);
 });
 
-
+ Route::get('/logout', function() {
+ Session::forget('key');
+  if(!Session::has('key'))
+   {
+      return "signout";
+   }
+ });
 
 
 
