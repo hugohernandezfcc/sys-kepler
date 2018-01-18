@@ -75,11 +75,11 @@ class AreasController extends Controller
      * @param  \App\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function show(Area $areaId)
+    public function show($areaId)
     {
         return view('area', [
                 'typeView' => 'view',
-                'record' => Area::find(intval($areaId))
+                'record' => Area::find($areaId)
             ]
         ); 
     }
