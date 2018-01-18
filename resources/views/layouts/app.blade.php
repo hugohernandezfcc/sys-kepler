@@ -13,7 +13,8 @@
     <!-- Styles -->
     <link href="{{ asset('inspinia/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/font-awesome/css/font-awesome.css')}}" rel="stylesheet">
-
+    <link href="{{ asset('inspinia/css/plugins/chosen/bootstrap-chosen.css')}}" rel="stylesheet">
+    <link href="{{ asset('inspinia/css/plugins/select2/select2.min.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/style.css')}}" rel="stylesheet">
     <script src="{{ asset('inspinia/js/jquery-3.1.1.min.js') }}"></script>

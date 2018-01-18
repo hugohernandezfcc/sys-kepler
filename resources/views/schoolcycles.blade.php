@@ -45,7 +45,7 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Inicio</label>
-                                <select data-placeholder="Choose a Country..." class="chosen-select"  tabindex="2">
+                                <select data-placeholder="Choose a Country..." class="select2_demo_3 form-control"  tabindex="2">
                                 <option value="">Select</option>
                                 <option value="United States">United States</option>
                                 <option value="United Kingdom">United Kingdom</option>
@@ -93,7 +93,8 @@
         <!-- Select2 -->
         <script src="{{ asset('inspinia/js/plugins/select2/select2.full.min.js')}}"></script>
         <script type="text/javascript">
-            $(".chosen-select").select2();
+            $(".select2_demo_3").select2();
+            $('.chosen-select').chosen({width: "100%"});
         </script>
     @else
         sd
