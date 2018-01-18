@@ -5,7 +5,7 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element"> 
                         <span>
-                            <img alt="image" class="img-circle" src="img/profile_small.jpg" />
+                            <img alt="image" class="img-circle" src="https://www.uaeh.edu.mx/excelencia/imagenes/uaeh.png" />
                         </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear"> 
@@ -41,11 +41,11 @@
                 <li>
                     <a href="layouts.html"><i class="fa fa-lis-ul"></i> <span class="nav-label">Contenidos</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li ><a href="/subjects">Asignaturas</a></li>
-                        <li ><a href="index.html">Tareas</a></li>
-                        <li><a href="dashboard_2.html">Pase de lista</a></li>
-                        <li><a href="dashboard_3.html">Modulos</a></li>
-                        <li><a href="dashboard_4_1.html">Examenes</a></li>
+                        <li ><a href="/subjects"><i class="fa fa-graduation-cap"></i> Asignaturas</a></li>
+                        <li ><a href="/task"><i class="fa fa-graduation-cap"></i> Tareas</a></li>
+                        <li><a href="/list"><i class="fa fa-list"></i>  Pase de lista</a></li>
+                        <li><a href="/modules"><i class="fa fa-archive"></i> Modulos</a></li>
+                        <li><a href="/test"><i class="fa fa-flask"></i> Examenes</a></li>
                     </ul>
                 </li>
                 @elseif (0)
