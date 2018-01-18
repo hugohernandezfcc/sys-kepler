@@ -1,4 +1,4 @@
-<footer>
+<footer style="position: absolute;bottom: 0;">
 	<div class="footer">
 	    <div class="pull-right">
 	        10GB of <strong>250GB</strong> Free.
