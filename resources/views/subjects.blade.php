@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <h2>Asignaturas</h2>
             <ol class="breadcrumb">
                 <li>
@@ -23,7 +23,7 @@
 
             </ol>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-6">
             @if($typeView != 'form')
                 <div class="title-action">
                     <a href="/subjects/create" class="btn btn-primary btn-sm">Agregar asignatura</a>
@@ -58,7 +58,8 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="get" class="form-horizontal">
+                        <form method="post" action="/subjects/store" id="form-create" class="form-horizontal">
+                            {{ csrf_field() }}
                             <div class="form-group"><label class="col-sm-2 control-label">Nombre de la asignatura</label>
 
                                 <div class="col-sm-10"><input type="text" name="name" class="form-control"></div>
