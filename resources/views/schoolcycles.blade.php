@@ -33,7 +33,7 @@
 
                 <div class="title-action">
                     <a onclick="document.getElementById('form-create').submit(); " class="btn btn-primary btn-sm">
-                        <i class="fa fa-save"></i> Guardar
+                        <i class="fa fa-check"></i> Guardar
                     </a>
                 </div>
                 
@@ -54,6 +54,9 @@
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="/cyclescontrol">
+                                Cancelar
                             </a>
                         </div>
                     </div>
