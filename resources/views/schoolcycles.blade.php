@@ -45,14 +45,12 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Inicio</label>
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <div class="col-sm-10"><input type="text" name="start" id="start" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Fin</label>
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <div class="col-sm-10"><input type="text" name="end" id="end" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -68,23 +66,6 @@
             </div>
         </div>
 
-        <script src="{{ asset('inspinia/js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
-
-        <script type="text/javascript">
-            $('#start').datepicker({
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true
-            });
-
-            $('#end').datepicker({
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true
-            });
-        </script>
     @else
         sd
     @endif
