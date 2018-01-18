@@ -32,7 +32,7 @@ class SchoolCyclesController extends Controller
     {
         return view('schoolcycles', [
                 'typeView'  => 'list'
-                //'records' => SchoolCycle::all()
+                'records' => SchoolCycle::all()
             ]
         );
     }
