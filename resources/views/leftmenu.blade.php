@@ -41,7 +41,7 @@
                 <li>
                     <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Contenidos</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li ><a href="index.html">Asignaturas</a></li>
+                        <li ><a href="/subjects">Asignaturas</a></li>
                         <li ><a href="index.html">Tareas</a></li>
                         <li><a href="dashboard_2.html">Pase de lista</a></li>
                         <li><a href="dashboard_3.html">Modulos</a></li>

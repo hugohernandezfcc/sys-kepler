@@ -42,6 +42,8 @@
     <script src="{{ asset('inspinia/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
     <script src="{{ asset('inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 
+    <!-- Datatables -->
+    <script src="{{ asset('inspinia/js/plugins/dataTables/datatables.min.js') }}"></script>
 
     <!-- Flot -->
     <script src="{{ asset('inspinia/js/plugins/flot/jquery.flot.js') }}"></script>
@@ -187,6 +189,30 @@
 
             if(document.getElementById('flot-dashboard-chart'))
                 $.plot($("#flot-dashboard-chart"), dataset, options);
+
+
+            $(document).ready(function(){
+                $('.dataTables-example').DataTable({
+                    pageLength: 25,
+                    responsive: true,
+                    dom: '<"html5buttons"B>lTfgitp',
+                    buttons: [
+                        {extend: 'copy'},
+                        {extend: 'csv'},
+                        {extend: 'excel', title: 'Datos_kepler'},
+                        {extend: 'pdf', title: 'Datos_kepler'},
+                        {extend: 'print',
+                            customize: function (win){
+                                    $(win.document.body).addClass('white-bg');
+                                    $(win.document.body).css('font-size', '10px');
+                                    $(win.document.body).find('table').addClass('compact').css('font-size', 'inherit');
+                            }
+                        }
+                    ]
+
+                });
+            });
+
     </script>
 
 
