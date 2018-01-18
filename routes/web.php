@@ -23,6 +23,20 @@ Route::get('/groups', function () {
 	return view('groups');
 });
 
+Route::group(['prefix' => 'cyclescontrol'], function(){
+	Route::get('/', [
+			'uses'	=>	'SchoolCyclesController@index',
+			'as'	=>	'index'
+		]
+	);
+
+	Route::get('/create', [
+			'uses'	=>	'SchoolCyclesController@create',
+			'as'	=>	'create'
+		]
+	);
+});
+
 Route::group(['prefix' => 'subjects'], function(){
 	Route::get('/', [
 			'uses'	=>	'SubjectsController@index',

@@ -14,19 +14,11 @@ class SchoolCyclesController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function read()
-    {
-        $schoolCycles = SchoolCycle::all();
-
-        return $schoolCycles;
+        return view('schoolcycles', [
+                'typeView'  => 'list'
+                //'records' => SchoolCycle::all()
+            ]
+        );
     }
 
     /**
@@ -36,13 +28,14 @@ class SchoolCyclesController extends Controller
      */
     public function create()
     {
-        $schoolCycle = new SchoolCycle();
-
-        $schoolCycle->name $request->get('name');
-        $schoolCycle->created_by = $request->user()->id;
-
-        $schoolCycle->save();
+        return view('schoolcycles', [
+                'typeView' => 'form'
+            ]
+        );   
     }
+
+
+    
 
     /**
      * Store a newly created resource in storage.
@@ -74,7 +67,7 @@ class SchoolCyclesController extends Controller
      */
     public function edit(SchoolCycle $schoolCycle)
     {
-        return view('nombre_vista')->with(['schoolCycle', $schoolCycle])
+        return view('nombre_vista')->with(['schoolCycle', $schoolCycle]);
     }
 
     /**
