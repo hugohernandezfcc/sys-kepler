@@ -14,20 +14,13 @@ class SubjectsController extends Controller
      */
     public function index()
     {
-        //
+        return view('subjects', [
+                'typeView'  => 'list',
+                'pacientes' => Subject::all()
+            ]
+        );
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function read()
-    {
-        $subjects = Subject::all();
-
-        return $subjects;
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -36,13 +29,10 @@ class SubjectsController extends Controller
      */
     public function create()
     {
-        $subject = new Subject();
-
-        $subject->name $request->get('name');
-        $subject->created_by = $request->user()->id;
-        $subject->area_id = $request->area()->id;
-
-        $subject->save();
+        return view('subjects', [
+                'typeView' => 'form'
+            ]
+        );   
     }
 
     /**
@@ -53,7 +43,13 @@ class SubjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $subject = new Subject();
+
+        $subject->name $request->get('name');
+        $subject->created_by = $request->user()->id;
+        $subject->area_id = $request->area()->id;
+
+        $subject->save();
     }
 
     /**

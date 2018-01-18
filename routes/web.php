@@ -23,10 +23,22 @@ Route::get('/groups', function () {
 	return view('groups');
 });
 
+Route::group(['prefix' => 'subjects'], function(){
+	Route::get('/', [
+			'uses'	=>	'SubjectsController@index',
+			'as'	=>	'subjects'
+		]
+	);
 
-Route::get('/subjects', function () {
-	return view('subjects');
+	Route::get('/create', [
+			'uses'	=>	'SubjectsController@create',
+			'as'	=>	'create'
+		]
+	);
 });
+
+
+
 
 
 use App\User;
