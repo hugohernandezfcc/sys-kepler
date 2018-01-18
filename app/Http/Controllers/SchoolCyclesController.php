@@ -3,10 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\SchoolCycle;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class SchoolCyclesController extends Controller
 {
+
+
+
+     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +61,18 @@ class SchoolCyclesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $SchoolCycle = new SchoolCycle();
+
+        $SchoolCycle->name = $request->name;
+        $SchoolCycle->start = $request->start;
+        $SchoolCycle->end = $request->end;
+        $SchoolCycle->description = $request->description;
+        $SchoolCycle->created_by = Auth::id();
+
+
+        if($SchoolCycle->save()){
+            return redirect('/cyclescontrol/show/' . $SchoolCycle->id);
+        }
     }
 
     /**
@@ -54,9 +81,15 @@ class SchoolCyclesController extends Controller
      * @param  \App\SchoolCycle  $schoolCycle
      * @return \Illuminate\Http\Response
      */
-    public function show(SchoolCycle $schoolCycle)
+    public function show($schoolCycleId)
     {
-        //
+
+
+        return view('schoolcycles', [
+                'typeView' => 'view',
+                'record' => SchoolCycle::find($schoolCycleId)
+            ]
+        ); 
     }
 
     /**

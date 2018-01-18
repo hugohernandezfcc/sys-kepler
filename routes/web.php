@@ -35,6 +35,18 @@ Route::group(['prefix' => 'cyclescontrol'], function(){
 			'as'	=>	'create'
 		]
 	);
+
+	Route::get('/show/$schoolCycleId', [
+			'uses'	=>	'SchoolCyclesController@show',
+			'as'	=>	'show'
+		]
+	);
+
+	Route::post('/store', [
+			'uses'	=>	'SchoolCyclesController@store',
+			'as'	=>	'store'
+		]
+	);
 });
 
 Route::group(['prefix' => 'subjects'], function(){

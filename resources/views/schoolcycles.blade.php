@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="post" action="" id="form-create" class="form-horizontal">
+                        <form method="post" action="/cyclescontrol/store" id="form-create" class="form-horizontal">
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Título</label>
