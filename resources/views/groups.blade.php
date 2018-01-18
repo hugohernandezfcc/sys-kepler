@@ -184,7 +184,7 @@
                     </div>
                     <div class="ibox">
                         <div class="ibox-title">
-                            <span class="label label-warning pull-right">DEADLINE</span>
+                            <span class="label label-warning pull-right">0 miembros nuevos</span>
                             <h5>NAHUATL</h5>
                         </div>
                         <div class="ibox-content">

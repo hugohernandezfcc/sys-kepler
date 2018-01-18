@@ -24,6 +24,11 @@ Route::get('/groups', function () {
 });
 
 
+Route::get('/subjects', function () {
+	return view('subjects');
+});
+
+
 use App\User;
 /* Ruta de prueba del template */
 Route::get('/update', function () {
