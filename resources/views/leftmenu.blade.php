@@ -33,8 +33,8 @@
                         <li><a href="dashboard_5.html">Dashboard v.5 </a></li>
                     </ul>
                 </li> -->
-                @if (1)
-                <li class="active"><a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Inicio</span></a></li>
+                @if (Auth::user()->type == "admin")
+                <li class="active"><a href="/"><i class="fa fa-diamond"></i> <span class="nav-label">Inicio</span></a></li>
                 <li><a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Grupos</span></a></li>
                 <li><a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Ciclos escolares</span></a></li>
                 <li><a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Areas</span></a></li>
