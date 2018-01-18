@@ -28,7 +28,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Ciclos <small>Información.</small></h5>
+                        <h5>Registra la información <small>Ciclos escolares.</small></h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -45,19 +45,19 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Inicio</label>
-                                <div class="col-sm-10"><input type="text" name="start" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" name="start" id="start" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Fin</label>
-                                <div class="col-sm-10"><input type="text" name="end" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" name="end" id="end" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Descripción</label>
-                                <div class="col-sm-10"><textarea name="description" class="form-control">></textarea> </div>
+                                <div class="col-sm-10"><textarea name="description" class="form-control"></textarea> </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                         </form>
@@ -65,6 +65,26 @@
                 </div>
             </div>
         </div>
+
+        <script src="{{ asset('inspinia/js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
+
+        <script type="text/javascript">
+            $('#start').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('#end').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+        </script>
     @else
         sd
     @endif
