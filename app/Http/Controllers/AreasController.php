@@ -79,7 +79,7 @@ class AreasController extends Controller
     {
         return view('area', [
                 'typeView' => 'view',
-                'record' => Area::find($areaId)
+                'record' => Area::find(intval($areaId))
             ]
         ); 
     }
