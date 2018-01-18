@@ -16,6 +16,7 @@
 
     <link href="{{ asset('inspinia/css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/style.css')}}" rel="stylesheet">
+    <script src="{{ asset('inspinia/js/jquery-3.1.1.min.js') }}"></script>
 </head>
 
 
