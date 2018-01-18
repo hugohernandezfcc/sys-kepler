@@ -45,7 +45,32 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Inicio</label>
-                                <div class="col-sm-10"><input type="text" name="start" id="start" class="form-control"></div>
+                                <select data-placeholder="Choose a Country..." class="chosen-select"  tabindex="2">
+                                <option value="">Select</option>
+                                <option value="United States">United States</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Afghanistan">Afghanistan</option>
+                                <option value="Aland Islands">Aland Islands</option>
+                                <option value="Albania">Albania</option>
+                                <option value="Algeria">Algeria</option>
+                                <option value="American Samoa">American Samoa</option>
+                                <option value="Andorra">Andorra</option>
+                                <option value="Angola">Angola</option>
+                                <option value="Anguilla">Anguilla</option>
+                                <option value="Antarctica">Antarctica</option>
+                                <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                                <option value="Argentina">Argentina</option>
+                                <option value="Armenia">Armenia</option>
+                                <option value="Aruba">Aruba</option>
+                                <option value="Australia">Australia</option>
+                                <option value="Austria">Austria</option>
+                                <option value="Azerbaijan">Azerbaijan</option>
+                                <option value="Bahamas">Bahamas</option>
+                                <option value="Bahrain">Bahrain</option>
+                                <option value="Bangladesh">Bangladesh</option>
+
+                                <option value="Zimbabwe">Zimbabwe</option>
+                                </select>
                             </div>
                             <div class="hr-line-dashed"></div>
 
@@ -65,7 +90,11 @@
                 </div>
             </div>
         </div>
-
+        <!-- Select2 -->
+        <script src="{{ asset('inspinia/js/plugins/select2/select2.full.min.js')}}"></script>
+        <script type="text/javascript">
+            $(".chosen-select").select2();
+        </script>
     @else
         sd
     @endif
