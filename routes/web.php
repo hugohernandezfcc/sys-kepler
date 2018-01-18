@@ -49,6 +49,32 @@ Route::group(['prefix' => 'cyclescontrol'], function(){
 	);
 });
 
+Route::group(['prefix' => 'areas'], function(){
+	Route::get('/', [
+			'uses'	=>	'AreasController@index',
+			'as'	=>	'index'
+		]
+	);
+
+	Route::get('/create', [
+			'uses'	=>	'AreasController@create',
+			'as'	=>	'create'
+		]
+	);
+
+	Route::get('/show/{areaId}', [
+			'uses'	=>	'AreasController@show',
+			'as'	=>	'show'
+		]
+	);
+
+	Route::post('/store', [
+			'uses'	=>	'AreasController@store',
+			'as'	=>	'store'
+		]
+	);
+});
+
 Route::group(['prefix' => 'subjects'], function(){
 	Route::get('/', [
 			'uses'	=>	'SubjectsController@index',

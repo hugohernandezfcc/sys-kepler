@@ -3,10 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Area;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class AreasController extends Controller
 {
+     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,19 +27,11 @@ class AreasController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function read()
-    {
-        $areas = Area::all();
-
-        return $areas;
+        return view('area', [
+                'typeView'  => 'list',
+                'records' => Area::all()
+            ]
+        );
     }
 
     /**
@@ -34,15 +39,13 @@ class AreasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        $area = new Area();
-
-        $area->name = $request->get('name');
-        $area->created_by = $request->user()->id;
-        $area->school_cycle_id = $request->schoolcycle()->id;
-
-        $area->save();
+        return view('area', [
+                'typeView' => 'form',
+                'to_related' => DB::table('school_cycles')->get();
+            ]
+        );   
     }
 
     /**
@@ -53,7 +56,17 @@ class AreasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $Area = new Area();
+
+        $Area->name = $request->name;
+        $Area->school_cycle_id = $request->school_cycle_id;
+        $Area->description = $request->description;
+        $Area->created_by = Auth::id();
+
+
+        if($Area->save()){
+            return redirect('/areas/show/' . $Area->id);
+        }
     }
 
     /**
@@ -62,9 +75,13 @@ class AreasController extends Controller
      * @param  \App\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function show(Area $area)
+    public function show(Area $areaId)
     {
-        //
+        return view('area', [
+                'typeView' => 'view',
+                'record' => Area::find($areaId)
+            ]
+        ); 
     }
 
     /**
@@ -78,7 +95,7 @@ class AreasController extends Controller
         //Se recibe el id, que es una instanacia de la clase por lo que
         //a través del modelo tenemos acceso a los datos de allí se retorna
         //el objeto completo.
-        return view('nombre_vista')->with(['area', $area])
+        return view('nombre_vista')->with(['area', $area]);
     }
 
     /**
