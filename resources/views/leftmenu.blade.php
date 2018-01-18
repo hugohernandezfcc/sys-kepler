@@ -5,7 +5,7 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element"> 
                         <span>
-                            <img alt="image" class="img-circle" src="https://www.uaeh.edu.mx/excelencia/imagenes/uaeh.png" />
+                            <img alt="image" class="img-circle" src="https://www.uaeh.edu.mx/excelencia/imagenes/uaeh.png" width="45%" />
                         </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear"> 
