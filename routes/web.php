@@ -11,12 +11,22 @@
 |
 */
 
+
+
 Auth::routes();
 Route::redirect('/', '/login', 301);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+use App\User;
 /* Ruta de prueba del template */
-Route::get('/template', function () {
-    return view('template');
+Route::get('/update', function () {
+
+	$user = User::find(1);
+	//'master', '', 'student'
+	$user->type = "admin";
+
+	$user->save();
+
+	dd($user);
 });
