@@ -87,6 +87,12 @@ Route::group(['prefix' => 'subjects'], function(){
 			'as'	=>	'create'
 		]
 	);
+
+	Route::post('/store', [
+			'uses'	=>	'SubjectsController@store',
+			'as'	=>	'store'
+		]
+	);
 });
 
 

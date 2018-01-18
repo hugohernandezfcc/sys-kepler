@@ -64,7 +64,7 @@ class SubjectsController extends Controller
 
 
         if($Subject->save()){
-            return redirect('/subjects/show/' . $Subject->id);
+            return redirect('/subjects');
         }
     }
 
