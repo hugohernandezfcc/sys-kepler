@@ -45,12 +45,14 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Inicio</label>
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <div class="col-sm-10"><input type="text" name="start" id="start" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Fin</label>
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <div class="col-sm-10"><input type="text" name="end" id="end" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -70,7 +72,6 @@
 
         <script type="text/javascript">
             $('#start').datepicker({
-                todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
                 calendarWeeks: true,
@@ -78,7 +79,6 @@
             });
 
             $('#end').datepicker({
-                todayBtn: "linked",
                 keyboardNavigation: false,
                 forceParse: false,
                 calendarWeeks: true,
