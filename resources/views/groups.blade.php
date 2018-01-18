@@ -127,15 +127,15 @@
                             </div>
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
-                                    <div class="font-bold">PROJECTS</div>
+                                    <div class="font-bold">Miembros</div>
                                     11
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="font-bold">RANKING</div>
+                                    <div class="font-bold">Calificación</div>
                                     6th
                                 </div>
                                 <div class="col-sm-4 text-right">
-                                    <div class="font-bold">BUDGET</div>
+                                    <div class="font-bold">ROI</div>
                                     $560,105 <i class="fa fa-level-up text-navy"></i>
                                 </div>
                             </div>
@@ -185,7 +185,7 @@
                     <div class="ibox">
                         <div class="ibox-title">
                             <span class="label label-warning pull-right">DEADLINE</span>
-                            <h5>IT-05 - Administration Team</h5>
+                            <h5>NAHUATL</h5>
                         </div>
                         <div class="ibox-content">
                             <div class="team-members">
@@ -196,12 +196,12 @@
                                 <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a4.jpg')}}"></a>
                                 <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a7.jpg')}}"></a>
                             </div>
-                            <h4>Info about Design Team</h4>
+                            <h4>Nahuatl A1</h4>
                             <p>
-                                Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin.
+                                Puede presentarse a sí mismo y a otros, pedir y dar información personal básica sobre su domicilio, sus pertenencias y las personas que conoce. Puede relacionarse de forma elemental siempre que su interlocutor hable despacio y con claridad y esté dispuesto a cooperar.
                             </p>
                             <div>
-                                <span>Status of current project:</span>
+                                <span>Progreso del curso:</span>
                                 <div class="stat-percent">14%</div>
                                 <div class="progress progress-mini">
                                     <div style="width: 14%;" class="progress-bar"></div>
@@ -209,16 +209,16 @@
                             </div>
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
-                                    <div class="font-bold">PROJECTS</div>
+                                    <div class="font-bold">miembros</div>
                                     8
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="font-bold">RANKING</div>
+                                    <div class="font-bold">Calificación</div>
                                     7th
                                 </div>
                                 <div class="col-sm-4 text-right">
-                                    <div class="font-bold">BUDGET</div>
-                                    $40,200 <i class="fa fa-level-up text-navy"></i>
+                                    <div class="font-bold">ROI</div>
+                                    $40,200 <i class="fa fa-level-down text-navy"></i>
                                 </div>
                             </div>
 
@@ -240,7 +240,7 @@
                                 Many desktop publishing packages and web page editors now use Lorem Ipsum as their. ometimes by accident, sometimes on purpose (injected humour and the like).
                             </p>
                             <div>
-                                <span>Status of current project:</span>
+                                <span>Progreso del curso:</span>
                                 <div class="stat-percent">25%</div>
                                 <div class="progress progress-mini">
                                     <div style="width: 25%;" class="progress-bar"></div>
@@ -248,15 +248,15 @@
                             </div>
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
-                                    <div class="font-bold">PROJECTS</div>
+                                    <div class="font-bold">Miembros</div>
                                     25
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="font-bold">RANKING</div>
+                                    <div class="font-bold">Calificación</div>
                                     4th
                                 </div>
                                 <div class="col-sm-4 text-right">
-                                    <div class="font-bold">BUDGET</div>
+                                    <div class="font-bold">ROI</div>
                                     $140,105 <i class="fa fa-level-up text-navy"></i>
                                 </div>
                             </div>
@@ -311,18 +311,18 @@
                         </div>
                         <div class="ibox-content">
                             <div class="team-members">
-                                <a href="#"><img alt="member" class="img-circle" src="img/a1.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a2.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a4.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a7.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a8.jpg"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a1.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a2.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a4.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a7.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a8.jpg')}}"></a>
                             </div>
                             <h4>Info about Design Team</h4>
                             <p>
                                 Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
                             </p>
                             <div>
-                                <span>Status of current project:</span>
+                                <span>Progreso del curso:</span>
                                 <div class="stat-percent">26%</div>
                                 <div class="progress progress-mini">
                                     <div style="width: 26%;" class="progress-bar"></div>
@@ -330,15 +330,15 @@
                             </div>
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
-                                    <div class="font-bold">PROJECTS</div>
+                                    <div class="font-bold">Miembros</div>
                                     16
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="font-bold">RANKING</div>
+                                    <div class="font-bold">Calificación</div>
                                     8th
                                 </div>
                                 <div class="col-sm-4 text-right">
-                                    <div class="font-bold">BUDGET</div>
+                                    <div class="font-bold">ROI</div>
                                     $160,100 <i class="fa fa-level-up text-navy"></i>
                                 </div>
                             </div>
@@ -351,18 +351,18 @@
                         </div>
                         <div class="ibox-content">
                             <div class="team-members">
-                                <a href="#"><img alt="member" class="img-circle" src="img/a2.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a3.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a8.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a6.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a7.jpg"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a2.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a3.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a8.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a6.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a7.jpg')}}"></a>
                             </div>
                             <h4>Info about Design Team</h4>
                             <p>
                                 Words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in.
                             </p>
                             <div>
-                                <span>Status of current project:</span>
+                                <span>Progreso del curso:</span>
                                 <div class="stat-percent">18%</div>
                                 <div class="progress progress-mini">
                                     <div style="width: 18%;" class="progress-bar"></div>
@@ -370,15 +370,15 @@
                             </div>
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
-                                    <div class="font-bold">PROJECTS</div>
+                                    <div class="font-bold">Miembros</div>
                                     53
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="font-bold">RANKING</div>
+                                    <div class="font-bold">Calificación</div>
                                     9th
                                 </div>
                                 <div class="col-sm-4 text-right">
-                                    <div class="font-bold">BUDGET</div>
+                                    <div class="font-bold">ROI</div>
                                     $60,140 <i class="fa fa-level-up text-navy"></i>
                                 </div>
                             </div>
