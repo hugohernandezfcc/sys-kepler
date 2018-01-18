@@ -56,13 +56,16 @@
                     <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Layouts</span></a>
                 </li>
                 @elseif (Auth::user()->type == "master")
-                <li>
-                    <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Layouts</span></a>
-                </li>
+                    <li class="active"><a href="/"><i class="fa fa-home"></i> <span class="nav-label">Inicio</span></a></li>
+                    <li ><a href="/groups"><i class="fa fa-group"></i> <span class="nav-label">Mis grupos</span></a></li>
+                    <li ><a href="/subjects"><i class="fa fa-graduation-cap"></i>  <span class="nav-label">Mis asignaturas</span></a></li>
+                    <li ><a href="/articles"><i class="fa fa-graduation-cap"></i>  <span class="nav-label">Mis artículos</span></a></li>
+                    <li ><a href="/forums"><i class="fa fa-graduation-cap"></i>  <span class="nav-label">Foros</span></a></li>
                 @endif
                 <li class="special_link">
                     <a href="/logout"><i class="fa fa-sign-out"></i> <span class="nav-label">Cerrar sesión</span></a>
                 </li>
+
                 <!-- <li>
                     <a href="mailbox.html"><i class="fa fa-envelope"></i> <span class="nav-label">Mailbox </span><span class="label label-warning pull-right">16/24</span></a>
                     <ul class="nav nav-second-level collapse">
