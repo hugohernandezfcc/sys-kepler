@@ -200,7 +200,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="m-b-md">
-                                        <a href="#" class="btn btn-white btn-xs pull-right">Editar Ciclo</a>
+                                        <a href="/cyclescontrol" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
                                         <h2>Ciclo escolar: {{$record->name}}</h2>
                                     </div>
                                     <dl class="dl-horizontal">
@@ -237,7 +237,7 @@
                                         <dt>Completado:</dt>
                                         <dd>
                                             <div class="progress progress-striped active m-b-sm">
-                                                <div style="width: 10%;" class="progress-bar"></div>
+                                                <div style="width: 2%;" class="progress-bar"></div>
                                             </div>
                                             <small>El ciclo tiene <strong>0%</strong> completado.</small>
                                         </dd>
