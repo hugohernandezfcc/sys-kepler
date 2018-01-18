@@ -230,10 +230,10 @@
                         </div>
                         <div class="ibox-content">
                             <div class="team-members">
-                                <a href="#"><img alt="member" class="img-circle" src="img/a1.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a8.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a3.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a7.jpg"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a1.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a8.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a3.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a7.jpg')}}"></a>
                             </div>
                             <h4>Info about Design Team</h4>
                             <p>
@@ -268,21 +268,21 @@
                     <div class="ibox">
                         <div class="ibox-title">
 
-                            <h5>IT-02 - Graphic Team</h5>
+                            <h5>Alemán Avanzado</h5>
                         </div>
                         <div class="ibox-content">
                             <div class="team-members">
-                                <a href="#"><img alt="member" class="img-circle" src="img/a3.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a4.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a7.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a2.jpg"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a3.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a4.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a7.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a2.jpg')}}"></a>
                             </div>
-                            <h4>Info about Design Team</h4>
+                            <h4>B2 (Intermedio alto)</h4>
                             <p>
-                                Very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                                Sabe reconstruir la información y los argumentos procedentes de diversas fuentes, ya sean en lengua hablada o escrita, y presentarlos de manera coherente y resumida. 
                             </p>
                             <div>
-                                <span>Status of current project:</span>
+                                <span>Progreso del curso:</span>
                                 <div class="stat-percent">82%</div>
                                 <div class="progress progress-mini">
                                     <div style="width: 82%;" class="progress-bar"></div>
@@ -290,15 +290,15 @@
                             </div>
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
-                                    <div class="font-bold">PROJECTS</div>
+                                    <div class="font-bold">Miembros</div>
                                     68
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="font-bold">RANKING</div>
-                                    2th
+                                    <div class="font-bold">Calificación</div>
+                                    56
                                 </div>
                                 <div class="col-sm-4 text-right">
-                                    <div class="font-bold">BUDGET</div>
+                                    <div class="font-bold">ROI</div>
                                     $701,400 <i class="fa fa-level-up text-navy"></i>
                                 </div>
                             </div>
