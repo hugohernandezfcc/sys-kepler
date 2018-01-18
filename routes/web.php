@@ -36,7 +36,7 @@ Route::group(['prefix' => 'cyclescontrol'], function(){
 		]
 	);
 
-	Route::get('/show/$schoolCycleId', [
+	Route::get('/show/{schoolCycleId}', [
 			'uses'	=>	'SchoolCyclesController@show',
 			'as'	=>	'show'
 		]
