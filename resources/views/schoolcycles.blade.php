@@ -45,31 +45,20 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Inicio</label>
-                                <select data-placeholder="Choose a Country..." class="select2_demo_3 form-control"  tabindex="2">
-                                <option value="">Select</option>
-                                <option value="United States">United States</option>
-                                <option value="United Kingdom">United Kingdom</option>
-                                <option value="Afghanistan">Afghanistan</option>
-                                <option value="Aland Islands">Aland Islands</option>
-                                <option value="Albania">Albania</option>
-                                <option value="Algeria">Algeria</option>
-                                <option value="American Samoa">American Samoa</option>
-                                <option value="Andorra">Andorra</option>
-                                <option value="Angola">Angola</option>
-                                <option value="Anguilla">Anguilla</option>
-                                <option value="Antarctica">Antarctica</option>
-                                <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                                <option value="Argentina">Argentina</option>
-                                <option value="Armenia">Armenia</option>
-                                <option value="Aruba">Aruba</option>
-                                <option value="Australia">Australia</option>
-                                <option value="Austria">Austria</option>
-                                <option value="Azerbaijan">Azerbaijan</option>
-                                <option value="Bahamas">Bahamas</option>
-                                <option value="Bahrain">Bahrain</option>
-                                <option value="Bangladesh">Bangladesh</option>
-
-                                <option value="Zimbabwe">Zimbabwe</option>
+                                <select class="form-control" name="start" id="start">
+                                    <option value="">Select</option>
+                                    <option value="Enero">Enero</option>
+                                    <option value="Febrero">Febrero</option>
+                                    <option value="Marzo">Marzo</option>
+                                    <option value="Abril">Abril</option>
+                                    <option value="Mayo">Mayo</option>
+                                    <option value="Junio">Junio</option>
+                                    <option value="Julio">Julio</option>
+                                    <option value="Agosto">Agosto</option>
+                                    <option value="Septiembre">Septiembre</option>
+                                    <option value="Octubre">Octubre</option>
+                                    <option value="Noviembre">Noviembre</option>
+                                    <option value="Diciembre">Diciembre</option>
                                 </select>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -90,12 +79,7 @@
                 </div>
             </div>
         </div>
-        <!-- Select2 -->
-        <script src="{{ asset('inspinia/js/plugins/select2/select2.full.min.js')}}"></script>
-        <script type="text/javascript">
-            $(".select2_demo_3").select2();
-            $('.chosen-select').chosen({width: "100%"});
-        </script>
+      
     @else
         sd
     @endif
