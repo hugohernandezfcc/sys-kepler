@@ -43,7 +43,7 @@ class AreasController extends Controller
     {
         return view('area', [
                 'typeView' => 'form',
-                'to_related' => DB::table('school_cycles')->get();
+                'to_related' => DB::table('school_cycles')->get()
             ]
         );   
     }

@@ -37,7 +37,7 @@
                 <li class="active"><a href="/"><i class="fa fa-home"></i> <span class="nav-label">Inicio</span></a></li>
                 <li><a href="/groups"><i class="fa fa-group"></i> <span class="nav-label">Grupos</span></a></li>
                 <li><a href="/cyclescontrol"><i class="fa fa-university"></i> <span class="nav-label">Ciclos escolares</span></a></li>
-                <li><a href="layouts.html"><i class="fa fa-subscript"></i> <span class="nav-label">Areas</span></a></li>
+                <li><a href="/areas"><i class="fa fa-subscript"></i> <span class="nav-label">Areas</span></a></li>
                 <li>
                     <a href="layouts.html"><i class="fa fa-lis-ul"></i> <span class="nav-label">Contenidos</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
