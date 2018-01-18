@@ -73,7 +73,7 @@ class SubjectsController extends Controller
      */
     public function edit(Subject $subject)
     {
-        return view('nombre_vista')->with(['subject', $subject])
+        return view('nombre_vista')->with(['subject', $subject]);
     }
 
     /**
