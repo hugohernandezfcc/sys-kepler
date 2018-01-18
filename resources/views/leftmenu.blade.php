@@ -59,8 +59,9 @@
                     <li class="active"><a href="/"><i class="fa fa-home"></i> <span class="nav-label">Inicio</span></a></li>
                     <li ><a href="/groups"><i class="fa fa-group"></i> <span class="nav-label">Mis grupos</span></a></li>
                     <li ><a href="/subjects"><i class="fa fa-graduation-cap"></i>  <span class="nav-label">Mis asignaturas</span></a></li>
-                    <li ><a href="/articles"><i class="fa fa-graduation-cap"></i>  <span class="nav-label">Mis artículos</span></a></li>
-                    <li ><a href="/forums"><i class="fa fa-graduation-cap"></i>  <span class="nav-label">Foros</span></a></li>
+                    <li ><a href="/articles"><i class="fa fa-copy"></i>  <span class="nav-label">Mis artículos</span></a></li>
+                    <li ><a href="/forums"><i class="fa fa-question"></i>  <span class="nav-label">Foros</span></a></li>
+                    <li ><a href="/forums"><i class="fa fa-calendar"></i>  <span class="nav-label">Calendario</span></a></li>
                 @endif
                 <li class="special_link">
                     <a href="/logout"><i class="fa fa-sign-out"></i> <span class="nav-label">Cerrar sesión</span></a>
