@@ -39,10 +39,10 @@
                 <li><a href="/cyclescontrol"><i class="fa fa-university"></i> <span class="nav-label">Ciclos escolares</span></a></li>
                 <li><a href="/areas"><i class="fa fa-subscript"></i> <span class="nav-label">Areas</span></a></li>
                 <li>
-                    <a href="layouts.html"><i class="fa fa-lis-ul"></i> <span class="nav-label">Contenidos</span><span class="fa arrow"></span></a>
+                    <a href="layouts.html"><i class="fa fa-lis-ul"></i> <span class="nav-label">Contenidos</span><span class="fa fa-ellipsis-v"></span></a>
                     <ul class="nav nav-second-level">
                         <li ><a href="/subjects"><i class="fa fa-graduation-cap"></i> Asignaturas</a></li>
-                        <li ><a href="/task"><i class="fa fa-graduation-cap"></i> Tareas</a></li>
+                        <li ><a href="/task"><i class="fa fa-task"></i> Tareas</a></li>
                         <li><a href="/list"><i class="fa fa-list"></i>  Pase de lista</a></li>
                         <li><a href="/modules"><i class="fa fa-archive"></i> Modulos</a></li>
                         <li><a href="/test"><i class="fa fa-flask"></i> Examenes</a></li>
