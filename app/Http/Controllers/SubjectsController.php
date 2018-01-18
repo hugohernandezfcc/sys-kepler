@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\DB;
 class SubjectsController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -17,12 +27,11 @@ class SubjectsController extends Controller
     public function index()
     {
         return view('subjects', [
-                'typeView'  => 'list'
-                // 'pacientes' => Subject::all()
+                'typeView'  => 'list',
+                'records' => Subject::all()
             ]
         );
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -32,7 +41,8 @@ class SubjectsController extends Controller
     public function create()
     {
         return view('subjects', [
-                'typeView' => 'form'
+                'typeView' => 'form',
+                'to_related' => DB::table('areas')->get()
             ]
         );   
     }
@@ -45,24 +55,32 @@ class SubjectsController extends Controller
      */
     public function store(Request $request)
     {
-        $subject = new Subject();
+        $Subject = new Subject();
 
-        $subject->name = $request->get('name');
-        $subject->created_by = $request->user()->id;
-        $subject->area_id = $request->area()->id;
+        $Subject->name = $request->name;
+        $Subject->area_id = $request->area_id;
 
-        $subject->save();
+        $Subject->created_by = Auth::id();
+
+
+        if($Subject->save()){
+            return redirect('/subjects/show/' . $Subject->id);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Subject  $subject
+     * @param  \App\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function show(Subject $subject)
+    public function show($subjectId)
     {
-        //
+        return view('subjects', [
+                'typeView' => 'view',
+                'record' => Area::find($subjectId)
+            ]
+        ); 
     }
 
     /**

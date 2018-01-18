@@ -8,15 +8,37 @@
                 <li>
                     <a href="index.html">Kepler</a>
                 </li>
-                <li class="active">
-                    <strong>Asignaturas de la organización</strong>
-                </li>
+                @if($typeView != 'form')
+                    <li class="active">
+                        <strong>Asignaturas de la organización</strong>
+                    </li>
+                @elseif($typeView == 'form')
+                    <li>
+                        Asignaturas de la organización
+                    </li>
+                    <li class="active">
+                        <strong>Crear asignatura</strong>
+                    </li>
+                @endif
+
             </ol>
         </div>
         <div class="col-sm-8">
-            <div class="title-action">
-                <a href="/subjects/create" class="btn btn-primary btn-sm">Agregar asignatura</a>
-            </div>
+            @if($typeView != 'form')
+                <div class="title-action">
+                    <a href="/subjects/create" class="btn btn-primary btn-sm">Agregar asignatura</a>
+                </div>
+
+            @elseif($typeView == 'form')
+
+                <div class="title-action">
+                    <a onclick="document.getElementById('form-create').submit(); " class="btn btn-primary btn-sm">
+                        <i class="fa fa-check"></i> Guardar
+                    </a>
+                </div>
+                
+
+            @endif
         </div>
     </div>
 
@@ -28,7 +50,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>All form elements <small>With custom checbox and radion elements.</small></h5>
+                        <h5>Registra la información <small>Asignatura.</small></h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -37,9 +59,21 @@
                     </div>
                     <div class="ibox-content">
                         <form method="get" class="form-horizontal">
-                            <div class="form-group"><label class="col-sm-2 control-label">Normal</label>
+                            <div class="form-group"><label class="col-sm-2 control-label">Nombre de la asignatura</label>
 
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" name="name" class="form-control"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Área</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="area_id" id="area_id">
+                                        
+                                        @foreach ($to_related as $to)
+                                            <option value="{{$to->id}}">{{$to->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                         </form>
