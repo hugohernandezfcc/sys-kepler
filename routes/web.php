@@ -94,12 +94,17 @@ Route::group(['prefix' => 'subjects'], function(){
 		]
 	);
 });
-
+	use Session;
+	use Auth;
  Route::get('/logout', function() {
  Session::forget('key');
   if(!Session::has('key'))
    {
-      return "signout";
+      	Auth::logout();
+
+	    Session::flush();
+
+	    return redirect('/');
    }
  });
 
