@@ -31,7 +31,7 @@ class SchoolCyclesController extends Controller
     public function index()
     {
         return view('schoolcycles', [
-                'typeView'  => 'list'
+                'typeView'  => 'list',
                 'records' => SchoolCycle::all()
             ]
         );
