@@ -35,7 +35,7 @@
                 </li> -->
                 @if (Auth::user()->type == "admin")
                 <li class="active"><a href="/"><i class="fa fa-diamond"></i> <span class="nav-label">Inicio</span></a></li>
-                <li><a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Grupos</span></a></li>
+                <li><a href="/groups"><i class="fa fa-diamond"></i> <span class="nav-label">Grupos</span></a></li>
                 <li><a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Ciclos escolares</span></a></li>
                 <li><a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Areas</span></a></li>
                 <li>

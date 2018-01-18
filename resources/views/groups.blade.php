@@ -25,7 +25,7 @@
                 <div class="col-lg-4">
                     <div class="ibox">
                         <div class="ibox-title">
-                            <span class="label label-primary pull-right">Nuevo miembro</span>
+                            <span class="label label-primary pull-right">2 nuevos miembro</span>
                             <h5>Inglés Avanazado</h5>
                         </div>
                         <div class="ibox-content">
@@ -36,13 +36,12 @@
                                 <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a5.jpg')}}"></a>
                                 <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a6.jpg')}}"></a>
                             </div>
-                            <h4>Info about Design Team</h4>
+                            <h4>Ingles C1</h4>
                             <p>
-                                It is a long established fact that a reader will be distracted by the readable content
-                                of a page when looking at its layout. The point of using Lorem Ipsum is that it has.
+                                Es capaz de comprender una amplia variedad de textos extensos y con cierto nivel de exigencia, así como reconocer en ellos sentidos implícitos. Sabe expresarse de forma fluida y espontánea sin muestras muy evidentes de esfuerzo para encontrar la expresión adecuada.
                             </p>
                             <div>
-                                <span>Status of current project:</span>
+                                <span>Progreso del curso:</span>
                                 <div class="stat-percent">48%</div>
                                 <div class="progress progress-mini">
                                     <div style="width: 48%;" class="progress-bar"></div>
@@ -50,15 +49,15 @@
                             </div>
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
-                                    <div class="font-bold">PROJECTS</div>
+                                    <div class="font-bold">Miembros</div>
                                     12
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="font-bold">RANKING</div>
-                                    4th
+                                    <div class="font-bold">Calificación</div>
+                                    82
                                 </div>
                                 <div class="col-sm-4 text-right">
-                                    <div class="font-bold">BUDGET</div>
+                                    <div class="font-bold">ROI</div>
                                     $200,913 <i class="fa fa-level-up text-navy"></i>
                                 </div>
                             </div>
@@ -71,11 +70,11 @@
                         </div>
                         <div class="ibox-content">
                             <div class="team-members">
-                                <a href="#"><img alt="member" class="img-circle" src="img/a4.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a5.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a6.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a8.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a7.jpg"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a4.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a5.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a6.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a8.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a7.jpg')}}"></a>
                             </div>
                             <h4>Info about Design Team</h4>
                             <p>
