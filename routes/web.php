@@ -18,9 +18,11 @@ Route::redirect('/', '/login', 301);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
 Route::get('/groups', function () {
 	return view('groups');
 });
+
 
 use App\User;
 /* Ruta de prueba del template */

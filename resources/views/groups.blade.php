@@ -25,16 +25,16 @@
                 <div class="col-lg-4">
                     <div class="ibox">
                         <div class="ibox-title">
-                            <span class="label label-primary pull-right">NEW</span>
-                            <h5>IT-01 - Design Team</h5>
+                            <span class="label label-primary pull-right">Nuevo miembro</span>
+                            <h5>Inglés Avanazado</h5>
                         </div>
                         <div class="ibox-content">
                             <div class="team-members">
-                                <a href="#"><img alt="member" class="img-circle" src="img/a1.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a2.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a3.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a5.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="img/a6.jpg"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a1.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a2.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a3.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a5.jpg')}}"></a>
+                                <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a6.jpg')}}"></a>
                             </div>
                             <h4>Info about Design Team</h4>
                             <p>
