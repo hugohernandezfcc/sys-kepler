@@ -89,11 +89,11 @@
                     <div class="widget navy-bg p-lg text-center">
                         <div class="m-b-md">
                             <i class="fa fa-shield fa-4x"></i>
-                            <h1 class="m-xs">456</h1>
+                            <h1 class="m-xs">10</h1>
                             <h3 class="font-bold no-margins">
-                                Shield
+                                Certificados
                             </h3>
-                            <small>power</small>
+
                         </div>
                     </div>
                     <div class="widget  p-lg text-center">
@@ -101,32 +101,30 @@
                             <i class="fa fa-flash fa-4x"></i>
                             <h1 class="m-xs">612</h1>
                             <h3 class="font-bold no-margins">
-                                Thunder
+                                Estudiantes 
                             </h3>
-                            <small>amount</small>
+                            <small>Egresados</small>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="widget lazur-bg p-xl">
 
-                                <h2>
-                                    Janet Smith
-                                </h2>
+                                
                         <ul class="list-unstyled m-t-md">
                             <li>
                                 <span class="fa fa-envelope m-r-xs"></span>
                                 <label>Email:</label>
-                                mike@mail.com
+                                {{Auth::user()->name}}
                             </li>
                             <li>
                                 <span class="fa fa-home m-r-xs"></span>
-                                <label>Address:</label>
-                                Street 200, Avenue 10
+                                <label>Dirección:</label>
+                                calle 200, Avenue 10
                             </li>
                             <li>
                                 <span class="fa fa-phone m-r-xs"></span>
-                                <label>Contact:</label>
+                                <label>Teléfono:</label>
                                 (+121) 678 3462
                             </li>
                         </ul>
@@ -137,9 +135,9 @@
                             <i class="fa fa-bell fa-4x"></i>
                             <h1 class="m-xs">47</h1>
                             <h3 class="font-bold no-margins">
-                                Notification
+                                Examenes
                             </h3>
-                            <small>We detect the error.</small>
+                            <small>Por revisar</small>
                         </div>
                     </div>
                 </div>
@@ -151,17 +149,17 @@
                         <h3 class="font-bold no-margins">
                             Likes
                         </h3>
-                        <small>amount</small>
+                        <small></small>
                     </div>
                 </div>
-                    <div class="widget yellow-bg p-lg text-center">
+                    <div class="widget navy-bg p-lg text-center">
                         <div class="m-b-md">
                             <i class="fa fa-warning fa-4x"></i>
-                            <h1 class="m-xs">Alarm</h1>
+                            <h1 class="m-xs">17</h1>
                             <h3 class="font-bold no-margins">
-                                Do
+                                Alumnos 
                             </h3>
-                            <small>something</small>
+                            <small>Sin revisar</small>
                         </div>
                     </div>
                     </div>
