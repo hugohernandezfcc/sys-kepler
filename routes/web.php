@@ -26,7 +26,7 @@ Route::get('/groups', function () {
 Route::group(['prefix' => 'subjects'], function(){
 	Route::get('/', [
 			'uses'	=>	'SubjectsController@index',
-			'as'	=>	'subjects'
+			'as'	=>	'index'
 		]
 	);
 

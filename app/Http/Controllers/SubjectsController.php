@@ -15,8 +15,8 @@ class SubjectsController extends Controller
     public function index()
     {
         return view('subjects', [
-                'typeView'  => 'list',
-                'pacientes' => Subject::all()
+                'typeView'  => 'list'
+                // 'pacientes' => Subject::all()
             ]
         );
     }
