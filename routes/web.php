@@ -103,9 +103,9 @@ use App\User;
 /* Ruta de prueba del template */
 Route::get('/update', function () {
 
-	$user = User::find(1);
+	$user = User::find(2);
 	//'master', '', 'student'
-	$user->type = "admin";
+	$user->type = "student";
 
 	$user->save();
 
