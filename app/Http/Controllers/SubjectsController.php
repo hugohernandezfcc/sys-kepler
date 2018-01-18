@@ -47,7 +47,7 @@ class SubjectsController extends Controller
     {
         $subject = new Subject();
 
-        $subject->name $request->get('name');
+        $subject->name = $request->get('name');
         $subject->created_by = $request->user()->id;
         $subject->area_id = $request->area()->id;
 
