@@ -9,7 +9,7 @@ class Area extends Model
     protected $table = 'areas';
 
     protected $fillable = [
-        'name', 'created_by', 'school_cycle_id',
+        'name', 'created_by', 'description', 'school_cycle_id',
     ];
 
     public function schoolcycle()

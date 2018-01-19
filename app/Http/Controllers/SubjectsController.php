@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Subject;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class SubjectsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware('auth');
     }
 
     /**
@@ -22,11 +25,13 @@ class SubjectsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function read()
+    public function index()
     {
-        $subjects = Subject::all();
-
-        return $subjects;
+        return view('subjects', [
+                'typeView'  => 'list',
+                'records' => Subject::all()
+            ]
+        );
     }
 
     /**
@@ -36,13 +41,11 @@ class SubjectsController extends Controller
      */
     public function create()
     {
-        $subject = new Subject();
-
-        $subject->name = $request->get('name');
-        $subject->created_by = $request->user()->id;
-        $subject->area_id = $request->area()->id;
-
-        $subject->save();
+        return view('subjects', [
+                'typeView' => 'form',
+                'to_related' => DB::table('areas')->get()
+            ]
+        );   
     }
 
     /**
@@ -53,18 +56,32 @@ class SubjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $Subject = new Subject();
+
+        $Subject->name = $request->name;
+        $Subject->area_id = $request->area_id;
+
+        $Subject->created_by = Auth::id();
+
+
+        if($Subject->save()){
+            return redirect('/subjects');
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Subject  $subject
+     * @param  \App\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function show(Subject $subject)
+    public function show($subjectId)
     {
-        //
+        return view('subjects', [
+                'typeView' => 'view',
+                'record' => Area::find($subjectId)
+            ]
+        ); 
     }
 
     /**
@@ -75,7 +92,7 @@ class SubjectsController extends Controller
      */
     public function edit(Subject $subject)
     {
-        return view('nombre_vista')->with(['subject', $subject])
+        return view('nombre_vista')->with(['subject', $subject]);
     }
 
     /**

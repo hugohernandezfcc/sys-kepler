@@ -9,11 +9,11 @@ class SchoolCycle extends Model
     protected $table = 'school_cycles';
 
     protected $fillable = [
-        'name', 'created_by',
+        'name', 'start', 'end', 'description', 'created_by',
     ];
 
     public function areas()
-    {
+    {$table->softDeletes();
         return $this->hasMany('App\Area');
     }
 

@@ -5,13 +5,13 @@
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
             <form role="search" class="navbar-form-custom" action="search_results.html">
                 <div class="form-group">
-                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                    <input type="text" placeholder="¿Buscas algo?" class="form-control" name="top-search" id="top-search">
                 </div>
             </form>
         </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li>
-                    <span class="m-r-sm text-muted welcome-message">Welcome to Kepler.</span>
+                    <span class="m-r-sm text-muted welcome-message">Bienvenido {{ Auth::user()->name }}</span>
                 </li>
                 <li class="dropdown">
                     <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -110,7 +110,7 @@
                 </li>
             </ul>
 
-            @guest
+           <!--  @guest
                 <ul class="dropdown-menu">
                     <li class="dropdown">
                         <a href="{{ route('login') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">Login</a>
@@ -144,7 +144,7 @@
                         </li>
                     </ul>
                 </li>
-            @endguest
+            @endguest -->
 
         </nav>
         </div>

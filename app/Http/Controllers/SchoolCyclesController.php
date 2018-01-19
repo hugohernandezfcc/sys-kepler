@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\SchoolCycle;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class SchoolCyclesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
+
+
+
+     /**
+     * Create a new controller instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware('auth');
     }
 
     /**
@@ -22,11 +28,13 @@ class SchoolCyclesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function read()
+    public function index()
     {
-        $schoolCycles = SchoolCycle::all();
-
-        return $schoolCycles;
+        return view('schoolcycles', [
+                'typeView'  => 'list',
+                'records' => SchoolCycle::all()
+            ]
+        );
     }
 
     /**
@@ -36,13 +44,14 @@ class SchoolCyclesController extends Controller
      */
     public function create()
     {
-        $schoolCycle = new SchoolCycle();
-
-        $schoolCycle->name = $request->get('name');
-        $schoolCycle->created_by = $request->user()->id;
-
-        $schoolCycle->save();
+        return view('schoolcycles', [
+                'typeView' => 'form'
+            ]
+        );   
     }
+
+
+    
 
     /**
      * Store a newly created resource in storage.
@@ -52,7 +61,18 @@ class SchoolCyclesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $SchoolCycle = new SchoolCycle();
+
+        $SchoolCycle->name = $request->name;
+        $SchoolCycle->start = $request->start;
+        $SchoolCycle->end = $request->end;
+        $SchoolCycle->description = $request->description;
+        $SchoolCycle->created_by = Auth::id();
+
+
+        if($SchoolCycle->save()){
+            return redirect('/cyclescontrol/show/' . $SchoolCycle->id);
+        }
     }
 
     /**
@@ -61,9 +81,15 @@ class SchoolCyclesController extends Controller
      * @param  \App\SchoolCycle  $schoolCycle
      * @return \Illuminate\Http\Response
      */
-    public function show(SchoolCycle $schoolCycle)
+    public function show($schoolCycleId)
     {
-        //
+
+
+        return view('schoolcycles', [
+                'typeView' => 'view',
+                'record' => SchoolCycle::find($schoolCycleId)
+            ]
+        ); 
     }
 
     /**
@@ -74,7 +100,7 @@ class SchoolCyclesController extends Controller
      */
     public function edit(SchoolCycle $schoolCycle)
     {
-        return view('nombre_vista')->with(['schoolCycle', $schoolCycle])
+        return view('nombre_vista')->with(['schoolCycle', $schoolCycle]);
     }
 
     /**
