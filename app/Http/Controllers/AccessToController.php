@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Module;
 use Illuminate\Http\Request;
 
-class ModulesController extends Controller
+class AccessToController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,11 +23,10 @@ class ModulesController extends Controller
      */
     public function read()
     {
-        $modules = Module::all();
+        $accessTo = AccessTo::all();
 
-        return $modules;
+        return $accessTo;
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -37,13 +35,14 @@ class ModulesController extends Controller
      */
     public function create()
     {
-        $module = new Module();
+        $accessTo = new AccessTo();
 
-        $module->name = $request->get('name');
-        $module->created_by = $request->user()->id;
-        $module->subject_id = $request->subject()->id;
+        $accessTo->name = $request->get('name');
+        $accessTo->created_by = $request->user()->id;
+        $accessTo->user_id = $request->users()->id;
+        $accessTo->group_id = $request->groups()->id;
 
-        $module->save();
+        $accessTo->save();
     }
 
     /**
@@ -60,10 +59,10 @@ class ModulesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\module  $module
+     * @param  \App\AccessTo  $accessTo
      * @return \Illuminate\Http\Response
      */
-    public function show(Module $module)
+    public function show(AccessTo $accessTo)
     {
         //
     }
@@ -71,37 +70,38 @@ class ModulesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\module  $module
+     * @param  \App\AccessTo  $accessTo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Module $module)
+    public function edit(AccessTo $accessTo)
     {
-        return view('nombre_vista')->with(['module', $module])
+        return view('nombre_vista')->with(['accessTo', $accessTo])
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\module  $module
+     * @param  \App\AccessTo  $accessTo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Module $module)
+    public function update(Request $request, AccessTo $accessTo)
     {
-        $module->name = $request->get('name');
+        $accessTo->name = $request->get('name');
 
-        $module->save();
+        $accessTo->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\module  $module
+     * @param  \App\AccessTo  $accessTo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Module $module)
+    public function destroy(AccessTo $accessTo)
     {
-        $module->delete();
+        $accessTo->delete();
 
         return redirect()->route('nombre_ruta_destino');
     }
+}

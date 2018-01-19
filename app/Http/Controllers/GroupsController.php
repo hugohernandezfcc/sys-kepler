@@ -18,13 +18,30 @@ class GroupsController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function read()
+    {
+        $groups = Group::all();
+
+        return $groups;
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        $group = new Group();
+
+        $group->name = $request->get('name');
+        $group->created_by = $request->user()->id;
+
+        $group->save();
     }
 
     /**
@@ -57,7 +74,7 @@ class GroupsController extends Controller
      */
     public function edit(Group $group)
     {
-        //
+        return view('nombre_vista')->with(['group', $group])
     }
 
     /**
@@ -69,7 +86,9 @@ class GroupsController extends Controller
      */
     public function update(Request $request, Group $group)
     {
-        //
+        $group->name = $request->get('name');
+
+        $group->save();
     }
 
     /**
@@ -80,6 +99,8 @@ class GroupsController extends Controller
      */
     public function destroy(Group $group)
     {
-        //
+        $group->delete();
+
+        return redirect()->route('nombre_ruta_destino');
     }
 }

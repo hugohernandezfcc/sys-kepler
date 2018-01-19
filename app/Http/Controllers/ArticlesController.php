@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Module;
+use App\Article;
 use Illuminate\Http\Request;
 
-class ModulesController extends Controller
+class ArticlesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
@@ -22,11 +21,10 @@ class ModulesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function read()
-    {
-        $modules = Module::all();
+    public function read() {
+        $articles = Article::all();
 
-        return $modules;
+        return $articles;
     }
 
 
@@ -35,15 +33,15 @@ class ModulesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $module = new Module();
+    public function create() {
+        $article = new Article();
 
-        $module->name = $request->get('name');
-        $module->created_by = $request->user()->id;
-        $module->subject_id = $request->subject()->id;
+        $article->name = $request->get('name');
+        $article->description = $request->get('description');
+        $article->created_by = $request->user()->id;
+        $article->module_id = $request->module()->id;
 
-        $module->save();
+        $article->save();
     }
 
     /**
@@ -52,56 +50,53 @@ class ModulesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\module  $module
+     * @param  \App\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Module $module)
-    {
+    public function show(Article $article) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\module  $module
+     * @param  \App\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(Module $module)
-    {
-        return view('nombre_vista')->with(['module', $module])
+    public function edit(Article $article) {
+        return view('nombre_vista')->with(['article', $article])
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\module  $module
+     * @param  \App\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Module $module)
-    {
-        $module->name = $request->get('name');
+    public function update(Request $request, Article $article) {
+        $article->name = $request->get('name');
+        $article->description = $request->get('description');
 
-        $module->save();
+        $article->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\module  $module
+     * @param  \App\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Module $module)
-    {
-        $module->delete();
+    public function destroy(Article $article) {
+        $article->delete();
 
         return redirect()->route('nombre_ruta_destino');
     }
+}

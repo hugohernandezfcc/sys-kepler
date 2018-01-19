@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Module;
+use App\Wall;
 use Illuminate\Http\Request;
 
-class ModulesController extends Controller
+class WallsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
@@ -22,11 +21,10 @@ class ModulesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function read()
-    {
-        $modules = Module::all();
+    public function read() {
+        $walls = Wall::all();
 
-        return $modules;
+        return $walls;
     }
 
 
@@ -35,15 +33,15 @@ class ModulesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $module = new Module();
+    public function create() {
+        $wall = new Wall();
 
-        $module->name = $request->get('name');
-        $module->created_by = $request->user()->id;
-        $module->subject_id = $request->subject()->id;
+        $wall->name = $request->get('name');
+        $wall->description = $request->get('description');
+        $wall->created_by = $request->user()->id;
+        $wall->module_id = $request->module()->id;
 
-        $module->save();
+        $wall->save();
     }
 
     /**
@@ -52,56 +50,53 @@ class ModulesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\module  $module
+     * @param  \App\wall  $wall
      * @return \Illuminate\Http\Response
      */
-    public function show(Module $module)
-    {
+    public function show(Wall $wall) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\module  $module
+     * @param  \App\wall  $wall
      * @return \Illuminate\Http\Response
      */
-    public function edit(Module $module)
-    {
-        return view('nombre_vista')->with(['module', $module])
+    public function edit(Wall $wall) {
+        return view('nombre_vista')->with(['wall', $wall])
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\module  $module
+     * @param  \App\wall  $wall
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Module $module)
-    {
-        $module->name = $request->get('name');
+    public function update(Request $request, Wall $wall) {
+        $wall->name = $request->get('name');
+        $wall->description = $request->get('description');
 
-        $module->save();
+        $wall->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\module  $module
+     * @param  \App\wall  $wall
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Module $module)
-    {
-        $module->delete();
+    public function destroy(Wall $wall) {
+        $wall->delete();
 
         return redirect()->route('nombre_ruta_destino');
     }
+}

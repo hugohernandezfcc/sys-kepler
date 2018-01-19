@@ -38,7 +38,7 @@ class RollOfListsController extends Controller
     {
         $rollOfList = new Exam();
 
-        $rollOfList->name $request->get('name');
+        $rollOfList->name = $request->get('name');
         $rollOfList->created_by = $request->user()->id;
         $rollOfList->subject_id = $request->subject()->id;
 

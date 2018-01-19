@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Module;
+use App\Link;
 use Illuminate\Http\Request;
 
-class ModulesController extends Controller
+class LinksController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
@@ -22,11 +21,10 @@ class ModulesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function read()
-    {
-        $modules = Module::all();
+    public function read() {
+        $links = Link::all();
 
-        return $modules;
+        return $links;
     }
 
 
@@ -35,15 +33,15 @@ class ModulesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $module = new Module();
+    public function create() {
+        $link = new Link();
 
-        $module->name = $request->get('name');
-        $module->created_by = $request->user()->id;
-        $module->subject_id = $request->subject()->id;
+        $link->name = $request->get('name');
+        $link->description = $request->get('description');
+        $link->created_by = $request->user()->id;
+        $link->module_id = $request->module()->id;
 
-        $module->save();
+        $link->save();
     }
 
     /**
@@ -52,56 +50,53 @@ class ModulesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\module  $module
+     * @param  \App\link  $link
      * @return \Illuminate\Http\Response
      */
-    public function show(Module $module)
-    {
+    public function show(Link $link) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\module  $module
+     * @param  \App\link  $link
      * @return \Illuminate\Http\Response
      */
-    public function edit(Module $module)
-    {
-        return view('nombre_vista')->with(['module', $module])
+    public function edit(Link $link) {
+        return view('nombre_vista')->with(['link', $link])
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\module  $module
+     * @param  \App\link  $link
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Module $module)
-    {
-        $module->name = $request->get('name');
+    public function update(Request $request, Link $link) {
+        $link->name = $request->get('name');
+        $link->description = $request->get('description');
 
-        $module->save();
+        $link->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\module  $module
+     * @param  \App\link  $link
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Module $module)
-    {
-        $module->delete();
+    public function destroy(Link $link) {
+        $link->delete();
 
         return redirect()->route('nombre_ruta_destino');
     }
+}

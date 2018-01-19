@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Module;
+use App\Forum;
 use Illuminate\Http\Request;
 
-class ModulesController extends Controller
+class ForumsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
@@ -22,11 +21,10 @@ class ModulesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function read()
-    {
-        $modules = Module::all();
+    public function read() {
+        $forums = Forum::all();
 
-        return $modules;
+        return $forums;
     }
 
 
@@ -35,15 +33,15 @@ class ModulesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $module = new Module();
+    public function create() {
+        $forum = new Forum();
 
-        $module->name = $request->get('name');
-        $module->created_by = $request->user()->id;
-        $module->subject_id = $request->subject()->id;
+        $forum->name = $request->get('name');
+        $forum->description = $request->get('description');
+        $forum->created_by = $request->user()->id;
+        $forum->module_id = $request->module()->id;
 
-        $module->save();
+        $forum->save();
     }
 
     /**
@@ -52,56 +50,53 @@ class ModulesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\module  $module
+     * @param  \App\forum  $forum
      * @return \Illuminate\Http\Response
      */
-    public function show(Module $module)
-    {
+    public function show(Forum $forum) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\module  $module
+     * @param  \App\forum  $forum
      * @return \Illuminate\Http\Response
      */
-    public function edit(Module $module)
-    {
-        return view('nombre_vista')->with(['module', $module])
+    public function edit(Forum $forum) {
+        return view('nombre_vista')->with(['forum', $forum])
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\module  $module
+     * @param  \App\forum  $forum
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Module $module)
-    {
-        $module->name = $request->get('name');
+    public function update(Request $request, Forum $forum) {
+        $forum->name = $request->get('name');
+        $forum->description = $request->get('description');
 
-        $module->save();
+        $forum->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\module  $module
+     * @param  \App\forum  $forum
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Module $module)
-    {
-        $module->delete();
+    public function destroy(Forum $forum) {
+        $forum->delete();
 
         return redirect()->route('nombre_ruta_destino');
     }
+}

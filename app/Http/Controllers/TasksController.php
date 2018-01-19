@@ -38,7 +38,7 @@ class TasksController extends Controller
     {
         $task = new Task();
 
-        $task->name $request->get('name');
+        $task->name = $request->get('name');
         $task->created_by = $request->user()->id;
         $task->subject_id = $request->subject()->id;
 
