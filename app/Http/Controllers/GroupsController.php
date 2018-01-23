@@ -3,10 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class GroupsController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +27,11 @@ class GroupsController extends Controller
      */
     public function index()
     {
-        //
+        return view('groups', [
+                'typeView'  => 'list',
+                'records' => Group::all()
+            ]
+        );
     }
 
     /**
@@ -36,12 +53,11 @@ class GroupsController extends Controller
      */
     public function create()
     {
-        $group = new Group();
-
-        $group->name = $request->get('name');
-        $group->created_by = $request->user()->id;
-
-        $group->save();
+        return view('groups', [
+                'typeView' => 'form',
+                'to_related' => DB::table('users')->get()
+            ]
+        );
     }
 
     /**
@@ -52,7 +68,16 @@ class GroupsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $Group = new Group();
+
+        $Group->name = $request->name;
+        $Group->description = $request->description;
+        $Group->created_by = Auth::id();
+
+
+        if($Group->save()){
+            return redirect('/groups/show/' . $Group->id);
+        }
     }
 
     /**
@@ -74,7 +99,7 @@ class GroupsController extends Controller
      */
     public function edit(Group $group)
     {
-        return view('nombre_vista')->with(['group', $group])
+        return view('nombre_vista')->with(['group', $group]);
     }
 
     /**
