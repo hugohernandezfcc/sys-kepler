@@ -68,15 +68,21 @@ class GroupsController extends Controller
      */
     public function store(Request $request)
     {
-        $Group = new Group();
+        $group = new Group();
 
-        $Group->name = $request->name;
-        $Group->description = $request->description;
-        $Group->created_by = Auth::id();
+        $group->name = $request->name;
+        $group->description = $request->description;
+        $group->created_by = Auth::id();
+        if ($group->save()) {
 
-
-        if($Group->save()){
-            return redirect('/groups/show/' . $Group->id);
+            if ($request->users != null) {
+                $users = explode(',', $request->users);
+                foreach ($users as $user) {
+                    $group->users()->attach($user->id, ['name' => $group->name, 'created_by' => Auth::id()]);
+                }
+            }
+            
+            return redirect('/groups/show/' . $group->id);
         }
     }
 
@@ -86,9 +92,13 @@ class GroupsController extends Controller
      * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show($groupId)
     {
-        //
+        return view('groups', [
+                'typeView' => 'view',
+                'record' => Group::find($groupId)
+            ]
+        );
     }
 
     /**

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <h2>Grupos</h2>
             <ol class="breadcrumb">
                 <li>
@@ -23,7 +23,7 @@
 
             </ol>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-6">
             @if($typeView != 'form')
                 <div class="title-action">
                     <a href="/groups/create" class="btn btn-primary btn-sm">Agregar Grupo</a>
@@ -104,6 +104,7 @@
                             </div>
 
                             <div class="hr-line-dashed"></div>
+                            <input name="users" id="users" type="hidden">
                         </form>
                     </div>
                 </div>
@@ -192,7 +193,7 @@
                             </div>
                             <h4>Ingles C1</h4>
                             <p>
-                                Es capaz de comprender una amplia variedad de textos extensos y con cierto nivel de exigencia, así como reconocer en ellos sentidos implícitos. Sabe expresarse de forma fluida y espontánea sin muestras muy evidentes de esfuerzo para encontrar la expresión adecuada.
+                                {{ $record->name }} Es capaz de comprender una amplia variedad de textos extensos y con cierto nivel de exigencia, así como reconocer en ellos sentidos implícitos. Sabe expresarse de forma fluida y espontánea sin muestras muy evidentes de esfuerzo para encontrar la expresión adecuada.
                             </p>
                             <div>
                                 <span>Progreso del curso:</span>
@@ -545,7 +546,10 @@
     @endif
 
     <script>
+        lista_usuarios = [];
         function removerUsuario(idUsuario) {
+            lista_usuarios.push(idUsuario);
+            $('#users').val(lista_usuarios);
             $("#"+idUsuario).remove();
         }
 

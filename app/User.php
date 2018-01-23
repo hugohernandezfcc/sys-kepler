@@ -28,7 +28,7 @@ class User extends Authenticatable
     ];
 
     public function groups() {
-        return $this->belongsToMany('App\Group', 'access_to', 'user_id', 'group_id');
+        return $this->belongsToMany('App\Group', 'access_to', 'user_id', 'group_id')->withPivot('name', 'created_by')->withTimestamps();
     }
 
     public function rolloflists()
