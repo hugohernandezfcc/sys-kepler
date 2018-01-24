@@ -112,65 +112,55 @@
         </div>
 
     @elseif($typeView == 'list')
+
         <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="row">
-                    <div class="col-lg-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Lista de grupos</h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                                
+            <div class="row">
+                @foreach ($records as $rec)
+                        <div class="col-lg-4">
+                            <div class="ibox">
+                                <div class="ibox-title">
+                                    @if($rec->created_at->diffInMinutes() < 2)
+                                        <span class="label label-primary pull-right">Nuevo</span>
+                                    @endif
+                                    <h5 class="cortar"><a href="/groups/show/{{ $rec->id }}" >
+                                            {{ $rec->name }}
+                                        </a></h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="team-members">
+                                        @foreach ($rec->users as $groupUser)
+                                            <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a'. $groupUser->pivot->user_id .'.jpg')}}"> </a>
+                                        @endforeach
+                                    </div>
+                                    <h4>Descripción del grupo:</h4>
+                                    <p>
+                                        {{ $rec->description }}
+                                    </p>
+                                    <div>
+                                        <span>Progreso del curso:</span>
+                                        <div class="stat-percent">48%</div>
+                                        <div class="progress progress-mini">
+                                            <div style="width: 48%;" class="progress-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row  m-t-sm">
+                                        <div class="col-sm-4">
+                                            <div class="font-bold">Miembros</div>
+                                            {{ count($rec->users) }}
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="font-bold">Calificación</div>
+                                            82
+                                        </div>
+                                        <div class="col-sm-4 text-right">
+                                            <div class="font-bold">ROI</div>
+                                            $200,913 <i class="fa fa-level-up text-navy"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="ibox-content">
-
-                        <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover dataTables-example" >
-                        <thead>
-                            <tr>
-                                <th> - </th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Fecha de creación</th>
-                                <th>Creado por</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        
-                        @foreach ($records as $rec)
-                            
-                             <tr class="gradeX">
-                                <td> 
-                                    <a href="/groups/show/{{ $rec->id }}" class="btn btn-primary btn-xs">
-                                        <i class="fa fa-eye"></i>
-                                    </a> 
-                                </td>
-                                <td>{{ $rec->name }}</td>
-                                <td>{{ $rec->description }}</td>
-                                <td>{{ $rec->created_at }}</td>
-                                <td>Admin</td>
-                            </tr>
-
-                        @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th> - </th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Fecha de creación</th>
-                                <th>Creado por</th>
-                            </tr>
-                        </tfoot>
-                        </table>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
 

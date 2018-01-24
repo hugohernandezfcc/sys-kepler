@@ -29,7 +29,8 @@ class GroupsController extends Controller
     {
         return view('groups', [
                 'typeView'  => 'list',
-                'records' => Group::all()
+                'records' => Group::orderBy('created_at', 'desc')
+                                ->get()
             ]
         );
     }
@@ -78,7 +79,7 @@ class GroupsController extends Controller
             if ($request->users != null) {
                 $users = explode(',', $request->users);
                 foreach ($users as $user) {
-                    $group->users()->attach($user->id, ['name' => $group->name, 'created_by' => Auth::id()]);
+                    $group->users()->attach($user, ['name' => $group->name, 'created_by' => Auth::id()]);
                 }
             }
             
@@ -94,6 +95,8 @@ class GroupsController extends Controller
      */
     public function show($groupId)
     {
+        /* $g = Group::find($groupId);
+        dd($g->users); */
         return view('groups', [
                 'typeView' => 'view',
                 'record' => Group::find($groupId)
