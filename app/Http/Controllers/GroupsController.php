@@ -3,10 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class GroupsController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +27,12 @@ class GroupsController extends Controller
      */
     public function index()
     {
-        //
+        return view('groups', [
+                'typeView'  => 'list',
+                'records' => Group::orderBy('created_at', 'desc')
+                                ->get()
+            ]
+        );
     }
 
     /**
@@ -36,12 +54,11 @@ class GroupsController extends Controller
      */
     public function create()
     {
-        $group = new Group();
-
-        $group->name = $request->get('name');
-        $group->created_by = $request->user()->id;
-
-        $group->save();
+        return view('groups', [
+                'typeView' => 'form',
+                'to_related' => DB::table('users')->get()
+            ]
+        );
     }
 
     /**
@@ -52,7 +69,22 @@ class GroupsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $group = new Group();
+
+        $group->name = $request->name;
+        $group->description = $request->description;
+        $group->created_by = Auth::id();
+        if ($group->save()) {
+
+            if ($request->users != null) {
+                $users = explode(',', $request->users);
+                foreach ($users as $user) {
+                    $group->users()->attach($user, ['name' => $group->name, 'created_by' => Auth::id()]);
+                }
+            }
+            
+            return redirect('/groups/show/' . $group->id);
+        }
     }
 
     /**
@@ -61,9 +93,15 @@ class GroupsController extends Controller
      * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show($groupId)
     {
-        //
+        /* $g = Group::find($groupId);
+        dd($g->users); */
+        return view('groups', [
+                'typeView' => 'view',
+                'record' => Group::find($groupId)
+            ]
+        );
     }
 
     /**
@@ -74,7 +112,7 @@ class GroupsController extends Controller
      */
     public function edit(Group $group)
     {
-        return view('nombre_vista')->with(['group', $group])
+        return view('nombre_vista')->with(['group', $group]);
     }
 
     /**

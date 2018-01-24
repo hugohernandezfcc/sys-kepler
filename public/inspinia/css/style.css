@@ -8551,3 +8551,10 @@ body.md-skin {
     margin: 0;
   }
 }
+
+.cortar{
+  width:70%;
+  text-overflow:ellipsis;
+  white-space:nowrap; 
+  overflow:hidden; 
+}

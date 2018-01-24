@@ -6,7 +6,7 @@
             <h2>Áreas</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="index.html">Kepler</a>
+                    <a href="/home">Kepler</a>
                 </li>
                 @if($typeView != 'form')
                     <li class="active">
@@ -37,7 +37,6 @@
                     </a>
                 </div>
                 
-
             @endif
         </div>
     </div>

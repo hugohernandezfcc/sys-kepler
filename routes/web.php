@@ -19,10 +19,6 @@ Route::redirect('/', '/login', 301);
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::get('/groups', function () {
-	return view('groups');
-});
-
 Route::group(['prefix' => 'cyclescontrol'], function(){
 	Route::get('/', [
 			'uses'	=>	'SchoolCyclesController@index',
@@ -90,6 +86,32 @@ Route::group(['prefix' => 'subjects'], function(){
 
 	Route::post('/store', [
 			'uses'	=>	'SubjectsController@store',
+			'as'	=>	'store'
+		]
+	);
+});
+
+Route::group(['prefix' => 'groups'], function(){
+	Route::get('/', [
+			'uses'	=>	'GroupsController@index',
+			'as'	=>	'index'
+		]
+	);
+
+	Route::get('/create', [
+			'uses'	=>	'GroupsController@create',
+			'as'	=>	'create'
+		]
+	);
+
+	Route::get('/show/{groupId}', [
+			'uses'	=>	'GroupsController@show',
+			'as'	=>	'show'
+		]
+	);
+
+	Route::post('/store', [
+			'uses'	=>	'GroupsController@store',
 			'as'	=>	'store'
 		]
 	);
