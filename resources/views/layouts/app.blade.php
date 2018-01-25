@@ -34,12 +34,11 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- Scripts Menú -->
-    <script src="{{ asset('inspinia/js/jquery-3.1.1.min.js') }}"></script>
     <script src="{{ asset('inspinia/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('inspinia/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
     <script src="{{ asset('inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>

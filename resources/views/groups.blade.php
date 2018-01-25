@@ -184,7 +184,7 @@
                 <div class="col-lg-12">
                     <div class="m-b-md">
                         <a href="/groups" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
-                        <h2>Ciclo escolar: {{$record->name}}</h2>
+                        <h2>Grupo: {{$record->name}}</h2>
                     </div>
                     @if($record->created_at->diffInMinutes() < 2)
                     <dl class="dl-horizontal">
