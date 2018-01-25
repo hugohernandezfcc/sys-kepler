@@ -182,7 +182,7 @@
         <div class="col-lg-6">
             <div class="ibox">
                 <div class="ibox-title">
-                    @if($rec->created_at->diffInMinutes() < 2)
+                    @if($record->created_at->diffInMinutes() < 2)
                         <span class="label label-primary pull-right">Nuevo</span>
                     @endif
                     <h5>{{ $record->name }}</h5>
