@@ -116,6 +116,14 @@ Route::group(['prefix' => 'groups'], function(){
 		]
 	);
 });
+
+Route::group(['prefix' => 'conversations'], function(){
+	Route::post('/store', [
+			'uses'	=>	'ConversationsController@store',
+			'as'	=>	'store'
+		]
+	);
+});
 	use Session;
 	use Auth;
  Route::get('/logout', function() {

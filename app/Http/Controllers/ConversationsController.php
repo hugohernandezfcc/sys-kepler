@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Conversation;
+use App\ItemConversation;
 use Illuminate\Http\Request;
+use Auth;
+use Illuminate\Support\Facades\DB;
 
 class ConversationsController extends Controller {
 
@@ -41,7 +44,31 @@ class ConversationsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+        $id_record = $request->id_record;
+        $table = $request->table;
+        $conversation_aux = Conversation::where('table', '=', $table)->where('id_record', '=', $id_record)->get();
+        if (count($conversation_aux) > 0) {
+            $conversation = (object) array('id' => $conversation_aux[0]->id);
+        } else {
+            $conversation = new Conversation();
+            $datosTabla = DB::table($table)->where('id', '=', $id_record)->first();
+            $conversation->name = $datosTabla->name;
+            $conversation->table = $table;
+            $conversation->id_record = $id_record;
+            $conversation->save();
+        }
+        $itemConversation = new ItemConversation();
+        $itemConversation->type = $request->type;
+        $itemConversation->parent = ($itemConversation->type === 'Question') ? null : $request->parent;
+        $itemConversation->name = $request->comentario;
+        $itemConversation->by = Auth::id();
+        $itemConversation->conversation = $conversation->id;
+        if($itemConversation->save()){
+            $itemConversation->user_name = Auth::user()->name;
+            $itemConversation->tiempo = $itemConversation->created_at->diffForHumans();
+            return response()->json($itemConversation);
+        }
+        
     }
 
     /**

@@ -177,6 +177,7 @@
 </div>
 
 @elseif($typeView == 'view')
+<input type="hidden" id="idRecord" value="{{ $record->id }}">
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
         <div class="ibox-content">
@@ -246,77 +247,151 @@
                         <div class="panel-body">
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab-1">
-                                    <div class="feed-activity-list">
-                                        <div class="feed-element">
-                                            <a href="#" class="pull-left">
-                                                <img alt="image" class="img-circle" src="{{ asset('inspinia/img/a2.jpg')}}">
-                                            </a>
-                                            <div class="media-body ">
-                                                <small class="pull-right">2h ago</small>
-                                                <strong>Mark Johnson</strong> posted message on <strong>Monica Smith</strong> site. <br>
-                                                <small class="text-muted">Today 2:10 pm - 12.06.2014</small>
-                                                <div class="well">
-                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                                                    Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                                    <div class="social-feed-separated">
+                                        <!--
+                                        foreach ($comments as $conversations)
+                                            foreach ($conversations as $itemConversation)
+                                                if ($itemConversation->parent === null)
+                                                <div class="social-avatar">
+                                                    <a href=""><img alt="image" src=" asset('inspinia/img/a'.$itemConversation->by.'.jpg')}}"></a>
+                                                </div>
+                                                
+                                                endif
+                                                
+                                                
+                                                 $itemConversation->parent }}
+                                                <div class="hr-line-dashed"></div>
+                                            endforeach
+                                             $conversations[0]->itemConversation()->parent }}
+                                        endforeach 
+                                        
+                                        <div class="social-avatar">
+                                            <a href=""><img alt="image" src=" asset('inspinia/img/a5.jpg')}}"></a>
+                                        </div>
+
+                                        <div class="social-feed-box">
+                                            <div class="social-avatar">
+                                                <a href="#">
+                                                    Andrew Williams
+                                                </a>
+                                                <small class="text-muted">Today 4:21 pm - 12.06.2014</small>
+                                            </div>
+                                            <div class="social-body">
+                                                <p>
+                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
+                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
+                                                    in their infancy. Packages and web page editors now use Lorem Ipsum as their
+                                                    default model text.
+                                                </p>
+                                                <img src="inspinia/img/gallery/9.jpg" class="img-responsive">
+                                                <div class="btn-group">
+                                                    <button class="btn btn-white btn-xs"><i class="fa fa-comments"></i> Comentar</button>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="feed-element">
-                                            <a href="#" class="pull-left">
-                                                <img alt="image" class="img-circle" src="{{ asset('inspinia/img/a3.jpg')}}">
-                                            </a>
-                                            <div class="media-body ">
-                                                <small class="pull-right">2h ago</small>
-                                                <strong>Janet Rosowski</strong> add 1 photo on <strong>Monica Smith</strong>. <br>
-                                                <small class="text-muted">2 days ago at 8:30am</small>
-                                            </div>
-                                        </div>
-                                        <div class="feed-element">
-                                            <a href="#" class="pull-left">
-                                                <img alt="image" class="img-circle" src="{{ asset('inspinia/img/a4.jpg')}}">
-                                            </a>
-                                            <div class="media-body ">
-                                                <small class="pull-right text-navy">5h ago</small>
-                                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                                <div class="actions">
-                                                    <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> Like </a>
-                                                    <a class="btn btn-xs btn-white"><i class="fa fa-heart"></i> Love</a>
+                                            <div class="social-footer">
+                                                <div class="social-comment">
+                                                    <a href="" class="pull-left">
+                                                        <img alt="image" src="inspinia/img/a3.jpg">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <a href="#">
+                                                            Andrew Williams
+                                                        </a>
+                                                        Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words.
+                                                        <br/>
+                                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 26 Like this!</a> -
+                                                        <small class="text-muted">12.06.2014</small>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="feed-element">
-                                            <a href="#" class="pull-left">
-                                                <img alt="image" class="img-circle" src="{{ asset('inspinia/img/a5.jpg')}}">
-                                            </a>
-                                            <div class="media-body ">
-                                                <small class="pull-right">2h ago</small>
-                                                <strong>Kim Smith</strong> posted message on <strong>Monica Smith</strong> site. <br>
-                                                <small class="text-muted">Yesterday 5:20 pm - 12.06.2014</small>
-                                                <div class="well">
-                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                                                    Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+
+                                                <div class="social-comment">
+                                                    <a href="" class="pull-left">
+                                                        <img alt="image" src="inspinia/img/a4.jpg">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <a href="#">
+                                                            Otra persona
+                                                        </a>
+                                                        Making this the first true generator on the Internet. It uses a dictionary of.
+                                                        <br/>
+                                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 11 Like this!</a> -
+                                                        <small class="text-muted">10.07.2014</small>
+                                                    </div>
+
+                                                    <div class="social-comment">
+                                                        <a href="" class="pull-left">
+                                                            <img alt="image" src="inspinia/img/a7.jpg">
+                                                        </a>
+                                                        <div class="media-body">
+                                                            <a href="#">
+                                                                nueva persona
+                                                            </a>
+                                                            Making this the first true generator on the Internet. It uses a dictionary of.
+                                                            <br/>
+                                                            <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 11 Like this!</a> -
+                                                            <small class="text-muted">10.07.2014</small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="social-comment">
+                                                        <a href="" class="pull-left">
+                                                            <img alt="image" src="inspinia/img/a8.jpg">
+                                                        </a>
+                                                        <div class="media-body">
+                                                            <textarea class="form-control" placeholder="Write comment..."></textarea>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
+
+                                                <div class="social-comment">
+                                                    <a href="" class="pull-left">
+                                                        <img alt="image" src="inspinia/img/a6.jpg">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <a href="#">
+                                                            Andrew Williams
+                                                        </a>
+                                                        Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words.
+                                                        <br/>
+                                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 26 Like this!</a> -
+                                                        <small class="text-muted">12.06.2014</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="social-comment">
+                                                    <a href="" class="pull-left">
+                                                        <img alt="image" src="inspinia/img/a7.jpg">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <a href="#">
+                                                            Andrew Williams
+                                                        </a>
+                                                        Making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words.
+                                                        <br/>
+                                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 26 Like this!</a> -
+                                                        <small class="text-muted">12.06.2014</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="social-comment">
+                                                    <a href="" class="pull-left">
+                                                        <img alt="image" src="inspinia/img/a3.jpg">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <textarea class="form-control" placeholder="Escribe un comentario..."></textarea>
+                                                    </div>
+                                                </div>
+
                                             </div>
-                                        </div>
-                                        <div class="feed-element">
-                                            <a href="#" class="pull-left">
-                                                <img alt="image" class="img-circle" src="{{ asset('inspinia/img/profile.jpg')}}">
-                                            </a>
-                                            <div class="media-body ">
-                                                <small class="pull-right">23h ago</small>
-                                                <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-                                                <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+
+                                        </div>-->
+                                        <div id='ultimo_comentario'>
+                                            <div class="social-avatar">
+                                                <a href=""><img alt="image" src="{{ asset('inspinia/img/a'.Auth::user()->id.'.jpg')}}"></a>
                                             </div>
-                                        </div>
-                                        <div class="feed-element">
-                                            <a href="#" class="pull-left">
-                                                <img alt="image" class="img-circle" src="{{ asset('inspinia/img/a7.jpg')}}">
-                                            </a>
-                                            <div class="media-body ">
-                                                <small class="pull-right">46h ago</small>
-                                                <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
-                                                <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                            <div class="media-body">
+                                                <textarea class="form-control" onkeypress="pulsar(this, event,'Question', null)" placeholder="Escribe un comentario..."></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -401,6 +476,64 @@
                 }
             }
         }
+    }
+    
+    function pulsar(textarea, e, tipoComentario, idParent) {
+        if (e.keyCode === 13 && !e.shiftKey) {
+            e.preventDefault();
+            comentario = $(textarea).val();
+            if (comentario !== '') {
+                $(textarea).val('');
+                agregarComentario('groups', comentario, tipoComentario, idParent);
+            }
+        }
+    }
+    
+    function agregarComentario(tabla, comentario, tipoComentario, idParent) {
+        idRecord = $('#idRecord').val();
+        $.ajax({
+            url: "/conversations/store",
+            data: { 
+                "table":tabla,
+                "id_record":idRecord,
+                "comentario":comentario,
+                "type":tipoComentario,
+                "parent":idParent,
+                "_token": "{{ csrf_token() }}"
+                },
+            dataType: "json",
+            method: "POST",
+            success: function(result)
+            {
+                if (result.type === 'Question') {
+                    var answer = "\'Answer\'";
+                    var html = '<div class="social-avatar"><a href=""><img alt="image" src="inspinia/img/a'+result.by+'.jpg"></a></div>\n\
+                    <div class="social-feed-box"><div class="social-avatar"><a href="#">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
+                    <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" src="inspinia/img/a3.jpg"></a>\n\
+                    <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div>';
+                    $('#ultimo_comentario').before(html);
+                } else if (result.type === 'Answer') {
+                    var answer = "\'Answer to Answer\'";
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="inspinia/img/a'+result.by+'.jpg"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
+                    <div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"> <img alt="image" src="inspinia/img/a8.jpg"> </a><div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div>';
+                    $('#comentario'+result.parent).before(html);
+                } else {
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="inspinia/img/a'+result.by+'.jpg"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
+                    $('#comentario'+result.parent).before(html);
+                }
+            },
+            error: function () {
+               //alert("fallo");
+            }
+            
+        });
+    }
+    
+    function habilitarComentario(idCampo) {
+        if ($('#comentario'+idCampo).hasClass("hidden")) {
+            $('#comentario'+idCampo).removeClass("hidden");
+        }
+        $('#comentario'+idCampo+' textarea').focus();    
     }
 </script>
 @endsection
