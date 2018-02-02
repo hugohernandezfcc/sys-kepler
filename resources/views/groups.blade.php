@@ -248,150 +248,72 @@
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab-1">
                                     <div class="social-feed-separated">
-                                        <!--
-                                        foreach ($comments as $conversations)
-                                            foreach ($conversations as $itemConversation)
-                                                if ($itemConversation->parent === null)
-                                                <div class="social-avatar">
-                                                    <a href=""><img alt="image" src=" asset('inspinia/img/a'.$itemConversation->by.'.jpg')}}"></a>
-                                                </div>
-                                                
-                                                endif
-                                                
-                                                
-                                                 $itemConversation->parent }}
-                                                <div class="hr-line-dashed"></div>
-                                            endforeach
-                                             $conversations[0]->itemConversation()->parent }}
-                                        endforeach 
-                                        
+                                        @foreach ($comments as $conversations)
                                         <div class="social-avatar">
-                                            <a href=""><img alt="image" src=" asset('inspinia/img/a5.jpg')}}"></a>
+                                            <a href=""><img alt="image" src="{{ asset('inspinia/img/a'. $conversations['Question']->user->id .'.jpg')}}"></a>
                                         </div>
-
                                         <div class="social-feed-box">
                                             <div class="social-avatar">
-                                                <a href="#">
-                                                    Andrew Williams
-                                                </a>
-                                                <small class="text-muted">Today 4:21 pm - 12.06.2014</small>
+                                                <a href="#">{{ $conversations['Question']->user->name }}</a><small class="text-muted"> - {{ $conversations['Question']->created_at->diffForHumans() }}</small>
                                             </div>
                                             <div class="social-body">
-                                                <p>
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy. Packages and web page editors now use Lorem Ipsum as their
-                                                    default model text.
-                                                </p>
-                                                <img src="inspinia/img/gallery/9.jpg" class="img-responsive">
+                                                <p>{{ $conversations['Question']->name }}</p><br>
                                                 <div class="btn-group">
-                                                    <button class="btn btn-white btn-xs"><i class="fa fa-comments"></i> Comentar</button>
+                                                    <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $conversations['Question']->id }})"><i class="fa fa-comments"></i> Comentar</a>
                                                 </div>
                                             </div>
                                             <div class="social-footer">
-                                                <div class="social-comment">
-                                                    <a href="" class="pull-left">
-                                                        <img alt="image" src="inspinia/img/a3.jpg">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <a href="#">
-                                                            Andrew Williams
-                                                        </a>
-                                                        Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words.
-                                                        <br/>
-                                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 26 Like this!</a> -
-                                                        <small class="text-muted">12.06.2014</small>
-                                                    </div>
-                                                </div>
-
-                                                <div class="social-comment">
-                                                    <a href="" class="pull-left">
-                                                        <img alt="image" src="inspinia/img/a4.jpg">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <a href="#">
-                                                            Otra persona
-                                                        </a>
-                                                        Making this the first true generator on the Internet. It uses a dictionary of.
-                                                        <br/>
-                                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 11 Like this!</a> -
-                                                        <small class="text-muted">10.07.2014</small>
-                                                    </div>
-
-                                                    <div class="social-comment">
-                                                        <a href="" class="pull-left">
-                                                            <img alt="image" src="inspinia/img/a7.jpg">
-                                                        </a>
-                                                        <div class="media-body">
-                                                            <a href="#">
-                                                                nueva persona
-                                                            </a>
-                                                            Making this the first true generator on the Internet. It uses a dictionary of.
-                                                            <br/>
-                                                            <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 11 Like this!</a> -
-                                                            <small class="text-muted">10.07.2014</small>
+                                                @if (count($conversations['Answer'][0]) > 0)
+                                                    @foreach ($conversations['Answer'][0] as $itemConversation)
+                                                        <div class="social-comment">
+                                                            <a href="" class="pull-left"><img alt="image" src="{{ asset('inspinia/img/a'. $itemConversation->user->id .'.jpg') }}"></a>
+                                                            <div class="media-body">
+                                                                <a href="#">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }} id {{ $itemConversation->id }}<br>
+                                                                <div class="btn-group">
+                                                                    <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">{{ $itemConversation->created_at->diffForHumans() }}</small>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            @if (count($itemConversation['AnswerToAnswer']) > 0)
+                                                                @foreach ($itemConversation['AnswerToAnswer'] as $itemAnswer)
+                                                                    <div class="social-comment">
+                                                                        <a href="" class="pull-left"><img alt="image" src="{{ asset('inspinia/img/a'. $itemAnswer->user->id .'.jpg') }}"></a>
+                                                                        <div class="media-body">
+                                                                            <a href="#">{{ $itemAnswer->user->name }}</a> {{ $itemAnswer->name }}<br><small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                            @endif
+                                                            
+                                                            <div class="social-comment hidden" id="comentario{{ $itemConversation->id }}">
+                                                                <a href="" class="pull-left"> <img alt="image" src="{{ asset('inspinia/img/a'.Auth::user()->id.'.jpg') }}"> </a>
+                                                                <div class="media-body">
+                                                                    <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer to Answer', {{ $itemConversation->id }})" placeholder="Escribe un comentario..."></textarea>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="social-comment">
-                                                        <a href="" class="pull-left">
-                                                            <img alt="image" src="inspinia/img/a8.jpg">
-                                                        </a>
-                                                        <div class="media-body">
-                                                            <textarea class="form-control" placeholder="Write comment..."></textarea>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="social-comment">
-                                                    <a href="" class="pull-left">
-                                                        <img alt="image" src="inspinia/img/a6.jpg">
-                                                    </a>
+                                                    @endforeach
+                                                @endif
+                                                <div class="social-comment hidden" id="comentario{{ $conversations['Question']->id }}">
+                                                    <a href="" class="pull-left"><img alt="image" src="{{ asset('inspinia/img/a'.Auth::user()->id.'.jpg') }}"></a>
                                                     <div class="media-body">
-                                                        <a href="#">
-                                                            Andrew Williams
-                                                        </a>
-                                                        Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words.
-                                                        <br/>
-                                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 26 Like this!</a> -
-                                                        <small class="text-muted">12.06.2014</small>
+                                                        <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer', {{ $conversations['Question']->id }})" placeholder="Escribe un comentario..."></textarea>
                                                     </div>
                                                 </div>
-
-                                                <div class="social-comment">
-                                                    <a href="" class="pull-left">
-                                                        <img alt="image" src="inspinia/img/a7.jpg">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <a href="#">
-                                                            Andrew Williams
-                                                        </a>
-                                                        Making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words.
-                                                        <br/>
-                                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 26 Like this!</a> -
-                                                        <small class="text-muted">12.06.2014</small>
-                                                    </div>
-                                                </div>
-
-                                                <div class="social-comment">
-                                                    <a href="" class="pull-left">
-                                                        <img alt="image" src="inspinia/img/a3.jpg">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <textarea class="form-control" placeholder="Escribe un comentario..."></textarea>
-                                                    </div>
-                                                </div>
-
                                             </div>
+                                        </div>
+                                            
+                                        <div class="hr-line-dashed"></div>
+                                            
+                                        @endforeach 
 
-                                        </div>-->
                                         <div id='ultimo_comentario'>
                                             <div class="social-avatar">
                                                 <a href=""><img alt="image" src="{{ asset('inspinia/img/a'.Auth::user()->id.'.jpg')}}"></a>
                                             </div>
                                             <div class="media-body">
-                                                <textarea class="form-control" onkeypress="pulsar(this, event,'Question', null)" placeholder="Escribe un comentario..."></textarea>
+                                                <textarea class="form-control" onkeypress="pulsar(this, event, 'Question', null)" placeholder="Escribe un comentario..."></textarea>
                                             </div>
                                         </div>
                                     </div>
