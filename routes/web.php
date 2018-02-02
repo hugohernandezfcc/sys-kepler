@@ -124,8 +124,8 @@ Route::group(['prefix' => 'conversations'], function(){
 		]
 	);
 });
-	use Session;
-	use Auth;
+	//use Session;
+	//use Auth;
  Route::get('/logout', function() {
  Session::forget('key');
   if(!Session::has('key'))
