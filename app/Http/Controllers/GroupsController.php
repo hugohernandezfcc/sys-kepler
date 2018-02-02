@@ -99,7 +99,7 @@ class GroupsController extends Controller
     {
         $comments = [];
         $conversation = Conversation::where('table', '=', 'groups')->where('id_record', '=', $groupId)->orderBy('created_at', 'asc')->get();
-        if ($conversation) {
+        if (count($conversation) > 0) {
             $questions = ItemConversation::where('conversation', '=', $conversation[0]->id)->where('parent',  '=', null)->orderBy('created_at', 'asc')->get();
 
             $comments = $this->obtenerComentarios($questions, $conversation);

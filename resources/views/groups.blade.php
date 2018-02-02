@@ -268,7 +268,7 @@
                                                         <div class="social-comment">
                                                             <a href="" class="pull-left"><img alt="image" src="{{ asset('inspinia/img/a'. $itemConversation->user->id .'.jpg') }}"></a>
                                                             <div class="media-body">
-                                                                <a href="#">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }} id {{ $itemConversation->id }}<br>
+                                                                <a href="#">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }}<br>
                                                                 <div class="btn-group">
                                                                     <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">{{ $itemConversation->created_at->diffForHumans() }}</small>
                                                                 </div>
