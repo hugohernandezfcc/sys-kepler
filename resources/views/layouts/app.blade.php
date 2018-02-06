@@ -17,6 +17,7 @@
     <link href="{{ asset('inspinia/css/plugins/select2/select2.min.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('inspinia/css/plugins/jasny/jasny-bootstrap.min.css')}}" rel="stylesheet">
     <script src="{{ asset('inspinia/js/jquery-3.1.1.min.js') }}"></script>
 </head>
 
@@ -65,6 +66,9 @@
 
     <!-- jQuery UI -->
     <script src="{{ asset('inspinia/js/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+    
+    <!-- Jasny -->
+    <script src="{{ asset('inspinia/js/plugins/jasny/jasny-bootstrap.min.js')}}"></script>
 
     <!-- Jvectormap -->
     <script src="{{ asset('inspinia/js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
