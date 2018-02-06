@@ -5,18 +5,20 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element"> 
                         <span>
-                            <img alt="image" class="img-circle" src="https://www.uaeh.edu.mx/excelencia/imagenes/uaeh.png" width="45%" />
+                            <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" width="45%" />
                         </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear"> 
-                            <span class="block m-t-xs"> <strong class="font-bold">Sys Kepler</strong>
-                         </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                            <span class="block m-t-xs"> <strong class="font-bold">Sys Kepler</strong></span> 
+                            <span class="text-muted text-xs block">Opciones <b class="caret"></b></span>
+                        </span>
+                        </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="profile.html">Profile</a></li>
+                            <li><a href="/profile"><i class="fa fa-btn fa-user"></i>  Perfil</a></li>
                             <li><a href="contacts.html">Contacts</a></li>
                             <li><a href="mailbox.html">Mailbox</a></li>
                             <li class="divider"></li>
-                            <li><a href="login.html">Logout</a></li>
+                            <li><a href="/logout"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">
