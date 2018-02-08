@@ -250,7 +250,7 @@
                                     <div class="social-feed-separated">
                                         @foreach ($comments as $conversations)
                                         <div class="social-avatar">
-                                            <a href=""><img alt="image" src="{{ asset('inspinia/img/a'. $conversations['Question']->user->id .'.jpg')}}"></a>
+                                            <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. $conversations['Question']->user->avatar) }}"></a>
                                         </div>
                                         <div class="social-feed-box">
                                             <div class="social-avatar">
@@ -266,7 +266,7 @@
                                                 @if (count($conversations['Answer'][0]) > 0)
                                                     @foreach ($conversations['Answer'][0] as $itemConversation)
                                                         <div class="social-comment">
-                                                            <a href="" class="pull-left"><img alt="image" src="{{ asset('inspinia/img/a'. $itemConversation->user->id .'.jpg') }}"></a>
+                                                            <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
                                                             <div class="media-body">
                                                                 <a href="#">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }}<br>
                                                                 <div class="btn-group">
@@ -277,7 +277,7 @@
                                                             @if (count($itemConversation['AnswerToAnswer']) > 0)
                                                                 @foreach ($itemConversation['AnswerToAnswer'] as $itemAnswer)
                                                                     <div class="social-comment">
-                                                                        <a href="" class="pull-left"><img alt="image" src="{{ asset('inspinia/img/a'. $itemAnswer->user->id .'.jpg') }}"></a>
+                                                                        <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
                                                                         <div class="media-body">
                                                                             <a href="#">{{ $itemAnswer->user->name }}</a> {{ $itemAnswer->name }}<br><small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
                                                                         </div>
@@ -286,7 +286,7 @@
                                                             @endif
                                                             
                                                             <div class="social-comment hidden" id="comentario{{ $itemConversation->id }}">
-                                                                <a href="" class="pull-left"> <img alt="image" src="{{ asset('inspinia/img/a'.Auth::user()->id.'.jpg') }}"> </a>
+                                                                <a href="" class="pull-left"> <img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
                                                                 <div class="media-body">
                                                                     <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer to Answer', {{ $itemConversation->id }})" placeholder="Escribe un comentario..."></textarea>
                                                                 </div>
@@ -296,7 +296,7 @@
                                                     @endforeach
                                                 @endif
                                                 <div class="social-comment hidden" id="comentario{{ $conversations['Question']->id }}">
-                                                    <a href="" class="pull-left"><img alt="image" src="{{ asset('inspinia/img/a'.Auth::user()->id.'.jpg') }}"></a>
+                                                    <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
                                                     <div class="media-body">
                                                         <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer', {{ $conversations['Question']->id }})" placeholder="Escribe un comentario..."></textarea>
                                                     </div>
@@ -310,7 +310,7 @@
 
                                         <div id='ultimo_comentario'>
                                             <div class="social-avatar">
-                                                <a href=""><img alt="image" src="{{ asset('inspinia/img/a'.Auth::user()->id.'.jpg')}}"></a>
+                                                <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
                                             </div>
                                             <div class="media-body">
                                                 <textarea class="form-control" onkeypress="pulsar(this, event, 'Question', null)" placeholder="Escribe un comentario..."></textarea>
@@ -413,6 +413,8 @@
     
     function agregarComentario(tabla, comentario, tipoComentario, idParent) {
         idRecord = $('#idRecord').val();
+        var imagenUsuario = '';
+        imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
         $.ajax({
             url: "/conversations/store",
             data: { 
@@ -429,18 +431,18 @@
             {
                 if (result.type === 'Question') {
                     var answer = "\'Answer\'";
-                    var html = '<div class="social-avatar"><a href=""><img alt="image" src="inspinia/img/a'+result.by+'.jpg"></a></div>\n\
+                    var html = '<div class="social-avatar"><a href=""><img alt="image" src="'+imagenUsuario+'"></a></div>\n\
                     <div class="social-feed-box"><div class="social-avatar"><a href="#">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
                     <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" src="inspinia/img/a3.jpg"></a>\n\
                     <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div>';
                     $('#ultimo_comentario').before(html);
                 } else if (result.type === 'Answer') {
                     var answer = "\'Answer to Answer\'";
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="inspinia/img/a'+result.by+'.jpg"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
                     <div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"> <img alt="image" src="inspinia/img/a8.jpg"> </a><div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div>';
                     $('#comentario'+result.parent).before(html);
                 } else {
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="inspinia/img/a'+result.by+'.jpg"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
                     $('#comentario'+result.parent).before(html);
                 }
             },
