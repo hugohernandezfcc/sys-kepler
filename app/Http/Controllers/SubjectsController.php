@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Subject;
+use App\Conversation;
+use App\ItemConversation;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -72,16 +74,46 @@ class SubjectsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Area  $area
+     * @param  \App\Subject  $subjectId
      * @return \Illuminate\Http\Response
      */
     public function show($subjectId)
     {
+        $comments = [];
+        $conversation = Conversation::where('table', '=', 'subjects')->where('id_record', '=', $subjectId)->orderBy('created_at', 'asc')->get();
+        if (count($conversation) > 0) {
+            $questions = ItemConversation::where('conversation', '=', $conversation[0]->id)->where('parent',  '=', null)->orderBy('created_at', 'asc')->get();
+
+            $comments = $this->obtenerComentarios($questions, $conversation);
+        }
+
         return view('subjects', [
                 'typeView' => 'view',
-                'record' => Area::find($subjectId)
+                'record' => Subject::find($subjectId),
+                'comments' => $comments
             ]
         ); 
+    }
+    
+    /**
+     * Se obtienen todos los comentarios, según el tipo y manteniendo el parent
+     * 
+     * @param type $auxs
+     * @param type $conversation
+     * @return type
+     */
+    public function obtenerComentarios($auxs, $conversation) {
+        $comentarios = [];
+        foreach ($auxs as $key => $comment) {
+            $comentarios[$key]['Question'] = $comment;
+            $comentarios[$key]['Answer'][0] = ItemConversation::where('conversation', '=', $conversation[0]->id)->where('parent', '=', $comment->id)->orderBy('parent', 'asc')->get();
+            if (count($comentarios[$key]['Answer'][0]) > 0) {
+                foreach ($comentarios[$key]['Answer'][0] as $key_answer => $answer) {
+                    $comentarios[$key]['Answer'][0][$key_answer]['AnswerToAnswer'] = ItemConversation::where('conversation', '=', $conversation[0]->id)->where('parent', '=', $answer->id)->orderBy('parent', 'asc')->get();
+                }
+            }
+        }
+        return $comentarios;
     }
 
     /**

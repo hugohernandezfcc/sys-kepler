@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\SchoolCycle;
+use App\Conversation;
+use App\ItemConversation;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -78,18 +80,46 @@ class SchoolCyclesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SchoolCycle  $schoolCycle
+     * @param  \App\SchoolCycle  $schoolCycleId
      * @return \Illuminate\Http\Response
      */
     public function show($schoolCycleId)
     {
+        $comments = [];
+        $conversation = Conversation::where('table', '=', 'school_cycles')->where('id_record', '=', $schoolCycleId)->orderBy('created_at', 'asc')->get();
+        if (count($conversation) > 0) {
+            $questions = ItemConversation::where('conversation', '=', $conversation[0]->id)->where('parent',  '=', null)->orderBy('created_at', 'asc')->get();
 
+            $comments = $this->obtenerComentarios($questions, $conversation);
+        }
 
         return view('schoolcycles', [
                 'typeView' => 'view',
-                'record' => SchoolCycle::find($schoolCycleId)
+                'record' => SchoolCycle::find($schoolCycleId),
+                'comments' => $comments
             ]
         ); 
+    }
+    
+    /**
+     * Se obtienen todos los comentarios, según el tipo y manteniendo el parent
+     * 
+     * @param type $auxs
+     * @param type $conversation
+     * @return type
+     */
+    public function obtenerComentarios($auxs, $conversation) {
+        $comentarios = [];
+        foreach ($auxs as $key => $comment) {
+            $comentarios[$key]['Question'] = $comment;
+            $comentarios[$key]['Answer'][0] = ItemConversation::where('conversation', '=', $conversation[0]->id)->where('parent', '=', $comment->id)->orderBy('parent', 'asc')->get();
+            if (count($comentarios[$key]['Answer'][0]) > 0) {
+                foreach ($comentarios[$key]['Answer'][0] as $key_answer => $answer) {
+                    $comentarios[$key]['Answer'][0][$key_answer]['AnswerToAnswer'] = ItemConversation::where('conversation', '=', $conversation[0]->id)->where('parent', '=', $answer->id)->orderBy('parent', 'asc')->get();
+                }
+            }
+        }
+        return $comentarios;
     }
 
     /**
