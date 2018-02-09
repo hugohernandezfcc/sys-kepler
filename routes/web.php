@@ -83,6 +83,12 @@ Route::group(['prefix' => 'subjects'], function() {
         'as' => 'create'
             ]
     );
+    
+    Route::get('/show/{subjectId}', [
+        'uses' => 'SubjectsController@show',
+        'as' => 'show'
+            ]
+    );
 
     Route::post('/store', [
         'uses' => 'SubjectsController@store',
