@@ -3,10 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Exam;
+use App\Area;
+use App\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExamsController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +27,11 @@ class ExamsController extends Controller
      */
     public function index()
     {
-        //
+        return view('test', [
+                'typeView'  => 'list',
+                'records' => Exam::all()
+            ]
+        );
     }
 
     /**
@@ -36,13 +53,11 @@ class ExamsController extends Controller
      */
     public function create()
     {
-        $exam = new Exam();
-
-        $exam->name = $request->get('name');
-        $exam->created_by = $request->user()->id;
-        $exam->subject_id = $request->subject()->id;
-
-        $exam->save();
+        return view('test', [
+                'typeView' => 'form',
+                'to_related' => Subject::all()->groupBy('area_id')
+            ]
+        );  
     }
 
     /**
@@ -75,7 +90,7 @@ class ExamsController extends Controller
      */
     public function edit(Exam $exam)
     {
-        return view('nombre_vista')->with(['exam', $exam])
+        return view('nombre_vista')->with(['exam', $exam]);
     }
 
     /**
