@@ -83,6 +83,8 @@
     <!-- Sparkline demo data  -->
     <script src="{{ asset('inspinia/js/demo/sparkline-demo.js')}}"></script>
 
+    <!-- Select2 -->
+    <script src="{{ asset('inspinia/js/plugins/select2/select2.full.min.js') }}"></script>
 
     <script type="text/javascript">
         var data2 = [

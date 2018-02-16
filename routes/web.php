@@ -97,6 +97,32 @@ Route::group(['prefix' => 'subjects'], function() {
     );
 });
 
+Route::group(['prefix' => 'test'], function() {
+    Route::get('/', [
+        'uses' => 'ExamsController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/create', [
+        'uses' => 'ExamsController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::get('/show/{subjectId}', [
+        'uses' => 'ExamsController@show',
+        'as' => 'show'
+            ]
+    );
+
+    Route::post('/store', [
+        'uses' => 'ExamsController@store',
+        'as' => 'store'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'groups'], function() {
     Route::get('/', [
         'uses' => 'GroupsController@index',

@@ -9,12 +9,17 @@ class Exam extends Model
     protected $table = 'exams';
 
     protected $fillable = [
-        'name', 'created_by', 'subject_id',
+        'name', 'created_by', 'subject_id', 'area_id', 'description',
     ];
 
     public function subject()
     {
         return $this->belongsTo('App\Subject', 'subject_id');
+    }
+    
+    public function area()
+    {
+        return $this->belongsTo('App\Area', 'area_id');
     }
 
     public function user()

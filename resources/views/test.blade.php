@@ -2,37 +2,37 @@
 
 @section('content')
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-sm-4">
-        <h2>Ciclos</h2>
+    <div class="col-sm-6">
+        <h2>Exámenes</h2>
         <ol class="breadcrumb">
             <li>
                 <a href="/home">Kepler</a>
             </li>
             @if($typeView != 'form')
             <li class="active">
-                <strong>Ciclos de la organización</strong>
+                <strong>Exámenes de la organización</strong>
             </li>
             @elseif($typeView == 'form')
             <li>
-                Ciclos de la organización
+                Exámenes de la organización
             </li>
             <li class="active">
-                <strong>Crear ciclo</strong>
+                <strong>Crear examen</strong>
             </li>
             @endif
 
         </ol>
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-6">
         @if($typeView != 'form')
         <div class="title-action">
-            <a href="/cyclescontrol/create" class="btn btn-primary btn-sm">Agregar Ciclo</a>
+            <a href="/test/create" class="btn btn-primary btn-sm">Agregar examen</a>
         </div>
 
         @elseif($typeView == 'form')
 
         <div class="title-action">
-            <a onclick="document.getElementById('form-create').submit(); " class="btn btn-primary btn-sm">
+            <a onclick="document.getElementById('form-create').submit();" class="btn btn-primary btn-sm">
                 <i class="fa fa-check"></i> Guardar
             </a>
         </div>
@@ -44,93 +44,132 @@
 
 
 
-@if($typeView == 'form') 
+@if($typeView == 'form')
 <br/>
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Registra la información <small>Ciclos escolares.</small></h5>
+                <h5>Registra la información <small>Examen.</small></h5>
                 <div class="ibox-tools">
                     <a class="collapse-link">
                         <i class="fa fa-chevron-up"></i>
                     </a>
-                    <a href="/cyclescontrol">
+                    <a href="/test">
                         Cancelar
                     </a>
                 </div>
             </div>
             <div class="ibox-content">
-                <form method="post" action="/cyclescontrol/store" id="form-create" class="form-horizontal">
+                <form method="post" action="/test/store" id="form-create" class="form-horizontal">
                     {{ csrf_field() }}
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Título</label>
+                    <div class="form-group"><label class="col-sm-2 control-label">Nombre del examen</label>
+
                         <div class="col-sm-10"><input type="text" name="name" class="form-control"></div>
                     </div>
                     <div class="hr-line-dashed"></div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Inicio</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="start" id="start">
-                                <option value="">Seleccionar mes</option>
-                                <option value="Enero">Enero</option>
-                                <option value="Febrero">Febrero</option>
-                                <option value="Marzo">Marzo</option>
-                                <option value="Abril">Abril</option>
-                                <option value="Mayo">Mayo</option>
-                                <option value="Junio">Junio</option>
-                                <option value="Julio">Julio</option>
-                                <option value="Agosto">Agosto</option>
-                                <option value="Septiembre">Septiembre</option>
-                                <option value="Octubre">Octubre</option>
-                                <option value="Noviembre">Noviembre</option>
-                                <option value="Diciembre">Diciembre</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Fin</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="end" id="end">
-                                <option value="">Seleccionar mes</option>
-                                <option value="Enero">Enero</option>
-                                <option value="Febrero">Febrero</option>
-                                <option value="Marzo">Marzo</option>
-                                <option value="Abril">Abril</option>
-                                <option value="Mayo">Mayo</option>
-                                <option value="Junio">Junio</option>
-                                <option value="Julio">Julio</option>
-                                <option value="Agosto">Agosto</option>
-                                <option value="Septiembre">Septiembre</option>
-                                <option value="Octubre">Octubre</option>
-                                <option value="Noviembre">Noviembre</option>
-                                <option value="Diciembre">Diciembre</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Descripción</label>
+                    <div class="form-group"><label class="col-sm-2 control-label">Descripción</label>
                         <div class="col-sm-10"><textarea name="description" class="form-control"></textarea> </div>
                     </div>
                     <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Asignatura</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select-subject" name="subject_id" id="subject_id">
+                                <option></option>
+                                @foreach ($to_related as $to_subject)
+                                <option disabled="" class="font-bold">Área {{$to_subject[0]->area->name}}</option>
+                                    @foreach ($to_subject as $to)
+                                    <option value="{{$to->id}}">{{$to->name}}</option>
+                                    @endforeach
+                                @endforeach
+                            </select>
+                            <select class="form-control" name="subject_id_otro_select" id="subject_id_otro_select">
+                                <option></option>
+                                @foreach ($to_related as $to_subject)
+                                <option disabled="" class="font-bold">Área {{$to_subject[0]->area->name}}</option>
+                                    @foreach ($to_subject as $to)
+                                    <option value="{{$to->id}}">{{$to->name}}</option>
+                                    @endforeach
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div id="questionTest1" class="questionTest">
+                        <div class="form-group"><label class="col-sm-2 control-label">Pregunta</label>
+
+                            <div class="col-sm-10"><input type="text" name="question1" class="form-control"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Tipo de pregunta</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="question1-subtype1" id="subtype1" onchange="tipoRespuesta(this)">
+                                    <option value="Question">Respuesta corta</option>
+                                    <option value="Single-option">Selección simple</option>
+                                    <option value="Multiple-option">Selección múltiple</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" id="typeQuestion1"><label class="col-sm-2 control-label">Espacio para respuesta</label>
+                            <div class="col-sm-10"><textarea id="answer1" class="form-control" disabled="true"></textarea> </div>
+                        </div>
+                        <div class="form-group hidden" id="typeSingleOption1"><label class="col-sm-2 control-label">Seleccione una opción</label>
+                            <div class="col-sm-10">
+                                <div class="radio">
+                                    <input type="radio" radio="radio1" id="radio1" value="option1" checked="">
+                                    <input type="text" name="question1-option1" class="form-control" value="Opción 1">
+                                </div>
+                                <div class="radio">
+                                    <input type="radio" radio="radio1" id="radio2" value="option2">
+                                    <input type="text" name="question1-option2" class="form-control" value="Opción 2">
+                                    <a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </a>
+                                </div>
+                                <div class="btn-group">
+                                    <br>
+                                    <a class="btn btn-primary" onclick="addOption(this, 'radio')">Agregar opción</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group hidden" id="typeMultipleOption1"><label class="col-sm-2 control-label">Seleccione una o varias opciones</label>
+                            <div class="col-sm-10">
+                                <div class="checkbox">
+                                    <input id="checkbox1" type="checkbox">
+                                    <input type="text" name="question1-option1" class="form-control" value="Opción 1">
+                                </div>
+                                <div class="checkbox">
+                                    <input id="checkbox2" type="checkbox">
+                                    <input type="text" name="question1-option2" class="form-control" value="Opción 2">
+                                    <a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </a>
+                                </div>
+                                <div class="btn-group">
+                                    <br>
+                                    <a class="btn btn-primary" onclick="addOption(this, 'checkbox')">Agregar opción</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="linea-final" class="hr-line-dashed"></div>
+                    <div class="btn-group">
+                        <a class="btn btn-primary" onclick="addQuestion()">Agregar pregunta</a>
+                        <a class="btn btn-default hidden" id='botonEliminar' onclick="removeQuestion()">Eliminar pregunta</a>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 @elseif($typeView == 'list')
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Lista de ciclos escolares</h5>
+                    <h5>Lista de exámenes</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -145,9 +184,9 @@
                             <thead>
                                 <tr>
                                     <th> - </th>
-                                    <th>Nombre</th>
-                                    <th>Inicia en</th>
-                                    <th>Finaliza en</th>
+                                    <th>Nombre del examen</th>
+                                    <th>Área</th>
+                                    <th>Asignatura</th>
                                     <th>Fecha de creación</th>
                                     <th>Creado por</th>
                                 </tr>
@@ -158,25 +197,26 @@
 
                                 <tr class="gradeX">
                                     <td> 
-                                        <a href="/cyclescontrol/show/{{ $rec->id }}" class="btn btn-primary btn-xs">
+                                        <a href="/test/show/{{ $rec->id }}" class="btn btn-primary btn-xs">
                                             <i class="fa fa-eye"></i>
                                         </a> 
                                     </td>
                                     <td>{{ $rec->name }}</td>
-                                    <td>{{ $rec->start }}</td>
-                                    <td>{{ $rec->end }}</td>
+                                    <td>{{ $rec->area->name }}</td>
+                                    <td>{{ $rec->subject->name }}</td>
                                     <td>{{ $rec->created_at }}</td>
                                     <td>{{ $rec->user->name }}</td>
                                 </tr>
 
                                 @endforeach
                             </tbody>
+
                             <tfoot>
                                 <tr>
                                     <th> - </th>
-                                    <th>Nombre</th>
-                                    <th>Inicia en</th>
-                                    <th>Finaliza en</th>
+                                    <th>Nombre del examen</th>
+                                    <th>Área</th>
+                                    <th>Asignatura</th>
                                     <th>Fecha de creación</th>
                                     <th>Creado por</th>
                                 </tr>
@@ -198,15 +238,15 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="m-b-md">
-                        <a href="/cyclescontrol" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
-                        <h2>Ciclo escolar: {{$record->name}}</h2>
+                        <a href="/subjects" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                        <h2>Asignatura: {{$record->name}}</h2>
                     </div>
                     @if($record->created_at->diffInMinutes() < 2)
                     <dl class="dl-horizontal">
                         <span class="label label-primary pull-right">Nuevo</span>
                     </dl>
                     @endif
-                    <h4>Descripción del ciclo escolar:</h4>
+                    <h4>Descripción de la asignatura:</h4>
                     <p>
                         {{ $record->description }}
                     </p>
@@ -215,32 +255,18 @@
             <div class="row">
                 <div class="col-lg-5">
                     <dl class="dl-horizontal">
+
                         <dt>Creado por:</dt> <dd>{{$record->user->name}}</dd>
-                        <dt>Número de participantes:</dt> <dd>  </dd>
                         <dt>Entidad:</dt> <dd><a href="#" class="text-navy"> UAEH</a> </dd>
                     </dl>
                 </div>
                 <div class="col-lg-7" id="cluster_info">
                     <dl class="dl-horizontal" >
-                        <dt>Inicia:</dt> <dd>{{$record->start}}</dd>
-                        <dt>Termina:</dt> <dd>{{$record->end}}</dd>
-                        <dt>Docentes:</dt>
+                        <dt>Descripción:</dt> <dd>{{$record->description}}</dd>
                     </dl>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <dl class="dl-horizontal">
-                        <dt>Completado:</dt>
-                        <dd>
-                            <div class="progress progress-striped active m-b-sm">
-                                <div style="width: 2%;" class="progress-bar"></div>
-                            </div>
-                            <small>El ciclo tiene <strong>0%</strong> completado.</small>
-                        </dd>
-                    </dl>
-                </div>
-            </div>
+
             <div class="row m-t-sm">
                 <div class="col-lg-12">
                     <div class="panel blank-panel">
@@ -252,7 +278,6 @@
                                 </ul>
                             </div>
                         </div>
-
                         <div class="panel-body">
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab-1">
@@ -358,7 +383,6 @@
                                                         Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable.
                                                     </p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td>
@@ -378,7 +402,6 @@
                                                         Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
                                                     </p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td>
@@ -398,7 +421,6 @@
                                                         There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which
                                                     </p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td>
@@ -418,7 +440,6 @@
                                                         Latin words, combined with a handful of model sentence structures
                                                     </p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td>
@@ -438,7 +459,6 @@
                                                         The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
                                                     </p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td>
@@ -458,7 +478,6 @@
                                                         The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
                                                     </p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td>
@@ -478,7 +497,6 @@
                                                         The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.
                                                     </p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td>
@@ -498,7 +516,6 @@
                                                         Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable.
                                                     </p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td>
@@ -518,9 +535,7 @@
                                                         Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
                                                     </p>
                                                 </td>
-
                                             </tr>
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -535,55 +550,85 @@
 @endif
 
 <script>
-    lista_usuarios = [];
-    trUser = '';
-    function moverUsuario(idUsuario, accion) {
-        trUser = $("#" + idUsuario)[0];
-        if (accion === 1) { 
-            lista_usuarios.push(idUsuario);
-            $("#"+idUsuario+" td:eq(3)").html('<a class="btn btn-default btn-xs" onclick="moverUsuario(' + idUsuario + ', 2)"><i class="fa fa-minus"> </i> Remover</a>');
-            $("#tabla_usuarios tr#" + idUsuario).remove();
-            $("#tabla_agregados").append(trUser);
-        } else {
-            $("#"+idUsuario+" td:eq(3)").html('<a class="btn btn-primary btn-xs" onclick="moverUsuario(' + idUsuario + ', 1)"><i class="fa fa-plus"> </i> Agregar</a>');
-            $("#tabla_agregados tr#" + idUsuario).remove();
-            $("#tabla_usuarios").append(trUser);
-            lista_usuarios = jQuery.grep(lista_usuarios, function(value) {
-                return value != idUsuario;
-            });
+    $(function() {
+        $('.select-subject').select2({
+            placeholder: 'Seleccione una asignatura',
+            allowClear: true
+        });
+        tipoRespuesta(document.getElementById("subtype1"));
+        $('#botonEliminar').addClass('hidden');
+    });
+    
+    function addQuestion() {
+        var totalQuestion = $('.questionTest').length + 1;
+        var btnRadio = "\'radio\'";
+        var btnCheckbox = "\'checkbox\'";
+        var newQuestion = '<div id="questionTest'+totalQuestion+'" class="questionTest"><div class="hr-line-dashed"></div><div class="form-group"><label class="col-sm-2 control-label">Pregunta</label><div class="col-sm-10"><input type="text" name="question'+totalQuestion+'" class="form-control"></div></div><div class="form-group">\n\
+            <label class="col-sm-2 control-label">Tipo de pregunta</label><div class="col-sm-10"><select class="form-control" name="question'+totalQuestion+'-subtype'+totalQuestion+'" id="subtype'+totalQuestion+'" onchange="tipoRespuesta(this)"><option value="Question">Respuesta corta</option>\n\
+            <option value="Single-option">Selección simple</option><option value="Multiple-option">Selección múltiple</option></select></div></div><div class="form-group" id="typeQuestion'+totalQuestion+'"><label class="col-sm-2 control-label">Espacio para respuesta</label><div class="col-sm-10">\n\
+            <textarea id="answer'+totalQuestion+'" class="form-control" disabled="true"></textarea> </div></div><div class="form-group hidden" id="typeSingleOption'+totalQuestion+'"><label class="col-sm-2 control-label">Seleccione una opción</label><div class="col-sm-10"><div class="radio">\n\
+            <input type="radio" radio="radio1" id="radio1" value="option1" checked=""><input type="text" name="question'+totalQuestion+'-option1" class="form-control" value="Opción 1"></div><div class="radio"><input type="radio" radio="radio1" id="radio2" value="option2">\n\
+            <input type="text" name="question'+totalQuestion+'-option2" class="form-control" value="Opción 2"><a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close"><span aria-hidden="true">&times;</span></a></div><div class="btn-group"><br>\n\
+            <a class="btn btn-primary" onclick="addOption(this, '+btnRadio+')">Agregar opción</a></div></div></div><div class="form-group hidden" id="typeMultipleOption'+totalQuestion+'"><label class="col-sm-2 control-label">Seleccione una o varias opciones</label><div class="col-sm-10"><div class="checkbox">\n\
+            <input id="checkbox1" type="checkbox"><input type="text" name="question'+totalQuestion+'-option1" class="form-control" value="Opción 1"></div><div class="checkbox"><input id="checkbox2" type="checkbox"><input type="text" name="question'+totalQuestion+'-option2" class="form-control" value="Opción 2">\n\
+            <a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close"><span aria-hidden="true">&times;</span></a></div><div class="btn-group"><br><a class="btn btn-primary" onclick="addOption(this, '+btnCheckbox+')">Agregar opción</a></div></div></div></div>';
+        $('#linea-final').before(newQuestion);
+        if (totalQuestion === 2) {
+            $('#botonEliminar').removeClass('hidden');
         }
-        $('#users').val(lista_usuarios);
-        if ($("#buscar_usuario").val() !== '') {
-            $("#buscar_usuario").val('');
-            buscarUsuario();
+        tipoRespuesta(document.getElementById('subtype'+totalQuestion));
+    }
+    
+    function removeQuestion() {
+        var idQuestionRemove = $('.questionTest').length;
+        $('#questionTest'+idQuestionRemove).remove();
+        if (idQuestionRemove === 2) {
+            $('#botonEliminar').addClass('hidden');
         }
     }
     
-    function habilitarDeshabilitarBuscador(tab) {
-        if (tab === 'tab-1') {
-            $("#buscar_usuario").prop('disabled', false);
+    function addOption(e, tipoInput) {
+        var idQuestionTest = $(e).parents('div')[3].id;
+        var nroQuestion = idQuestionTest.charAt(idQuestionTest.length-1);
+        var cantOption = $(e).parent().parent().children('div').length;
+        if (tipoInput === 'radio') {
+            var option = '<div class="radio"> <input type="radio" radio="radio1" id="radio2" value="option2"><input type="text" name="question'+nroQuestion+'-option'+cantOption+'" class="form-control" value="Opción '+cantOption+'">\n\
+                <a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close"><span aria-hidden="true">&times;</span></a></div>';
         } else {
-            $("#buscar_usuario").prop('disabled', true);
+            var option = '<div class="checkbox"><input id="checkbox2" type="checkbox"><input type="text" name="question'+nroQuestion+'-option'+cantOption+'" class="form-control" value="Opción '+cantOption+'">\n\
+                <a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close"><span aria-hidden="true">&times;</span></a></div>';
+        }
+        $(e).parent().before(option);
+    }
+    
+    function removeOption(e) {
+        $(e).parent().remove();
+    }
+    
+    function tipoRespuesta(selectSubtype) {
+        var cadena = selectSubtype.name;
+        var idSubtype = cadena.charAt(cadena.length-1);
+        if (selectSubtype.value === 'Question') {
+            agregarQuitarHidden('#typeQuestion'+idSubtype, '#typeSingleOption'+idSubtype, '#typeMultipleOption'+idSubtype);
+            $('#typeSingleOption'+idSubtype+' :text').prop('disabled', true);
+            $('#typeMultipleOption'+idSubtype+' :text').prop('disabled', true);
+        } else if (selectSubtype.value === 'Single-option') {
+            agregarQuitarHidden('#typeSingleOption'+idSubtype, '#typeQuestion'+idSubtype, '#typeMultipleOption'+idSubtype);
+            $('#typeSingleOption'+idSubtype+' :text').prop('disabled', false);
+            $('#typeMultipleOption'+idSubtype+' :text').prop('disabled', true);
+        } else {
+            agregarQuitarHidden('#typeMultipleOption'+idSubtype, '#typeQuestion'+idSubtype, '#typeSingleOption'+idSubtype);
+            $('#typeSingleOption'+idSubtype+' :text').prop('disabled', true);
+            $('#typeMultipleOption'+idSubtype+' :text').prop('disabled', false);
         }
     }
     
-    function buscarUsuario() {
-        var input, filter, table, tr, td, i;
-        input = document.getElementById("buscar_usuario");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("tabla_usuarios");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                if (td.innerHTML.toUpperCase().indexOf(filter) > - 1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
+    function agregarQuitarHidden(atributoRemover, atributoAdd1, atributoAdd2) {
+        $(atributoRemover).removeClass("hidden");
+        $(atributoAdd1).addClass("hidden");
+        $(atributoAdd2).addClass("hidden");
     }
+    
     
     function pulsar(textarea, e, tipoComentario, idParent) {
         if (e.keyCode === 13 && !e.shiftKey) {
@@ -591,7 +636,7 @@
             comentario = $(textarea).val();
             if (comentario !== '') {
                 $(textarea).val('');
-                agregarComentario('school_cycles', comentario, tipoComentario, idParent);
+                agregarComentario('exams', comentario, tipoComentario, idParent);
             }
         }
     }
