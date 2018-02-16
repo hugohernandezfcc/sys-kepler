@@ -84,7 +84,7 @@
                                     @endforeach
                                 @endforeach
                             </select>
-                            <select class="form-control" name="subject_id" id="subject_id">
+                            <select class="form-control" name="subject_id_otro_select" id="subject_id_otro_select">
                                 <option></option>
                                 @foreach ($to_related as $to_subject)
                                 <option disabled="" class="font-bold">Área {{$to_subject[0]->area->name}}</option>
@@ -104,7 +104,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Tipo de pregunta</label>
                             <div class="col-sm-10">
-                                <select class="form-control" name="subtype1" id="subtype1" onchange="tipoRespuesta(this)">
+                                <select class="form-control" name="question1-subtype1" id="subtype1" onchange="tipoRespuesta(this)">
                                     <option value="Question">Respuesta corta</option>
                                     <option value="Single-option">Selección simple</option>
                                     <option value="Multiple-option">Selección múltiple</option>
@@ -117,12 +117,19 @@
                         <div class="form-group hidden" id="typeSingleOption1"><label class="col-sm-2 control-label">Seleccione una opción</label>
                             <div class="col-sm-10">
                                 <div class="radio">
-                                    <input type="radio" id="radio1" value="option1" checked="">
-                                    <input type="text" name="option1" class="form-control" value="Opción 1" required>
+                                    <input type="radio" radio="radio1" id="radio1" value="option1" checked="">
+                                    <input type="text" name="question1-option1" class="form-control" value="Opción 1">
                                 </div>
                                 <div class="radio">
-                                    <input type="radio" id="radio2" value="option2">
-                                    <input type="text" name="option2" class="form-control" value="Opción 2" required>
+                                    <input type="radio" radio="radio1" id="radio2" value="option2">
+                                    <input type="text" name="question1-option2" class="form-control" value="Opción 2">
+                                    <a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </a>
+                                </div>
+                                <div class="btn-group">
+                                    <br>
+                                    <a class="btn btn-primary" onclick="addOption(this, 'radio')">Agregar opción</a>
                                 </div>
                             </div>
                         </div>
@@ -130,18 +137,26 @@
                             <div class="col-sm-10">
                                 <div class="checkbox">
                                     <input id="checkbox1" type="checkbox">
-                                    <input type="text" name="option1" class="form-control" value="Opción 1" required>
+                                    <input type="text" name="question1-option1" class="form-control" value="Opción 1">
                                 </div>
-                                <div class="checkbox checkbox-primary">
+                                <div class="checkbox">
                                     <input id="checkbox2" type="checkbox">
-                                    <input type="text" name="option2" class="form-control" value="Opción 2" required>
+                                    <input type="text" name="question1-option2" class="form-control" value="Opción 2">
+                                    <a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </a>
+                                </div>
+                                <div class="btn-group">
+                                    <br>
+                                    <a class="btn btn-primary" onclick="addOption(this, 'checkbox')">Agregar opción</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div id="linea-final" class="hr-line-dashed"></div>
                     <div class="btn-group">
-                        <div class="btn btn-primary center-orientation" onclick="addQuestion()">Agregar pregunta</div>
+                        <a class="btn btn-primary" onclick="addQuestion()">Agregar pregunta</a>
+                        <a class="btn btn-default hidden" id='botonEliminar' onclick="removeQuestion()">Eliminar pregunta</a>
                     </div>
                 </form>
             </div>
@@ -535,29 +550,59 @@
 @endif
 
 <script>
-    /*$(function() {
-        var id = $("#area_id").children(":selected").val();
-        buscarAsignatura(id);
-    });
-    
-    $("#area_id").change(function() {
-        var id = $(this).children(":selected").val();
-        buscarAsignatura(id);
-    });
-    
-    function buscarAsignatura(area_id) {
-        alert(area_id);
-    }*/
     $(function() {
         $('.select-subject').select2({
             placeholder: 'Seleccione una asignatura',
             allowClear: true
         });
+        tipoRespuesta(document.getElementById("subtype1"));
+        $('#botonEliminar').addClass('hidden');
     });
     
     function addQuestion() {
-        var totalQuestion = $('.questionTest').length;
-        alert(total);
+        var totalQuestion = $('.questionTest').length + 1;
+        var btnRadio = "\'radio\'";
+        var btnCheckbox = "\'checkbox\'";
+        var newQuestion = '<div id="questionTest'+totalQuestion+'" class="questionTest"><div class="hr-line-dashed"></div><div class="form-group"><label class="col-sm-2 control-label">Pregunta</label><div class="col-sm-10"><input type="text" name="question'+totalQuestion+'" class="form-control"></div></div><div class="form-group">\n\
+            <label class="col-sm-2 control-label">Tipo de pregunta</label><div class="col-sm-10"><select class="form-control" name="question'+totalQuestion+'-subtype'+totalQuestion+'" id="subtype'+totalQuestion+'" onchange="tipoRespuesta(this)"><option value="Question">Respuesta corta</option>\n\
+            <option value="Single-option">Selección simple</option><option value="Multiple-option">Selección múltiple</option></select></div></div><div class="form-group" id="typeQuestion'+totalQuestion+'"><label class="col-sm-2 control-label">Espacio para respuesta</label><div class="col-sm-10">\n\
+            <textarea id="answer'+totalQuestion+'" class="form-control" disabled="true"></textarea> </div></div><div class="form-group hidden" id="typeSingleOption'+totalQuestion+'"><label class="col-sm-2 control-label">Seleccione una opción</label><div class="col-sm-10"><div class="radio">\n\
+            <input type="radio" radio="radio1" id="radio1" value="option1" checked=""><input type="text" name="question'+totalQuestion+'-option1" class="form-control" value="Opción 1"></div><div class="radio"><input type="radio" radio="radio1" id="radio2" value="option2">\n\
+            <input type="text" name="question'+totalQuestion+'-option2" class="form-control" value="Opción 2"><a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close"><span aria-hidden="true">&times;</span></a></div><div class="btn-group"><br>\n\
+            <a class="btn btn-primary" onclick="addOption(this, '+btnRadio+')">Agregar opción</a></div></div></div><div class="form-group hidden" id="typeMultipleOption'+totalQuestion+'"><label class="col-sm-2 control-label">Seleccione una o varias opciones</label><div class="col-sm-10"><div class="checkbox">\n\
+            <input id="checkbox1" type="checkbox"><input type="text" name="question'+totalQuestion+'-option1" class="form-control" value="Opción 1"></div><div class="checkbox"><input id="checkbox2" type="checkbox"><input type="text" name="question'+totalQuestion+'-option2" class="form-control" value="Opción 2">\n\
+            <a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close"><span aria-hidden="true">&times;</span></a></div><div class="btn-group"><br><a class="btn btn-primary" onclick="addOption(this, '+btnCheckbox+')">Agregar opción</a></div></div></div></div>';
+        $('#linea-final').before(newQuestion);
+        if (totalQuestion === 2) {
+            $('#botonEliminar').removeClass('hidden');
+        }
+        tipoRespuesta(document.getElementById('subtype'+totalQuestion));
+    }
+    
+    function removeQuestion() {
+        var idQuestionRemove = $('.questionTest').length;
+        $('#questionTest'+idQuestionRemove).remove();
+        if (idQuestionRemove === 2) {
+            $('#botonEliminar').addClass('hidden');
+        }
+    }
+    
+    function addOption(e, tipoInput) {
+        var idQuestionTest = $(e).parents('div')[3].id;
+        var nroQuestion = idQuestionTest.charAt(idQuestionTest.length-1);
+        var cantOption = $(e).parent().parent().children('div').length;
+        if (tipoInput === 'radio') {
+            var option = '<div class="radio"> <input type="radio" radio="radio1" id="radio2" value="option2"><input type="text" name="question'+nroQuestion+'-option'+cantOption+'" class="form-control" value="Opción '+cantOption+'">\n\
+                <a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close"><span aria-hidden="true">&times;</span></a></div>';
+        } else {
+            var option = '<div class="checkbox"><input id="checkbox2" type="checkbox"><input type="text" name="question'+nroQuestion+'-option'+cantOption+'" class="form-control" value="Opción '+cantOption+'">\n\
+                <a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close"><span aria-hidden="true">&times;</span></a></div>';
+        }
+        $(e).parent().before(option);
+    }
+    
+    function removeOption(e) {
+        $(e).parent().remove();
     }
     
     function tipoRespuesta(selectSubtype) {
@@ -565,10 +610,16 @@
         var idSubtype = cadena.charAt(cadena.length-1);
         if (selectSubtype.value === 'Question') {
             agregarQuitarHidden('#typeQuestion'+idSubtype, '#typeSingleOption'+idSubtype, '#typeMultipleOption'+idSubtype);
+            $('#typeSingleOption'+idSubtype+' :text').prop('disabled', true);
+            $('#typeMultipleOption'+idSubtype+' :text').prop('disabled', true);
         } else if (selectSubtype.value === 'Single-option') {
             agregarQuitarHidden('#typeSingleOption'+idSubtype, '#typeQuestion'+idSubtype, '#typeMultipleOption'+idSubtype);
+            $('#typeSingleOption'+idSubtype+' :text').prop('disabled', false);
+            $('#typeMultipleOption'+idSubtype+' :text').prop('disabled', true);
         } else {
             agregarQuitarHidden('#typeMultipleOption'+idSubtype, '#typeQuestion'+idSubtype, '#typeSingleOption'+idSubtype);
+            $('#typeSingleOption'+idSubtype+' :text').prop('disabled', true);
+            $('#typeMultipleOption'+idSubtype+' :text').prop('disabled', false);
         }
     }
     
