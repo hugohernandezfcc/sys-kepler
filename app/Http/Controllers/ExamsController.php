@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exam;
+use App\ItemsExam;
 use App\Area;
 use App\Subject;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -68,7 +70,55 @@ class ExamsController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $exam = new Exam();
+        $exam->name = $request->name;
+        $exam->description = $request->description;
+        $exam->subject_id = $request->subject_id;
+        $subject = Subject::find($request->subject_id);
+        $exam->area_id = $subject->area_id;
+        $exam->created_by = Auth::id();
+        if ($exam->save()) {
+            $this->storeItemsExam($request, $exam->id);
+        }
+        return redirect('/test');
+    }
+    
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Exam $examId
+     */
+    protected function storeItemsExam($request, $examId) {
+        $totalQuestion = $request->totalQuestion;
+        for ($i = 1; $i <= $totalQuestion; $i++) {
+            $itemsExamQ = new ItemsExam();
+            $questionTxt = "question$i";
+            $itemsExamQ->name = $request->$questionTxt;
+            $itemsExamQ->type = 'Question';
+            $itemsExamQ->parent = null;
+            $itemsExamQ->by = Auth::id();
+            $itemsExamQ->exam = $examId;
+            if ($itemsExamQ->save()) {
+                $subtypeTxt = "question$i-subtype$i";
+                $subtype = str_replace('-', ' ', $request->$subtypeTxt);
+                if ($subtype !== 'Question') { //Single-option y Multiple-option
+                    $j = 1;
+                    $optionsTxt = "question$i-option$j";
+                    do {
+                        $itemsExamA = new ItemsExam();
+                        $itemsExamA->name = $request->$optionsTxt;
+                        $itemsExamA->type = 'Answer';
+                        $itemsExamA->subtype = $subtype;
+                        $itemsExamA->parent = $itemsExamQ->id;
+                        $itemsExamA->by = Auth::id();
+                        $itemsExamA->exam = $examId;
+                        $j++;
+                        $optionsTxt = "question$i-option$j";
+                    } while ($request->$optionsTxt !== null && $itemsExamA->save());
+                }
+            }
+        }
     }
 
     /**
