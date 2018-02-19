@@ -262,12 +262,11 @@
                         
                             @if ($answer->subtype === 'Open')
                                 <label class="col-sm-2 control-label">Responda brevemente</label>
-                                    <div class="col-sm-10"><textarea id="answer1" class="form-control"></textarea> </div>
-                                
+                                <div class="col-sm-10"><textarea id="answer1" class="form-control"></textarea> </div>
                             @elseif ($answer->subtype === 'Single option')
                                 @if ($key === 0)
                                     <label class="col-sm-2 control-label">Seleccione una opción</label>
-                                @else ($key > 1)
+                                @else
                                     <label class="col-sm-2 control-label"></label>
                                 @endif
                                 <div class="col-sm-10">
@@ -281,7 +280,7 @@
                             @else
                                 @if ($key === 0)
                                     <label class="col-sm-2 control-label">Seleccione una o varias opciones</label>
-                                @else ($key > 1)
+                                @else
                                     <label class="col-sm-2 control-label"></label>
                                 @endif
                                 <div class="col-sm-10">
