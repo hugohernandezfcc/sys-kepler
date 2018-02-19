@@ -102,7 +102,16 @@ class ExamsController extends Controller
             if ($itemsExamQ->save()) {
                 $subtypeTxt = "question$i-subtype$i";
                 $subtype = str_replace('-', ' ', $request->$subtypeTxt);
-                if ($subtype !== 'Question') { //Single-option y Multiple-option
+                if ($subtype === 'Question') { 
+                    $itemsExamA = new ItemsExam();
+                    $itemsExamA->name = '';
+                    $itemsExamA->type = 'Answer';
+                    $itemsExamA->subtype = 'Open';
+                    $itemsExamA->parent = $itemsExamQ->id;
+                    $itemsExamA->by = Auth::id();
+                    $itemsExamA->exam = $examId;
+                    $itemsExamA->save();
+                } else {//Single-option y Multiple-option
                     $j = 1;
                     $optionsTxt = "question$i-option$j";
                     do {
@@ -124,12 +133,17 @@ class ExamsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Exam  $exam
+     * @param  \App\Exam  $examId
      * @return \Illuminate\Http\Response
      */
-    public function show(Exam $exam)
+    public function show($examId)
     {
-        //
+        return view('test', [
+                'typeView' => 'view',
+                'record' => Exam::find($examId),
+                'items_exam' => ItemsExam::where('exam', '=', $examId)->where('parent', '=', null)->get()
+            ]
+        );
     }
 
     /**
