@@ -267,11 +267,13 @@
                             @elseif ($answer->subtype === 'Single option')
                                 @if ($key === 0)
                                     <label class="col-sm-2 control-label">Seleccione una opción</label>
+                                @else ($key > 1)
+                                    <label class="col-sm-2 control-label"></label>
                                 @endif
                                 <div class="col-sm-10">
                                     <div class="radio">
-                                        <input type="radio" name="radio1" id="radio1" value="option1" checked="">
-                                        <label for="radio1">
+                                        <input type="radio" name="radio" id="radio{{$key}}" value="{{ $answer->id }}">
+                                        <label for="radio{{$key}}">
                                             {{ $answer->name }}
                                         </label>
                                     </div>
@@ -279,11 +281,13 @@
                             @else
                                 @if ($key === 0)
                                     <label class="col-sm-2 control-label">Seleccione una o varias opciones</label>
+                                @else ($key > 1)
+                                    <label class="col-sm-2 control-label"></label>
                                 @endif
                                 <div class="col-sm-10">
-                                    <div class="checkbox checkbox-primary">
-                                        <input id="checkbox2" type="checkbox" checked="">
-                                        <label for="checkbox2">
+                                    <div class="checkbox checkbox-success">
+                                        <input id="checkbox{{$key}}" type="checkbox">
+                                        <label for="checkbox{{$key}}">
                                             {{ $answer->name }}
                                         </label>
                                     </div>
