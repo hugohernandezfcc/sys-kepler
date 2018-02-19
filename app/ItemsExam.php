@@ -17,7 +17,7 @@ class ItemsExam extends Model
     }
 
     public function parent() {
-        return $this->hasOne('App\ItemsExam', 'id', 'parent');
+        return $this->belongsTo('App\ItemsExam', 'id', 'parent');
     }
     
     public function conversation() {
