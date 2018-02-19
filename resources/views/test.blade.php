@@ -63,6 +63,7 @@
             <div class="ibox-content">
                 <form method="post" action="/test/store" id="form-create" class="form-horizontal">
                     {{ csrf_field() }}
+                    <input name="totalQuestion" id="totalQuestion" value="1" type="hidden">
                     <div class="form-group"><label class="col-sm-2 control-label">Nombre del examen</label>
 
                         <div class="col-sm-10"><input type="text" name="name" class="form-control"></div>
@@ -561,6 +562,7 @@
     
     function addQuestion() {
         var totalQuestion = $('.questionTest').length + 1;
+        $('#totalQuestion').val(totalQuestion);
         var btnRadio = "\'radio\'";
         var btnCheckbox = "\'checkbox\'";
         var newQuestion = '<div id="questionTest'+totalQuestion+'" class="questionTest"><div class="hr-line-dashed"></div><div class="form-group"><label class="col-sm-2 control-label">Pregunta</label><div class="col-sm-10"><input type="text" name="question'+totalQuestion+'" class="form-control"></div></div><div class="form-group">\n\
@@ -582,6 +584,7 @@
     function removeQuestion() {
         var idQuestionRemove = $('.questionTest').length;
         $('#questionTest'+idQuestionRemove).remove();
+        $('#totalQuestion').val($('.questionTest').length);
         if (idQuestionRemove === 2) {
             $('#botonEliminar').addClass('hidden');
         }
