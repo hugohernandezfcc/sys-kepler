@@ -95,12 +95,12 @@
                             <div class="col-sm-10"><input type="text" name="question1" class="form-control" required="true"></div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Tipo de pregunta</label>
+                            <label class="col-sm-2 control-label">Tipo de respuesta</label>
                             <div class="col-sm-10">
                                 <select class="form-control" name="question1-subtype1" id="subtype1" onchange="tipoRespuesta(this)" required="true">
-                                    <option value="Question">Respuesta corta</option>
-                                    <option value="Single-option">Selección simple</option>
-                                    <option value="Multiple-option">Selección múltiple</option>
+                                    <option value="Question">Caja de texto</option>
+                                    <option value="Single-option">Botón opcional</option>
+                                    <option value="Multiple-option">Botón opción múltiple</option>
                                 </select>
                             </div>
                         </div>
