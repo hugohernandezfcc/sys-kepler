@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Exam;
 use App\ItemsExam;
-use App\Area;
 use App\Subject;
 use Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ExamsController extends Controller
 {
@@ -114,7 +112,7 @@ class ExamsController extends Controller
                 } else {//Single-option y Multiple-option
                     $j = 1;
                     $optionsTxt = "question$i-option$j";
-                    do {
+                    while ($request->$optionsTxt !== null) {
                         $itemsExamA = new ItemsExam();
                         $itemsExamA->name = $request->$optionsTxt;
                         $itemsExamA->type = 'Answer';
@@ -122,9 +120,10 @@ class ExamsController extends Controller
                         $itemsExamA->parent = $itemsExamQ->id;
                         $itemsExamA->by = Auth::id();
                         $itemsExamA->exam = $examId;
+                        $itemsExamA->save();
                         $j++;
                         $optionsTxt = "question$i-option$j";
-                    } while ($request->$optionsTxt !== null && $itemsExamA->save());
+                    }
                 }
             }
         }
