@@ -475,6 +475,7 @@
                 $(e).html('Aplicado');
                 $(e).removeClass("hidden");
                 $('.buttonload').remove();
+                console.log('applyexams/takeexam/'+result.codeExam);
             },
             error: function () {
                //alert("fallo");

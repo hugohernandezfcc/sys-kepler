@@ -57,7 +57,7 @@ class ApplyExamsController extends Controller
         $applyExam->by = Auth::id();
         if ($applyExam->save()) {
             //$this->enviarMail($applyExam);
-            return Response()->json(array('result' => 'ok'));
+            return Response()->json(array('result' => 'ok', 'codeExam' => $applyExam->name));
         }
     }
     
@@ -78,8 +78,7 @@ class ApplyExamsController extends Controller
                 ]
             ); 
         } else {
-            //error
-            dd('error');
+            return redirect('/404');
         }
     }
 
