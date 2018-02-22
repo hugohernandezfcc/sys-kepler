@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exam;
 use App\ItemsExam;
 use App\Subject;
+use App\Group;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -78,7 +79,7 @@ class ExamsController extends Controller
         if ($exam->save()) {
             $this->storeItemsExam($request, $exam->id);
         }
-        return redirect('/test');
+        return redirect('/test/show' . $exam->id);
     }
     
     /**
@@ -103,7 +104,7 @@ class ExamsController extends Controller
                 if ($subtype === 'Question') { 
                     $itemsExamA = new ItemsExam();
                     $itemsExamA->name = '';
-                    $itemsExamA->type = 'Answer';
+                    $itemsExamA->type = 'Question';
                     $itemsExamA->subtype = 'Open';
                     $itemsExamA->parent = $itemsExamQ->id;
                     $itemsExamA->by = Auth::id();
@@ -115,7 +116,7 @@ class ExamsController extends Controller
                     while ($request->$optionsTxt !== null) {
                         $itemsExamA = new ItemsExam();
                         $itemsExamA->name = $request->$optionsTxt;
-                        $itemsExamA->type = 'Answer';
+                        $itemsExamA->type = 'Question';
                         $itemsExamA->subtype = $subtype;
                         $itemsExamA->parent = $itemsExamQ->id;
                         $itemsExamA->by = Auth::id();
@@ -140,7 +141,8 @@ class ExamsController extends Controller
         return view('test', [
                 'typeView' => 'view',
                 'record' => Exam::find($examId),
-                'items_exam' => ItemsExam::where('exam', '=', $examId)->where('parent', '=', null)->get()
+                'items_exam' => ItemsExam::where('exam', '=', $examId)->where('parent', '=', null)->get(),
+                'to_related' => Group::all()
             ]
         );
     }

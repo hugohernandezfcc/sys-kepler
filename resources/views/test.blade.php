@@ -25,7 +25,7 @@
         </ol>
     </div>
     <div class="col-sm-6">
-        @if($typeView != 'form')
+        @if($typeView == 'list')
         <div class="title-action">
             <a href="/test/create" class="btn btn-primary btn-sm">Agregar examen</a>
         </div>
@@ -38,7 +38,10 @@
             </button>
         </div>
 
-
+        @elseif($typeView == 'view')
+        <div class="title-action">
+            <a href="#modalGroups" id="openBtn" data-toggle="modal" data-exam="{{ $record->id }}" class="btn btn-primary">Aplicar examen</a>
+        </div>
         @endif
     </div>
 </div>
@@ -216,7 +219,6 @@
                             </tfoot>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -259,7 +261,7 @@
                             <h3> {{ $item_exam->name }} </h3>
                         </div>
                         <div class="">
-                        @foreach ($item_exam->children()->get() as $key => $answer)
+                        @foreach ($item_exam->children()->where('type', '=', 'Question')->get() as $key => $answer)
                         
                             @if ($answer->subtype === 'Open')
                                 <label class="col-sm-2 control-label">Responda brevemente</label>
@@ -301,6 +303,65 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalGroups">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 class="modal-title">Seleccione el grupo al que desee aplicar el examen</h3>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center"></h5>
+                    <table class="table table-striped table-bordered table-hover dataTables-modal" >
+                            <thead>
+                                <tr>
+                                    <th>Aplicar</th>
+                                    <th>Nombre del grupo</th>
+                                    <th>Descripción</th>
+                                    <th>Fecha de creación</th>
+                                    <th>Creado por</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($to_related as $group)
+                                <tr class="gradeX">
+                                    @if (count($group->exams()->where('exam_id', '=', $record->id)->get()) === 0)
+                                    <td class="text-center">
+                                        <button type="button" onclick="applyExam(this, {{ $group->id }})" class="btn btn-primary btn-xs">
+                                            Aplicar
+                                        </button> 
+                                    </td>
+                                    @else
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-default btn-xs" disabled>
+                                            Aplicado
+                                        </button> 
+                                    </td>
+                                    @endif
+                                    <td>{{ $group->name }}</td>
+                                    <td>{{ $group->description }}</td>
+                                    <td>{{ $group->created_at }}</td>
+                                    <td>{{ $group->user->name }}</td>
+                                </tr>
+                                @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Aplicar</th>
+                                <th>Nombre del grupo</th>
+                                <th>Descripción</th>
+                                <th>Fecha de creación</th>
+                                <th>Creado por</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>
 @endif
 
@@ -313,6 +374,11 @@
         if ($('#typeView').val() === 'form') {
             tipoRespuesta(document.getElementById("subtype1"));
             $('#botonEliminar').addClass('hidden');
+        } else if($('#typeView').val() === 'view') {
+            $('.dataTables-modal').DataTable({
+                pageLength: 10,
+                responsive: true
+            });
         }
     });
     
@@ -388,6 +454,35 @@
         $(atributoAdd2).addClass("hidden");
     }
     
+    function applyExam(e, groupId) {
+        $(e).prop('disabled',true);
+        $(e).before('<button class="buttonload btn btn-primary btn-xs" disabled><i class="fa fa-spinner fa-spin"></i> </button>');
+        $(e).addClass("hidden");
+        var examId = $('#idRecord').val();
+        $.ajax({
+            url: "/applyexams/store",
+            data: { 
+                "examId":examId,
+                "groupId":groupId,
+                "_token": "{{ csrf_token() }}"
+                },
+            dataType: "json",
+            method: "POST",
+            success: function(result)
+            {
+                $(e).removeClass('btn-primary');
+                $(e).addClass('btn-default');
+                $(e).html('Aplicado');
+                $(e).removeClass("hidden");
+                $('.buttonload').remove();
+                console.log('applyexams/takeexam/'+result.codeExam);
+            },
+            error: function () {
+               //alert("fallo");
+            }
+            
+        });
+    }
     
     function pulsar(textarea, e, tipoComentario, idParent) {
         if (e.keyCode === 13 && !e.shiftKey) {

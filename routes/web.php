@@ -110,12 +110,12 @@ Route::group(['prefix' => 'test'], function() {
             ]
     );
     
-    Route::get('/show/{subjectId}', [
+    Route::get('/show/{examId}', [
         'uses' => 'ExamsController@show',
         'as' => 'show'
             ]
     );
-
+    
     Route::post('/store', [
         'uses' => 'ExamsController@store',
         'as' => 'store'
@@ -153,6 +153,20 @@ Route::group(['prefix' => 'conversations'], function() {
     Route::post('/store', [
         'uses' => 'ConversationsController@store',
         'as' => 'store'
+            ]
+    );
+});
+
+Route::group(['prefix' => 'applyexams'], function() {
+    Route::post('/store', [
+        'uses' => 'ApplyExamsController@store',
+        'as' => 'store'
+            ]
+    );
+    
+    Route::get('/takeexam/{applyExamName}', [
+        'uses' => 'ApplyExamsController@takeexam',
+        'as' => 'takeexam'
             ]
     );
 });
