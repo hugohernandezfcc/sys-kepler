@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\ApplyExam;
+use App\Exam;
+use App\ItemsExam;
 use Auth;
 use Illuminate\Http\Request;
 
 class ApplyExamsController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -53,12 +64,23 @@ class ApplyExamsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\ApplyExam  $applyExam
+     * @param  \App\ApplyExam  $applyExamName
      * @return \Illuminate\Http\Response
      */
-    public function show(ApplyExam $applyExam)
+    public function takeexam($applyExamName)
     {
-        //
+        $takeExam = ApplyExam::where('name', '=', $applyExamName)->first();
+        if ($takeExam !== null) {
+            return view('takeexam', [
+                'typeView' => 'takeexam',
+                'record' => Exam::find($takeExam->exam_id),
+                'items_exam' => ItemsExam::where('exam', '=', $takeExam->exam_id)->where('parent', '=', null)->get(),
+                ]
+            ); 
+        } else {
+            //error
+            dd('error');
+        }
     }
 
     /**
