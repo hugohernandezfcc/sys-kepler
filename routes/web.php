@@ -157,6 +157,14 @@ Route::group(['prefix' => 'conversations'], function() {
     );
 });
 
+Route::group(['prefix' => 'applyexams'], function() {
+    Route::post('/store', [
+        'uses' => 'ApplyExamsController@store',
+        'as' => 'store'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'profile'], function() {
     Route::get('/', [
         'uses' => 'UsersController@index',
