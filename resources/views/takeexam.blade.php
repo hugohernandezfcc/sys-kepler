@@ -80,13 +80,13 @@
                                     @foreach ($item_exam->children()->where('type', '=', 'Question')->get() as $key => $detalle)
                                         @if ($detalle->subtype === 'Open')
                                             <div class="form-group" id="typeQuestion1">
-                                                <label class="col-sm-2 control-label text-xs">Responda brevemente</label>
+                                                <label class="col-sm-2 control-label small">Responda brevemente</label>
                                                 <div class="col-sm-10"><textarea name="Open-question{{ $item_exam->id }}" class="form-control"></textarea> </div>
                                             </div>
                                         @elseif ($detalle->subtype === 'Single option')
                                             @if ($key == 0)
                                             <div class="form-group">    
-                                                <label class="col-sm-2 control-label text">Seleccione una opción</label>
+                                                <label class="col-sm-2 control-label small">Seleccione una opción</label>
                                                 <div class="col-sm-10">
                                             @endif
                                                     <div class="radio">
@@ -102,7 +102,7 @@
                                         @else
                                             @if ($key == 0)
                                             <div class="form-group">
-                                                <label class="col-sm-2 control-label">Seleccione una o varias opciones</label>
+                                                <label class="col-sm-2 control-label small">Seleccione una o varias opciones</label>
                                                 <div class="col-sm-10">
                                             @endif
                                                     <div class="checkbox checkbox-success">
