@@ -79,7 +79,7 @@ class ExamsController extends Controller
         if ($exam->save()) {
             $this->storeItemsExam($request, $exam->id);
         }
-        return redirect('/test/show' . $exam->id);
+        return redirect('/test/show/' . $exam->id);
     }
     
     /**

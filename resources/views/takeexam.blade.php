@@ -11,7 +11,7 @@
             </li>
             @if($typeView == 'takeexam')
             <li>
-                <strong>Tomar examen</strong>
+                Tomar examen
             </li>
             <li class="active">
                 <strong>{{ $record->name }}</strong>
@@ -33,7 +33,6 @@
 
 
 @if($typeView == 'takeexam')
-<input type="hidden" id="idRecord" value="{{ $record->id }}">
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
         <div class="ibox-content">
@@ -66,51 +65,62 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    @foreach ($items_exam as $item_exam)
-                    <div class="hr-line-dashed"></div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h3> {{ $item_exam->name }} </h3>
-                        </div>
-                        <div class="">
-                        @foreach ($item_exam->children()->where('type', '=', 'Question')->get() as $key => $answer)
-                        
-                            @if ($answer->subtype === 'Open')
-                                <label class="col-sm-2 control-label">Responda brevemente</label>
-                                <div class="col-sm-10"><textarea id="answer1" class="form-control"></textarea> </div>
-                            @elseif ($answer->subtype === 'Single option')
-                                @if ($key === 0)
-                                    <label class="col-sm-2 control-label">Seleccione una opción</label>
-                                @else
-                                    <label class="col-sm-2 control-label"></label>
-                                @endif
-                                <div class="col-sm-10">
-                                    <div class="radio">
-                                        <input type="radio" name="radio" id="radio{{$key}}" value="{{ $answer->id }}">
-                                        <label for="radio{{$key}}">
-                                            {{ $answer->name }}
-                                        </label>
+                    <form method="post" role='form' action="/applyexams/storeanswers" id="form-create" class="form-horizontal" disabled>
+                        {{ csrf_field() }}
+                        <input type="hidden" id="examId" name="examId" value="{{ $record->id }}">
+                        @foreach ($items_exam as $item_exam)
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div id="questionId-{{ $item_exam->id }}" class="questionTest">
+                                    <input type="hidden" name="question{{ $item_exam->id }}" value="{{ $item_exam->id }}">
+                                    <div class="col-sm-12">
+                                        <h3> {{ $item_exam->name }} </h3>
                                     </div>
+                                    @php ($totalOption = count($item_exam->children()->where('type', '=', 'Question')->get()))
+                                    @foreach ($item_exam->children()->where('type', '=', 'Question')->get() as $key => $detalle)
+                                        @if ($detalle->subtype === 'Open')
+                                            <div class="form-group" id="typeQuestion1">
+                                                <label class="col-sm-2 control-label text-xs">Responda brevemente</label>
+                                                <div class="col-sm-10"><textarea name="Open-question{{ $item_exam->id }}" class="form-control"></textarea> </div>
+                                            </div>
+                                        @elseif ($detalle->subtype === 'Single option')
+                                            @if ($key == 0)
+                                            <div class="form-group">    
+                                                <label class="col-sm-2 control-label text">Seleccione una opción</label>
+                                                <div class="col-sm-10">
+                                            @endif
+                                                    <div class="radio">
+                                                        <input type="radio" name="Single-question{{ $item_exam->id }}" id="Single-question{{ $item_exam->id }}-option{{ $detalle->id }}" value="{{ $detalle->id }}">
+                                                        <label for="Single-question{{ $item_exam->id }}-option{{ $detalle->id }}">
+                                                            {{ $detalle->name }}
+                                                        </label>
+                                                    </div>
+                                            @if (($key+1) == $totalOption)
+                                                </div>
+                                            </div>
+                                            @endif
+                                        @else
+                                            @if ($key == 0)
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Seleccione una o varias opciones</label>
+                                                <div class="col-sm-10">
+                                            @endif
+                                                    <div class="checkbox checkbox-success">
+                                                        <input id="Multiple-question{{ $item_exam->id }}-option{{ $detalle->id }}" name="Multiple-question{{ $item_exam->id }}-option{{ $detalle->id }}" type="checkbox">
+                                                        <label for="Multiple-question{{ $item_exam->id }}-option{{ $detalle->id }}">
+                                                            {{ $detalle->name }}
+                                                        </label>
+                                                    </div>
+                                            @if (($key+1) == $totalOption)
+                                                </div>
+                                            </div>
+                                            @endif
+                                        @endif
+                                    @endforeach
                                 </div>
-                            @else
-                                @if ($key === 0)
-                                    <label class="col-sm-2 control-label">Seleccione una o varias opciones</label>
-                                @else
-                                    <label class="col-sm-2 control-label"></label>
-                                @endif
-                                <div class="col-sm-10">
-                                    <div class="checkbox checkbox-success">
-                                        <input id="checkbox{{$key}}" type="checkbox">
-                                        <label for="checkbox{{$key}}">
-                                            {{ $answer->name }}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endif
+                            </div>
                         @endforeach
-                        </div>
-                    </div>
-                    @endforeach
+                    </form>
                 </div>
             </div>
         </div>

@@ -83,6 +83,55 @@ class ApplyExamsController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeanswers(Request $request)
+    {
+        $examId = $request->examId;
+        $questionExams = ItemsExam::where('exam', '=', $examId)->where('parent', '=', null)->get();
+        foreach ($questionExams as $question) {
+            $questionOpenTxt = 'Open-question'.$question->id;
+            $questionSingleTxt = 'Single-question'.$question->id;
+            if ($request->$questionOpenTxt !== null) {
+                $this->storeAnswerExam($request->$questionOpenTxt, 'Open', $question->id, $examId);
+            } else if ($request->$questionSingleTxt !== null) {
+                $this->storeAnswerExam($request->$questionSingleTxt, 'Single option', $question->id, $examId);
+            } else {
+                foreach ($question->children()->where('type', '=', 'Question')->get() as $key => $detalle) {
+                    $questionMultipleTxt = 'Multiple-question'.$question->id.'-option'.$detalle->id;
+                    if ($request->$questionMultipleTxt !== null) {
+                        $this->storeAnswerExam($detalle->id, 'Multiple option', $question->id, $examId);
+                    }
+                }
+            }
+        }
+        return redirect('/home');
+    }
+    
+    /**
+     * Permite almacenar el detalle de las respuestas, dependiendo del suptipo
+     * 
+     * @param mixed $respuesta
+     * @param string $subtype
+     * @param integer $questionId
+     * @param integer $examId
+     */
+    protected function storeAnswerExam($respuesta, $subtype, $questionId, $examId) {
+        $answer = ItemsExam::where('id', '=', $respuesta)->first();
+        $itemsExamA = new ItemsExam();
+        $itemsExamA->name = $answer->name;
+        $itemsExamA->type = 'Answer';
+        $itemsExamA->subtype = $subtype;
+        $itemsExamA->parent = $questionId;
+        $itemsExamA->by = Auth::id();
+        $itemsExamA->exam = $examId;
+        $itemsExamA->save();
+    }
+    
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\ApplyExam  $applyExam
