@@ -245,57 +245,72 @@
                     <p>
                         {{ $record->description }}
                     </p>
-                    <h4>Área:</h4>
-                    <p>
-                        {{ $record->area->name }}
-                    </p>
-                    <h4>Asignatura:</h4>
-                    <p>
-                        {{ $record->subject->name }}
-                    </p>
-
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+                        <dt>Área:</dt> <dd>{{ $record->area->name }}</dd>
+                        <dt>Asignatura:</dt> <dd>{{ $record->subject->name }}</dd>
+                    </dl>
+                </div>
+                <div class="col-lg-6" id="cluster_info">
+                    <dl class="dl-horizontal" >
+                        <dt>Participante:</dt> <dd>{{ Auth::user()->name }}</dd>
+                        <dt>Grupo:</dt> <dd></dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
                     @foreach ($items_exam as $item_exam)
                     <div class="hr-line-dashed"></div>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <h3> {{ $item_exam->name }} </h3>
-                        </div>
-                        <div class="">
-                        @foreach ($item_exam->children()->where('type', '=', 'Question')->get() as $key => $answer)
-                        
-                            @if ($answer->subtype === 'Open')
-                                <label class="col-sm-2 control-label">Responda brevemente</label>
-                                <div class="col-sm-10"><textarea id="answer1" class="form-control"></textarea> </div>
-                            @elseif ($answer->subtype === 'Single option')
-                                @if ($key === 0)
-                                    <label class="col-sm-2 control-label">Seleccione una opción</label>
-                                @else
-                                    <label class="col-sm-2 control-label"></label>
-                                @endif
+                        <div id="questionId-{{ $item_exam->id }}" name="questionId-{{ $item_exam->id }}" class="questionTest">
+                            <div class="col-sm-12">
+                                <h3> {{ $item_exam->name }} </h3>
+                            </div>
+                            @php ($totalOption = count($item_exam->children()->where('type', '=', 'Question')->get()))
+                            @foreach ($item_exam->children()->where('type', '=', 'Question')->get() as $key => $detalle)
+                            @if ($detalle->subtype === 'Open')
+                            <div class="form-group" id="typeQuestion1">
+                                <label class="col-sm-2 control-label text-xs">Responda brevemente</label>
+                                <div class="col-sm-10"><textarea name="Open-question{{ $item_exam->id }}" class="form-control"></textarea> </div>
+                            </div>
+                            @elseif ($detalle->subtype === 'Single option')
+                            @if ($key == 0)
+                            <div class="form-group">    
+                                <label class="col-sm-2 control-label text">Seleccione una opción</label>
                                 <div class="col-sm-10">
+                                    @endif
                                     <div class="radio">
-                                        <input type="radio" name="radio" id="radio{{$key}}" value="{{ $answer->id }}">
-                                        <label for="radio{{$key}}">
-                                            {{ $answer->name }}
+                                        <input type="radio" name="Single-question{{ $item_exam->id }}" id="Single-question{{ $item_exam->id }}-option{{ $detalle->id }}" value="{{ $detalle->id }}">
+                                        <label for="Single-question{{ $item_exam->id }}-option{{ $detalle->id }}">
+                                            {{ $detalle->name }}
                                         </label>
                                     </div>
+                                    @if (($key+1) == $totalOption)
                                 </div>
-                            @else
-                                @if ($key === 0)
-                                    <label class="col-sm-2 control-label">Seleccione una o varias opciones</label>
-                                @else
-                                    <label class="col-sm-2 control-label"></label>
-                                @endif
-                                <div class="col-sm-10">
-                                    <div class="checkbox checkbox-success">
-                                        <input id="checkbox{{$key}}" type="checkbox">
-                                        <label for="checkbox{{$key}}">
-                                            {{ $answer->name }}
-                                        </label>
-                                    </div>
-                                </div>
+                            </div>
                             @endif
-                        @endforeach
+                            @else
+                            @if ($key == 0)
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Seleccione una o varias opciones</label>
+                                <div class="col-sm-10">
+                                    @endif
+                                    <div class="checkbox checkbox-success">
+                                        <input id="Multiple-question{{ $item_exam->id }}-option{{ $detalle->id }}" name="Multiple-question{{ $item_exam->id }}-option{{ $detalle->id }}" type="checkbox">
+                                        <label for="Multiple-question{{ $item_exam->id }}-option{{ $detalle->id }}">
+                                            {{ $detalle->name }}
+                                        </label>
+                                    </div>
+                                    @if (($key+1) == $totalOption)
+                                </div>
+                            </div>
+                            @endif
+                            @endif
+                            @endforeach
                         </div>
                     </div>
                     @endforeach
@@ -313,37 +328,37 @@
                 <div class="modal-body">
                     <h5 class="text-center"></h5>
                     <table class="table table-striped table-bordered table-hover dataTables-modal" >
-                            <thead>
-                                <tr>
-                                    <th>Aplicar</th>
-                                    <th>Nombre del grupo</th>
-                                    <th>Descripción</th>
-                                    <th>Fecha de creación</th>
-                                    <th>Creado por</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($to_related as $group)
-                                <tr class="gradeX">
-                                    @if (count($group->exams()->where('exam_id', '=', $record->id)->get()) === 0)
-                                    <td class="text-center">
-                                        <button type="button" onclick="applyExam(this, {{ $group->id }})" class="btn btn-primary btn-xs">
-                                            Aplicar
-                                        </button> 
-                                    </td>
-                                    @else
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-default btn-xs" disabled>
-                                            Aplicado
-                                        </button> 
-                                    </td>
-                                    @endif
-                                    <td>{{ $group->name }}</td>
-                                    <td>{{ $group->description }}</td>
-                                    <td>{{ $group->created_at }}</td>
-                                    <td>{{ $group->user->name }}</td>
-                                </tr>
-                                @endforeach
+                        <thead>
+                            <tr>
+                                <th>Aplicar</th>
+                                <th>Nombre del grupo</th>
+                                <th>Descripción</th>
+                                <th>Fecha de creación</th>
+                                <th>Creado por</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($to_related as $group)
+                            <tr class="gradeX">
+                                @if (count($group->exams()->where('exam_id', '=', $record->id)->get()) === 0)
+                                <td class="text-center">
+                                    <button type="button" onclick="applyExam(this, {{ $group->id }})" class="btn btn-primary btn-xs">
+                                        Aplicar
+                                    </button> 
+                                </td>
+                                @else
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-default btn-xs" disabled>
+                                        Aplicado
+                                    </button> 
+                                </td>
+                                @endif
+                                <td>{{ $group->name }}</td>
+                                <td>{{ $group->description }}</td>
+                                <td>{{ $group->created_at }}</td>
+                                <td>{{ $group->user->name }}</td>
+                            </tr>
+                            @endforeach
                         </tbody>
                         <tfoot>
                             <tr>

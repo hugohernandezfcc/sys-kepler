@@ -164,6 +164,12 @@ Route::group(['prefix' => 'applyexams'], function() {
             ]
     );
     
+    Route::post('/storeanswers', [
+        'uses' => 'ApplyExamsController@storeanswers',
+        'as' => 'storeanswers'
+            ]
+    );
+    
     Route::get('/takeexam/{applyExamName}', [
         'uses' => 'ApplyExamsController@takeexam',
         'as' => 'takeexam'
