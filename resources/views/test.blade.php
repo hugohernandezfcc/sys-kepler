@@ -372,7 +372,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default " data-dismiss="modal">Cerrar</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -392,8 +392,25 @@
         } else if($('#typeView').val() === 'view') {
             $('.dataTables-modal').DataTable({
                 pageLength: 10,
-                responsive: true
+                responsive: true,
+                "scrollCollapse": true,
+                "language": {
+                    "lengthMenu":   "Mostrar _MENU_ registros por página",
+                    "zeroRecords":  "No se ha encontrado - sorry",
+                    "info":         "Página _PAGE_ de _PAGES_",
+                    "infoEmpty":    "Registros no disponibles",
+                    "search":       "",
+                    "paginate": {
+                        "first":      "Primero",
+                        "last":       "Ultimo",
+                        "next":       " Siguiente ",
+                        "previous":   " Anterior "
+                    },
+                    "infoFiltered": "(filtered from _MAX_ total records)"
+                }
             });
+            $('div.dataTables_filter input').addClass('slds-input');
+            $('div.dataTables_filter input').attr("placeholder","Buscar grupo");
         }
     });
     

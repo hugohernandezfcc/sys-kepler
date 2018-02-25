@@ -40,7 +40,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="m-b-md">
-                        <a href="/home" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
                         <h2>Examen: {{$record->name}}</h2>
                     </div>
                     <h4>Descripción del examen:</h4>
