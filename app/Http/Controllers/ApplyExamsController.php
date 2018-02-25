@@ -98,12 +98,13 @@ class ApplyExamsController extends Controller
             if ($request->$questionOpenTxt !== null) {
                 $this->storeAnswerExam($request->$questionOpenTxt, 'Open', $question->id, $examId);
             } else if ($request->$questionSingleTxt !== null) {
-                $this->storeAnswerExam($request->$questionSingleTxt, 'Single option', $question->id, $examId);
+                $answer = ItemsExam::where('id', '=', $request->$questionSingleTxt)->first();
+                $this->storeAnswerExam($answer->name, 'Single option', $question->id, $examId);
             } else {
-                foreach ($question->children()->where('type', '=', 'Question')->get() as $key => $detalle) {
+                foreach ($question->children()->where('type', '=', 'Question')->get() as $detalle) {
                     $questionMultipleTxt = 'Multiple-question'.$question->id.'-option'.$detalle->id;
                     if ($request->$questionMultipleTxt !== null) {
-                        $this->storeAnswerExam($detalle->id, 'Multiple option', $question->id, $examId);
+                        $this->storeAnswerExam($detalle->name, 'Multiple option', $question->id, $examId);
                     }
                 }
             }
@@ -112,7 +113,7 @@ class ApplyExamsController extends Controller
     }
     
     /**
-     * Permite almacenar el detalle de las respuestas, dependiendo del suptipo
+     * Permite almacenar el detalle de cada respuesta
      * 
      * @param mixed $respuesta
      * @param string $subtype
@@ -120,9 +121,8 @@ class ApplyExamsController extends Controller
      * @param integer $examId
      */
     protected function storeAnswerExam($respuesta, $subtype, $questionId, $examId) {
-        $answer = ItemsExam::where('id', '=', $respuesta)->first();
         $itemsExamA = new ItemsExam();
-        $itemsExamA->name = $answer->name;
+        $itemsExamA->name = $respuesta;
         $itemsExamA->type = 'Answer';
         $itemsExamA->subtype = $subtype;
         $itemsExamA->parent = $questionId;
