@@ -199,11 +199,24 @@
                 $.plot($("#flot-dashboard-chart"), dataset, options);
 
 
-            $(document).ready(function(){
-
+            $(function(){
                 $('.dataTables-example').DataTable({
                     pageLength: 10,
                     responsive: true,
+                    language: {
+                        lengthMenu:   "Mostrar _MENU_ registros por página.",
+                        zeroRecords:  "No se ha encontrado - sorry",
+                        info:         "Página _PAGE_ de _PAGES_",
+                        infoEmpty:    "Registros no disponibles",
+                        search:       "&nbsp; Buscar&nbsp;",
+                        paginate: {
+                            first:      "Primero",
+                            last:       "Ultimo",
+                            next:       " Siguiente ",
+                            previous:   " Anterior "
+                        },
+                        infoFiltered: "(filtered from _MAX_ total records)"
+                    },
                     dom: '<"html5buttons"B>lTfgitp',
                     buttons: [
                         {extend: 'copy'},
