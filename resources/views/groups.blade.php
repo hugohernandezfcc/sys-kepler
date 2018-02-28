@@ -49,9 +49,6 @@
             <div class="ibox-title">
                 <h5>Registra la información <small>Grupos.</small></h5>
                 <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
                     <a href="/groups">
                         Cancelar
                     </a>
