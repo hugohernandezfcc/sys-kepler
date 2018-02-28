@@ -24,6 +24,10 @@ class Group extends Model
     	return $this->belongsToMany('App\Exam', 'apply_exams', 'group_id', 'exam_id')->withPivot('name', 'by')->withTimestamps();
     }
 
+    public function tasks() {
+    	return $this->belongsToMany('App\Task', 'apply_tasks', 'group_id', 'task_id')->withPivot('name', 'by')->withTimestamps();
+    }
+
     public function user() {
         return $this->belongsTo('App\User', 'created_by');
     }

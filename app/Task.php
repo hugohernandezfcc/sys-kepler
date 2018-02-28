@@ -11,7 +11,16 @@ class Task extends Model
     protected $fillable = [
         'name', 'created_by', 'subject_id',
     ];
+    
+    public function groups() {
+        return $this->belongsToMany('App\Group', 'apply_tasks', 'task_id', 'group_id')->withPivot('name', 'by')->withTimestamps();
+    }
 
+    public function area()
+    {
+        return $this->belongsTo('App\Area', 'area_id');
+    }
+    
     public function subject()
     {
         return $this->belongsTo('App\Subject', 'subject_id');

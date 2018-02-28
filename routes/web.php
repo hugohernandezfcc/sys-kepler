@@ -123,6 +123,38 @@ Route::group(['prefix' => 'test'], function() {
     );
 });
 
+Route::group(['prefix' => 'task'], function() {
+    Route::get('/', [
+        'uses' => 'TasksController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/create', [
+        'uses' => 'TasksController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::get('/show/{taskId}', [
+        'uses' => 'TasksController@show',
+        'as' => 'show'
+            ]
+    );
+    
+    Route::post('/store', [
+        'uses' => 'TasksController@store',
+        'as' => 'store'
+            ]
+    );
+    
+    Route::post('/storeapplytask', [
+        'uses' => 'TasksController@storeapplytask',
+        'as' => 'storeapplytask'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'groups'], function() {
     Route::get('/', [
         'uses' => 'GroupsController@index',
