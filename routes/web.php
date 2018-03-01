@@ -209,6 +209,26 @@ Route::group(['prefix' => 'applyexams'], function() {
     );
 });
 
+Route::group(['prefix' => 'applytasks'], function() {
+    Route::post('/store', [
+        'uses' => 'ApplyTasksController@store',
+        'as' => 'store'
+            ]
+    );
+    
+    Route::post('/storeanswers', [
+        'uses' => 'ApplyTasksController@storeanswers',
+        'as' => 'storeanswers'
+            ]
+    );
+    
+    Route::get('/taketask/{applyTaskName}', [
+        'uses' => 'ApplyTasksController@taketask',
+        'as' => 'taketask'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'profile'], function() {
     Route::get('/', [
         'uses' => 'UsersController@index',

@@ -288,7 +288,7 @@
         $(e).addClass("hidden");
         var taskId = $('#idRecord').val();
         $.ajax({
-            url: "/task/storeapplytask",
+            url: "/applytasks/store",
             data: { 
                 "taskId":taskId,
                 "groupId":groupId,
@@ -303,7 +303,7 @@
                 $(e).html('Aplicado');
                 $(e).removeClass("hidden");
                 $('.buttonload').remove();
-                console.log('applyexams/takeexam/'+result.codeTask);
+                console.log('applytasks/taketask/'+result.codeTask);
             },
             error: function () {
                //alert("fallo");
