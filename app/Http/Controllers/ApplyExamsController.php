@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\ApplyExam;
 use App\Exam;
 use App\ItemsExam;
+use App\Result;
+use App\ResultItem;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -90,21 +92,28 @@ class ApplyExamsController extends Controller
      */
     public function storeanswers(Request $request)
     {
-        $examId = $request->examId;
-        $questionExams = ItemsExam::where('exam', '=', $examId)->where('parent', '=', null)->get();
-        foreach ($questionExams as $question) {
-            $questionOpenTxt = 'Open-question'.$question->id;
-            $questionSingleTxt = 'Single-question'.$question->id;
-            if ($request->$questionOpenTxt !== null) {
-                $this->storeAnswerExam($request->$questionOpenTxt, 'Open', $question->id, $examId);
-            } else if ($request->$questionSingleTxt !== null) {
-                $answer = ItemsExam::where('id', '=', $request->$questionSingleTxt)->first();
-                $this->storeAnswerExam($answer->name, 'Single option', $question->id, $examId);
-            } else {
-                foreach ($question->children()->where('type', '=', 'Question')->get() as $detalle) {
-                    $questionMultipleTxt = 'Multiple-question'.$question->id.'-option'.$detalle->id;
-                    if ($request->$questionMultipleTxt !== null) {
-                        $this->storeAnswerExam($detalle->name, 'Multiple option', $question->id, $examId);
+        $exam = Exam::where('id', '=', $request->examId)->first();
+        $questionExams = ItemsExam::where('exam', '=', $exam->id)->where('parent', '=', null)->get();
+        $result = new Result();
+        $result->id_record = $exam->id;
+        $result->name_record = $exam->name;
+        $result->type = 'result test';
+        $result->by = Auth::id();
+        if ($result->save()) {
+            foreach ($questionExams as $question) {
+                $questionOpenTxt = 'Open-question'.$question->id;
+                $questionSingleTxt = 'Single-question'.$question->id;
+                if ($request->$questionOpenTxt !== null) {
+                    $this->storeAnswerExam($request->$questionOpenTxt, $question->name, $result->id);
+                } else if ($request->$questionSingleTxt !== null) {
+                    $answer = ItemsExam::where('id', '=', $request->$questionSingleTxt)->first();
+                    $this->storeAnswerExam($answer->name, $question->name, $result->id);
+                } else {
+                    foreach ($question->children()->where('type', '=', 'Question')->get() as $detalle) {
+                        $questionMultipleTxt = 'Multiple-question'.$question->id.'-option'.$detalle->id;
+                        if ($request->$questionMultipleTxt !== null) {
+                            $this->storeAnswerExam($detalle->name, $question->name, $result->id);
+                        }
                     }
                 }
             }
@@ -116,19 +125,16 @@ class ApplyExamsController extends Controller
      * Permite almacenar el detalle de cada respuesta
      * 
      * @param mixed $respuesta
-     * @param string $subtype
-     * @param integer $questionId
-     * @param integer $examId
+     * @param mixed $question
+     * @param integer $resultId
      */
-    protected function storeAnswerExam($respuesta, $subtype, $questionId, $examId) {
-        $itemsExamA = new ItemsExam();
-        $itemsExamA->name = $respuesta;
-        $itemsExamA->type = 'Answer';
-        $itemsExamA->subtype = $subtype;
-        $itemsExamA->parent = $questionId;
-        $itemsExamA->by = Auth::id();
-        $itemsExamA->exam = $examId;
-        $itemsExamA->save();
+    protected function storeAnswerExam($respuesta, $question, $resultId) {
+        $resultItem = new ResultItem();
+        $resultItem->indication = $question;
+        $resultItem->answer = $respuesta;
+        $resultItem->result = $resultId;
+        $resultItem->by = Auth::id();
+        $resultItem->save();
     }
     
     /**
