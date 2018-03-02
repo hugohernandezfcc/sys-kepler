@@ -40,6 +40,7 @@
 
         @elseif($typeView == 'view')
         <div class="title-action">
+            <a href="/results/test-{{ $record->id }}" class="btn btn-primary">Respuestas examen</a>
             <a href="#modalGroups" id="openBtn" data-toggle="modal" data-exam="{{ $record->id }}" class="btn btn-primary">Aplicar examen</a>
         </div>
         @endif

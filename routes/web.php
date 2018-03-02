@@ -255,6 +255,20 @@ Route::group(['prefix' => 'profile'], function() {
     );
 });
 
+Route::group(['prefix' => 'results'], function() {
+    Route::get('/{type}', [
+        'uses' => 'ResultsController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/show/{typeExamIdGroupId}', [
+        'uses' => 'ResultsController@show',
+        'as' => 'show'
+            ]
+    );
+});
+
 //use Session;
 //use Auth;
 Route::get('/logout', function() {

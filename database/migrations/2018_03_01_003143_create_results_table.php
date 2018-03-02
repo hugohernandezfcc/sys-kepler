@@ -20,6 +20,7 @@ class CreateResultsTable extends Migration
             $table->string('name_record');
             $table->integer('by')->unsigned();
             $table->foreign('by')->references('id')->on('users');
+            $table->integer('group_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

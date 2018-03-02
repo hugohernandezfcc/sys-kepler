@@ -73,10 +73,11 @@ class ApplyExamsController extends Controller
     {
         $takeExam = ApplyExam::where('name', '=', $applyExamName)->first();
         if ($takeExam !== null) {
-            return view('takeexam', [
+            return view('takeeval', [
                 'typeView' => 'takeexam',
                 'record' => Exam::find($takeExam->exam_id),
                 'items_exam' => ItemsExam::where('exam', '=', $takeExam->exam_id)->where('parent', '=', null)->get(),
+                'to_related' => $takeExam
                 ]
             ); 
         } else {
@@ -99,6 +100,7 @@ class ApplyExamsController extends Controller
         $result->name_record = $exam->name;
         $result->type = 'result test';
         $result->by = Auth::id();
+        $result->group_id = $request->groupId;
         if ($result->save()) {
             foreach ($questionExams as $question) {
                 $questionOpenTxt = 'Open-question'.$question->id;

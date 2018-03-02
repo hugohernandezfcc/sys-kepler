@@ -75,6 +75,7 @@ class ApplyTasksController extends Controller
             return view('takeeval', [
                 'typeView' => 'taketask',
                 'record' => Task::find($takeTask->task_id),
+                'to_related' => $takeTask
                 ]
             ); 
         } else {
@@ -96,6 +97,7 @@ class ApplyTasksController extends Controller
         $result->name_record = $task->name;
         $result->type = 'result task';
         $result->by = Auth::id();
+        $result->group_id = $request->groupId;
         if ($result->save()) {
             $taskAnswer = 'response'.$task->id;
             if ($request->$taskAnswer !== null) {

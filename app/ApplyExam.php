@@ -12,6 +12,11 @@ class ApplyExam extends Model
         'name', 'by', 'exam_id', 'group_id',
     ];
 
+    public function group()
+    {
+        return $this->belongsTo('App\Group', 'group_id');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\User', 'by');

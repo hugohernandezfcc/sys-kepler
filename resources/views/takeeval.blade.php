@@ -75,7 +75,7 @@
                 <div class="col-lg-6" id="cluster_info">
                     <dl class="dl-horizontal" >
                         <dt>Participante:</dt> <dd>{{ Auth::user()->name }}</dd>
-                        <dt>Grupo:</dt> <dd>{{ $record->groups()->where('exam_id', '=', $record->id)->first()->name }}</dd>
+                        <dt>Grupo:</dt> <dd>{{ $to_related->group->name }}</dd>
                     </dl>
                 </div>
             </div>
@@ -84,6 +84,7 @@
                     <form method="post" role='form' action="/applyexams/storeanswers" id="form-create" class="form-horizontal" disabled>
                         {{ csrf_field() }}
                         <input type="hidden" id="examId" name="examId" value="{{ $record->id }}">
+                        <input type="hidden" id="groupId" name="groupId" value="{{ $to_related->group->id }}">
                         @foreach ($items_exam as $item_exam)
                             <div class="hr-line-dashed"></div>
                             <div class="row">
@@ -168,7 +169,7 @@
                 <div class="col-lg-6" id="cluster_info">
                     <dl class="dl-horizontal" >
                         <dt>Participante:</dt> <dd>{{ Auth::user()->name }}</dd>
-                        <dt>Grupo:</dt> <dd>{{ $record->groups()->where('task_id', '=', $record->id)->first()->name }}</dd>
+                        <dt>Grupo:</dt> <dd>{{ $to_related->group->name }}</dd>
                     </dl>
                 </div>
             </div>
@@ -176,7 +177,8 @@
                 <div class="col-lg-12">
                     <form method="post" role='form' action="/applytasks/storeanswers" id="form-create" class="form-horizontal" disabled>
                         {{ csrf_field() }}
-                        <input type="hidden" id="examId" name="taskId" value="{{ $record->id }}">
+                        <input type="hidden" id="taskId" name="taskId" value="{{ $record->id }}">
+                        <input type="hidden" id="groupId" name="groupId" value="{{ $to_related->group->id }}">
                         <div class="form-group" id="typeQuestion1">
                             <label class="col-sm-2 control-label small">Responda</label>
                             <div class="col-sm-10"><textarea name="response{{ $record->id }}" class="form-control"></textarea> </div>
