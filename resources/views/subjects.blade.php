@@ -52,9 +52,6 @@
             <div class="ibox-title">
                 <h5>Registra la información <small>Asignatura.</small></h5>
                 <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
                     <a href="/subjects">
                         Cancelar
                     </a>
@@ -92,12 +89,6 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Lista de asignaturas</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-
-                    </div>
                 </div>
                 <div class="ibox-content">
 

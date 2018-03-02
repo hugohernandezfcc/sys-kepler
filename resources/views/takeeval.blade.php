@@ -4,7 +4,11 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <input type="hidden" id="typeView" value="{{ $typeView }}">
     <div class="col-sm-6">
-        <h2>Examen</h2>
+        @if($typeView == 'takeexam')
+            <h2>Examen</h2>
+        @elseif($typeView == 'taketask')
+            <h2>Tarea</h2>
+        @endif
         <ol class="breadcrumb">
             <li>
                 <a href="/home">Kepler</a>
@@ -16,11 +20,24 @@
             <li class="active">
                 <strong>{{ $record->name }}</strong>
             </li>
+            @elseif($typeView == 'taketask')
+            <li>
+                Tomar tarea
+            </li>
+            <li class="active">
+                <strong>{{ $record->name }}</strong>
+            </li>
             @endif
         </ol>
     </div>
     <div class="col-sm-6">
         @if($typeView == 'takeexam')
+        <div class="title-action">
+            <button type="submit" form="form-create" class="btn btn-primary btn-sm">
+                <i class="fa fa-check"></i> Guardar
+            </button>
+        </div>
+        @elseif($typeView == 'taketask')
         <div class="title-action">
             <button type="submit" form="form-create" class="btn btn-primary btn-sm">
                 <i class="fa fa-check"></i> Guardar
@@ -58,7 +75,7 @@
                 <div class="col-lg-6" id="cluster_info">
                     <dl class="dl-horizontal" >
                         <dt>Participante:</dt> <dd>{{ Auth::user()->name }}</dd>
-                        <dt>Grupo:</dt> <dd>{{ $record->groups()->where('exam_id', '=', $record->id)->first()->name }}</dd>
+                        <dt>Grupo:</dt> <dd>{{ $to_related->group->name }}</dd>
                     </dl>
                 </div>
             </div>
@@ -67,6 +84,7 @@
                     <form method="post" role='form' action="/applyexams/storeanswers" id="form-create" class="form-horizontal" disabled>
                         {{ csrf_field() }}
                         <input type="hidden" id="examId" name="examId" value="{{ $record->id }}">
+                        <input type="hidden" id="groupId" name="groupId" value="{{ $to_related->group->id }}">
                         @foreach ($items_exam as $item_exam)
                             <div class="hr-line-dashed"></div>
                             <div class="row">
@@ -119,6 +137,52 @@
                                 </div>
                             </div>
                         @endforeach
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@elseif($typeView == 'taketask')
+<div class="wrapper wrapper-content animated fadeInUp">
+    <div class="ibox">
+        <div class="ibox-content">
+                
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="m-b-md">
+                        <h2>Tarea: {{$record->name}}</h2>
+                    </div>
+                    <h4>Descripción de la actividad:</h4>
+                    <p>
+                        {{ $record->description }}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+                        <dt>Área:</dt> <dd>{{ $record->area->name }}</dd>
+                        <dt>Asignatura:</dt> <dd>{{ $record->subject->name }}</dd>
+                    </dl>
+                </div>
+                <div class="col-lg-6" id="cluster_info">
+                    <dl class="dl-horizontal" >
+                        <dt>Participante:</dt> <dd>{{ Auth::user()->name }}</dd>
+                        <dt>Grupo:</dt> <dd>{{ $to_related->group->name }}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <form method="post" role='form' action="/applytasks/storeanswers" id="form-create" class="form-horizontal" disabled>
+                        {{ csrf_field() }}
+                        <input type="hidden" id="taskId" name="taskId" value="{{ $record->id }}">
+                        <input type="hidden" id="groupId" name="groupId" value="{{ $to_related->group->id }}">
+                        <div class="form-group" id="typeQuestion1">
+                            <label class="col-sm-2 control-label small">Responda</label>
+                            <div class="col-sm-10"><textarea name="response{{ $record->id }}" class="form-control"></textarea> </div>
+                        </div>
                     </form>
                 </div>
             </div>

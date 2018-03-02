@@ -40,6 +40,7 @@
 
         @elseif($typeView == 'view')
         <div class="title-action">
+            <a href="/results/test-{{ $record->id }}" class="btn btn-primary">Respuestas examen</a>
             <a href="#modalGroups" id="openBtn" data-toggle="modal" data-exam="{{ $record->id }}" class="btn btn-primary">Aplicar examen</a>
         </div>
         @endif
@@ -56,9 +57,6 @@
             <div class="ibox-title">
                 <h5>Registra la información <small>Examen.</small></h5>
                 <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
                     <a href="/test">
                         Cancelar
                     </a>
@@ -166,12 +164,6 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Lista de exámenes</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-
-                    </div>
                 </div>
                 <div class="ibox-content">
 

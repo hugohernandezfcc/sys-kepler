@@ -52,9 +52,6 @@
             <div class="ibox-title">
                 <h5>Edita tu información</h5>
                 <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
                     <a href="/profile">
                         Cancelar
                     </a>

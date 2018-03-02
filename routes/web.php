@@ -123,6 +123,38 @@ Route::group(['prefix' => 'test'], function() {
     );
 });
 
+Route::group(['prefix' => 'task'], function() {
+    Route::get('/', [
+        'uses' => 'TasksController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/create', [
+        'uses' => 'TasksController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::get('/show/{taskId}', [
+        'uses' => 'TasksController@show',
+        'as' => 'show'
+            ]
+    );
+    
+    Route::post('/store', [
+        'uses' => 'TasksController@store',
+        'as' => 'store'
+            ]
+    );
+    
+    Route::post('/storeapplytask', [
+        'uses' => 'TasksController@storeapplytask',
+        'as' => 'storeapplytask'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'groups'], function() {
     Route::get('/', [
         'uses' => 'GroupsController@index',
@@ -177,6 +209,26 @@ Route::group(['prefix' => 'applyexams'], function() {
     );
 });
 
+Route::group(['prefix' => 'applytasks'], function() {
+    Route::post('/store', [
+        'uses' => 'ApplyTasksController@store',
+        'as' => 'store'
+            ]
+    );
+    
+    Route::post('/storeanswers', [
+        'uses' => 'ApplyTasksController@storeanswers',
+        'as' => 'storeanswers'
+            ]
+    );
+    
+    Route::get('/taketask/{applyTaskName}', [
+        'uses' => 'ApplyTasksController@taketask',
+        'as' => 'taketask'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'profile'], function() {
     Route::get('/', [
         'uses' => 'UsersController@index',
@@ -199,6 +251,20 @@ Route::group(['prefix' => 'profile'], function() {
     Route::post('/update', [
         'uses' => 'UsersController@update',
         'as' => 'update'
+            ]
+    );
+});
+
+Route::group(['prefix' => 'results'], function() {
+    Route::get('/{type}', [
+        'uses' => 'ResultsController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/show/{typeExamIdGroupId}', [
+        'uses' => 'ResultsController@show',
+        'as' => 'show'
             ]
     );
 });

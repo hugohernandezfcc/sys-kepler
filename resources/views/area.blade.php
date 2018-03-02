@@ -51,9 +51,6 @@
             <div class="ibox-title">
                 <h5>Registra la información <small>Áreas.</small></h5>
                 <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
                     <a href="/areas">
                         Cancelar
                     </a>
@@ -97,12 +94,6 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Lista de áreas</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-
-                    </div>
                 </div>
                 <div class="ibox-content">
 
