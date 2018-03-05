@@ -81,7 +81,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <form method="post" role='form' action="/applyexams/storeanswers" id="form-create" class="form-horizontal" disabled>
+                    <form method="post" role='form' action="/applytests/storeanswers" id="form-create" class="form-horizontal" disabled>
                         {{ csrf_field() }}
                         <input type="hidden" id="examId" name="examId" value="{{ $record->id }}">
                         <input type="hidden" id="groupId" name="groupId" value="{{ $to_related->group->id }}">
@@ -179,9 +179,10 @@
                         {{ csrf_field() }}
                         <input type="hidden" id="taskId" name="taskId" value="{{ $record->id }}">
                         <input type="hidden" id="groupId" name="groupId" value="{{ $to_related->group->id }}">
+                        <input type="hidden" id="response" name="response{{ $record->id }}">
                         <div class="form-group" id="typeQuestion1">
                             <label class="col-sm-2 control-label small">Responda</label>
-                            <div class="col-sm-10"><textarea name="response{{ $record->id }}" class="form-control"></textarea> </div>
+                            <div class="col-sm-10"><textarea id="editor" class="form-control"></textarea> </div>
                         </div>
                     </form>
                 </div>
@@ -190,4 +191,14 @@
     </div>
 </div>
 @endif
+<script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+<script type="text/javascript">
+    $(function() {
+        CKEDITOR.replace('editor');
+        CKEDITOR.instances.editor.on("change", function() {
+            $('#response').val(CKEDITOR.instances.editor.getData());
+        });
+    });
+    
+</script>
 @endsection
