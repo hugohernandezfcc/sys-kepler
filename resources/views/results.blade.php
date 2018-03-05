@@ -107,12 +107,14 @@
                             </thead>
                             <tbody>
                                 @foreach ($records as $rec)
-                                    @foreach ($rec as $detalle)
-                                        <tr class="gradeX">
-                                            <td>{{ $detalle->user->name }}</td>
-                                            <td>{{ $detalle->indication }}</td>
-                                            <td>{{ $detalle->answer }}</td>
-                                        </tr>
+                                    @foreach ($rec as $collections)
+                                        @foreach ($collections as $detalle)
+                                            <tr class="gradeX">
+                                                <td>{{ $detalle->user->name }}</td>
+                                                <td>{{ $detalle->indication }}</td>
+                                                <td>{!! $detalle->answer !!}</td>
+                                            </tr>
+                                        @endforeach
                                     @endforeach
                                 @endforeach
                             </tbody>

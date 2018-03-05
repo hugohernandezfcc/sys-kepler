@@ -189,7 +189,7 @@ Route::group(['prefix' => 'conversations'], function() {
     );
 });
 
-Route::group(['prefix' => 'applyexams'], function() {
+Route::group(['prefix' => 'applytests'], function() {
     Route::post('/store', [
         'uses' => 'ApplyExamsController@store',
         'as' => 'store'
@@ -202,7 +202,7 @@ Route::group(['prefix' => 'applyexams'], function() {
             ]
     );
     
-    Route::get('/takeexam/{applyExamName}', [
+    Route::get('/taketest/{applyExamName}', [
         'uses' => 'ApplyExamsController@takeexam',
         'as' => 'takeexam'
             ]

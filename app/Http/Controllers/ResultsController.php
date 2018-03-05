@@ -69,7 +69,7 @@ class ResultsController extends Controller
     {
         //
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -81,23 +81,26 @@ class ResultsController extends Controller
         $evaluation = explode("-", $typeGroupIdExamId);
         if ($evaluation[0] === 'test') {
             $to_related = Exam::find($evaluation[1]);
-            $result = Result::where('id_record', '=', $evaluation[1])->where('type', '=', 'result test')->where('group_id', '=', $evaluation[2])->get();
+            $results = Result::where('id_record', '=', $evaluation[1])->where('type', '=', 'result test')->where('group_id', '=', $evaluation[2])->get();
             $typeResult = 'test';
         } else if ($evaluation[0] === 'task') {
             $to_related = Task::find($evaluation[1]);
-            $result = Result::where('id_record', '=', $evaluation[1])->where('type', '=', 'result task')->where('group_id', '=', $evaluation[2])->get();
+            $results = Result::where('id_record', '=', $evaluation[1])->where('type', '=', 'result task')->where('group_id', '=', $evaluation[2])->get();
             $typeResult = 'task';
         }
-//        dd(ResultItem::where('result', '=', $result[0]->id)->get()->groupBy('by'));
+        $records = [];
+        foreach ($results as $result) {
+            $records[] = ResultItem::where('result', '=', $result->id)->get()->groupBy('by');
+        }
         return view('results', [
                 'typeView'  => 'view',
                 'typeResult'  => $typeResult,
-                'records' => ResultItem::where('result', '=', $result[0]->id)->get()->groupBy('by'),
+                'records' => $records,
                 'to_related' => $to_related
             ]
         );
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *

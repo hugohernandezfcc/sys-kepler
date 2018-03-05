@@ -484,7 +484,7 @@
         $(e).addClass("hidden");
         var examId = $('#idRecord').val();
         $.ajax({
-            url: "/applyexams/store",
+            url: "/applytests/store",
             data: { 
                 "examId":examId,
                 "groupId":groupId,
@@ -499,7 +499,7 @@
                 $(e).html('Aplicado');
                 $(e).removeClass("hidden");
                 $('.buttonload').remove();
-                console.log('applyexams/takeexam/'+result.codeExam);
+                console.log('applytests/taketest/'+result.codeExam);
             },
             error: function () {
                //alert("fallo");
