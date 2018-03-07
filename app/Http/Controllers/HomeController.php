@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
+use App\Group;
+use App\Subject;
+use App\User;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -22,14 +26,21 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-
-        if(Auth::user()->type == "admin"){
-            return view('home');
-        }elseif (Auth::user()->type == "student") {
+    public function index() {
+        if(Auth::user()->type == "admin") {
+            $records['areas'] = count(Area::all());
+            $records['students'] = count(User::where('type', '=', 'student')->get());
+            $records['subjects'] = count(Subject::all());
+            $records['groups'] = count(Group::all());
+            return view('home', [
+                'typeView'  => 'list',
+                'records' => $records
+                ]
+            );
+        } elseif (Auth::user()->type == "student") {
             return view('home_student');
-        }else
+        } else {
             return view('home_master');
+        }
     }
 }

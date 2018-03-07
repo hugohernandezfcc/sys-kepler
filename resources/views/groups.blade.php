@@ -138,7 +138,7 @@
                 <div class="ibox-content">
                     <div class="team-members">
                         @foreach ($rec->users as $groupUser)
-                        <a href="#"><img alt="member" class="img-circle" src="{{ asset('inspinia/img/a'. $groupUser->pivot->user_id .'.jpg')}}"> </a>
+                        <a href="#"><img alt="member" class="img-circle" src="{{ asset('uploads/avatars/'. $groupUser->avatar) }}"> </a>
                         @endforeach
                     </div>
                     <h4>Descripción del grupo:</h4>
@@ -207,10 +207,10 @@
                     <dl class="dl-horizontal" >
                         <dt>Inicia:</dt> <dd>
                         <dt>Termina:</dt> <dd>
-                        <dt>Docentes:</dt>
+                        <dt>Participantes:</dt>
                         <dd class="project-people">
                             @foreach ($record->users as $groupUser)
-                            <a href="#"><img alt="image" class="img-circle" src="{{ asset('inspinia/img/a'. $groupUser->pivot->user_id .'.jpg')}}"> </a>
+                            <a href="#"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $groupUser->avatar) }}"> </a>
                             @endforeach
                         </dd>
                     </dl>
