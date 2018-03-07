@@ -88,6 +88,17 @@
     <script src="{{ asset('inspinia/js/plugins/select2/select2.full.min.js') }}"></script>
 
     <script type="text/javascript">
+        $(function () {
+            var url = jQuery(location).attr('href').split('/')[3];
+            if (url == 'home') {
+                $('#side-menu li.active').removeClass('active');
+                $("#side-menu [href='/']").parent().addClass('active');
+            } else if (url == 'groups' || url == 'cyclescontrol' || url == 'areas') { 
+                $('#side-menu li.active').removeClass('active');
+                $("#side-menu [href='/" + url +"']").parent().addClass('active');
+            }
+        });
+        
         var data2 = [
                 [gd(2012, 1, 1), 7], [gd(2012, 1, 2), 6], [gd(2012, 1, 3), 4], [gd(2012, 1, 4), 8],
                 [gd(2012, 1, 5), 9], [gd(2012, 1, 6), 7], [gd(2012, 1, 7), 5], [gd(2012, 1, 8), 4],
