@@ -374,6 +374,9 @@
 
 <script>
     $(function() {
+        $('#side-menu li.active').removeClass('active');
+        var url = jQuery(location).attr('href').split('/')[3];
+        $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
         $('.select-subject').select2({
             placeholder: 'Seleccione una asignatura',
             allowClear: true

@@ -138,7 +138,7 @@
                 <div class="ibox-content">
                     <div class="team-members">
                         @foreach ($rec->users as $groupUser)
-                        <a href="#"><img alt="member" class="img-circle" src="{{ asset('uploads/avatars/'. $groupUser->avatar) }}"> </a>
+                        <a href="#"><img title="{{ $groupUser->name }}" alt="member" class="img-circle" src="{{ asset('uploads/avatars/'. $groupUser->avatar) }}"> </a>
                         @endforeach
                     </div>
                     <h4>Descripción del grupo:</h4>
@@ -210,7 +210,7 @@
                         <dt>Participantes:</dt>
                         <dd class="project-people">
                             @foreach ($record->users as $groupUser)
-                            <a href="#"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $groupUser->avatar) }}"> </a>
+                            <a href="#"><img title="{{ $groupUser->name }}" alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $groupUser->avatar) }}"> </a>
                             @endforeach
                         </dd>
                     </dl>
