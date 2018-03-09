@@ -27,14 +27,10 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $camposUsers = Schema::getColumnListing('users');
-        for ($i=0; $i<8; ++$i) {
-            unset($camposUsers[$i]);
-        }
         return view('profile', [
             'typeView' => 'view',
             'record' => Auth::user(),
-            'camposUsers' => $camposUsers
+            'camposUsers' => $this->camposUsers()
                 ]
         );
     }
@@ -46,18 +42,10 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit() {
-        $auxCamposUsers = Schema::getColumnListing('users');
-        for ($i=0; $i<8; ++$i) {
-            unset($auxCamposUsers[$i]);
-        }
-        foreach ($auxCamposUsers as $key => $value) {
-            $type = Schema::getColumnType('users', $value);
-            $camposUsers[$key] = ['tipo' => $type, 'valor' => $value];
-        }
         return view('profile', [
             'typeView' => 'form',
             'record' => Auth::user(),
-            'camposUsers' => $camposUsers
+            'camposUsers' => $this->camposUsers()
                 ]
         );
     }
@@ -87,10 +75,35 @@ class UsersController extends Controller {
 
             $user->avatar = $filename;
         }
+        
+        $auxCamposUsers = Schema::getColumnListing('users');
+        for ($i=9; $i<count($auxCamposUsers); ++$i) {
+            $campo = $auxCamposUsers[$i];
+            $user->$campo = $request->$campo;
+        }
 
         if ($user->update()) {
             return redirect('/profile');
         }
+    }
+    
+    /**
+     * Se obtienen los todos los campos de la tabla Users y luego se trabaja a partir de los nuevos campos
+     * que estarian despues de 'avatar'; sino hay nuevos campos se retorna un array vacio.
+     * 
+     * @return array
+     */
+    protected function camposUsers() {
+        $auxCamposUsers = Schema::getColumnListing('users');
+        for ($i=0; $i<9; ++$i) {
+            unset($auxCamposUsers[$i]);
+        }
+        $camposUsers=[];
+        foreach ($auxCamposUsers as $key => $value) {
+            $type = Schema::getColumnType('users', $value);
+            $camposUsers[$key] = ['tipo' => $type, 'valor' => $value];
+        }
+        return $camposUsers;
     }
 
 }

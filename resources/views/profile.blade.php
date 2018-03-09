@@ -90,21 +90,19 @@
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    @if(count($camposUsers) > 0)
-                        @foreach ($camposUsers as $campo)
-                            @php($valorCampo = $campo['valor'])
-                            <div class="form-group"><label class="col-sm-2 control-label">{{ucwords($valorCampo)}}</label>
-                                @if($campo['tipo'] == 'string')
-                                    <div class="col-sm-10"><input type="text" name="{{$valorCampo}}" value="{{$record->$valorCampo}}" class="form-control"></div>
-                                @elseif($campo['tipo'] == 'integer')
-                                    <div class="col-sm-10"><input type="number" name="{{$valorCampo}}" value="{{$record->$valorCampo}}" class="form-control"></div>
-                                @else
-                                    <div class="col-sm-10"><input type="date" name="{{$valorCampo}}" value="{{date('Y-m-d', strtotime($record->$valorCampo))}}" class="form-control"></div>
-                                @endif
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                        @endforeach
-                    @endif
+                    @foreach ($camposUsers as $campo)
+                        @php($valorCampo = $campo['valor'])
+                        <div class="form-group"><label class="col-sm-2 control-label">{{ucwords($valorCampo)}}</label>
+                            @if($campo['tipo'] == 'string')
+                                <div class="col-sm-10"><input type="text" name="{{$valorCampo}}" value="{{$record->$valorCampo}}" class="form-control"></div>
+                            @elseif($campo['tipo'] == 'integer')
+                                <div class="col-sm-10"><input type="number" name="{{$valorCampo}}" value="{{$record->$valorCampo}}" class="form-control"></div>
+                            @else
+                                <div class="col-sm-10"><input type="date" name="{{$valorCampo}}" value="{{date('Y-m-d', strtotime($record->$valorCampo))}}" class="form-control"></div>
+                            @endif
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                    @endforeach
                 </form>
             </div>
         </div>
@@ -126,11 +124,18 @@
                             <div class="m-b-md">
                                 <img src="{{ asset('uploads/avatars/'. $record->avatar) }}" alt="image" class="img-circle" width="10%">
                                 <h2>Nombre y apellido: {{$record->name}}</h2>
-                                @if(count($camposUsers) > 0)
-                                    @foreach ($camposUsers as $campo)
-                                        {{$campo}}: {{$record->$campo}} <br>
-                                    @endforeach
-                                @endif
+                                @foreach ($camposUsers as $campo)
+                                    @php($valorCampo = $campo['valor'])
+                                    @if($campo['tipo'] == 'string' OR $campo['tipo'] == 'integer')
+                                        {{ucwords($valorCampo)}}: {{$record->$valorCampo}} <br>
+                                    @else
+                                        @if($record->$valorCampo !== null)
+                                            {{ucwords($valorCampo)}}: {{date('d-m-Y', strtotime($record->$valorCampo))}} <br>
+                                        @else
+                                            {{ucwords($valorCampo)}}: <br>
+                                        @endif
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>
