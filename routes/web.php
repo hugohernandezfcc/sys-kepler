@@ -269,6 +269,20 @@ Route::group(['prefix' => 'results'], function() {
     );
 });
 
+Route::group(['prefix' => 'configurations'], function() {
+    Route::get('/create', [
+        'uses' => 'ConfigurationsController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::post('/addcolumn', [
+        'uses' => 'ConfigurationsController@store',
+        'as' => 'store'
+            ]
+    );
+});
+
 //use Session;
 //use Auth;
 Route::get('/logout', function() {
