@@ -26,6 +26,9 @@
     <div class="col-sm-6">
         @if($typeView != 'form')
         <div class="title-action">
+            @if (Auth::user()->type == "admin")
+                <a href="/configurations/create" class="btn btn-primary btn-sm">Agregar columna tabla Users</a>
+            @endif
             <a href="/profile/edit" class="btn btn-primary btn-sm">Editar perfil</a>
         </div>
 
@@ -87,6 +90,21 @@
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
+                    @if(count($camposUsers) > 0)
+                        @foreach ($camposUsers as $campo)
+                            @php($valorCampo = $campo['valor'])
+                            <div class="form-group"><label class="col-sm-2 control-label">{{ucwords($valorCampo)}}</label>
+                                @if($campo['tipo'] == 'string')
+                                    <div class="col-sm-10"><input type="text" name="{{$valorCampo}}" value="{{$record->$valorCampo}}" class="form-control"></div>
+                                @elseif($campo['tipo'] == 'integer')
+                                    <div class="col-sm-10"><input type="number" name="{{$valorCampo}}" value="{{$record->$valorCampo}}" class="form-control"></div>
+                                @else
+                                    <div class="col-sm-10"><input type="date" name="{{$valorCampo}}" value="{{date('Y-m-d', strtotime($record->$valorCampo))}}" class="form-control"></div>
+                                @endif
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        @endforeach
+                    @endif
                 </form>
             </div>
         </div>
@@ -108,26 +126,12 @@
                             <div class="m-b-md">
                                 <img src="{{ asset('uploads/avatars/'. $record->avatar) }}" alt="image" class="img-circle" width="10%">
                                 <h2>Nombre y apellido: {{$record->name}}</h2>
+                                @if(count($camposUsers) > 0)
+                                    @foreach ($camposUsers as $campo)
+                                        {{$campo}}: {{$record->$campo}} <br>
+                                    @endforeach
+                                @endif
                             </div>
-                            <dl class="dl-horizontal">
-                                <dt>Estado:</dt> <dd><span class="label label-primary">Activo</span></dd>
-                            </dl>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <dl class="dl-horizontal">
-
-                                <dt>Creado por:</dt> <dd>Admin</dd>
-                                <dt>Entidad:</dt> <dd><a href="#" class="text-navy"> UAEH</a> </dd>
-                            </dl>
-                        </div>
-                        <div class="col-lg-7" id="cluster_info">
-                            <dl class="dl-horizontal" >
-
-                                <dt>Descripción:</dt> <dd>{{$record->description}}</dd>
-
-                            </dl>
                         </div>
                     </div>
                 </div>

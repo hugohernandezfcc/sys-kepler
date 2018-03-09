@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Requests;
 use Image;
 use File;
@@ -26,9 +27,14 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $camposUsers = Schema::getColumnListing('users');
+        for ($i=0; $i<8; ++$i) {
+            unset($camposUsers[$i]);
+        }
         return view('profile', [
             'typeView' => 'view',
-            'record' => Auth::user()
+            'record' => Auth::user(),
+            'camposUsers' => $camposUsers
                 ]
         );
     }
@@ -40,9 +46,18 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit() {
+        $auxCamposUsers = Schema::getColumnListing('users');
+        for ($i=0; $i<8; ++$i) {
+            unset($auxCamposUsers[$i]);
+        }
+        foreach ($auxCamposUsers as $key => $value) {
+            $type = Schema::getColumnType('users', $value);
+            $camposUsers[$key] = ['tipo' => $type, 'valor' => $value];
+        }
         return view('profile', [
             'typeView' => 'form',
-            'record' => Auth::user()
+            'record' => Auth::user(),
+            'camposUsers' => $camposUsers
                 ]
         );
     }
