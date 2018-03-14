@@ -27,6 +27,7 @@
         @if($typeView != 'form')
         <div class="title-action">
             @if (Auth::user()->type == "admin")
+                <a href="/configurations/createinscriptions" class="btn btn-primary btn-sm">Agregar proceso de inscripción</a>
                 <a href="/configurations/create" class="btn btn-primary btn-sm">Agregar columna tabla Users</a>
             @endif
             <a href="/profile/edit" class="btn btn-primary btn-sm">Editar perfil</a>
@@ -65,12 +66,12 @@
                     {{ csrf_field() }}
                     <div class="form-group"><label class="col-sm-2 control-label">Nombre</label>
 
-                        <div class="col-sm-10"><input type="text" name="name" value="{{ $record->name }}" class="form-control"></div>
+                        <div class="col-sm-10"><input type="text" name="name" value="{{ Auth::user()->name }}" class="form-control"></div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group"><label class="col-sm-2 control-label">Correo</label>
 
-                        <div class="col-sm-10"><input type="text" name="email" value="{{ $record->email }}" disabled="true" class="form-control"></div>
+                        <div class="col-sm-10"><input type="text" name="email" value="{{ Auth::user()->email }}" disabled="true" class="form-control"></div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group"><label class="col-sm-2 control-label">Imagen de perfil</label>
@@ -94,11 +95,11 @@
                         @php($valorCampo = $campo['valor'])
                         <div class="form-group"><label class="col-sm-2 control-label">{{ucwords($valorCampo)}}</label>
                             @if($campo['tipo'] == 'string')
-                                <div class="col-sm-10"><input type="text" name="{{$valorCampo}}" value="{{$record->$valorCampo}}" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" name="{{$valorCampo}}" value="{{Auth::user()->$valorCampo}}" class="form-control"></div>
                             @elseif($campo['tipo'] == 'integer')
-                                <div class="col-sm-10"><input type="number" name="{{$valorCampo}}" value="{{$record->$valorCampo}}" class="form-control"></div>
+                                <div class="col-sm-10"><input type="number" name="{{$valorCampo}}" value="{{Auth::user()->$valorCampo}}" class="form-control"></div>
                             @else
-                                <div class="col-sm-10"><input type="date" name="{{$valorCampo}}" value="{{date('Y-m-d', strtotime($record->$valorCampo))}}" class="form-control"></div>
+                                <div class="col-sm-10"><input type="date" name="{{$valorCampo}}" value="{{date('Y-m-d', strtotime(Auth::user()->$valorCampo))}}" class="form-control"></div>
                             @endif
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -122,15 +123,15 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="m-b-md">
-                                <img src="{{ asset('uploads/avatars/'. $record->avatar) }}" alt="image" class="img-circle" width="10%">
-                                <h2>Nombre y apellido: {{$record->name}}</h2>
+                                <img src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" alt="image" class="img-circle" width="10%">
+                                <h2>Nombre y apellido: {{Auth::user()->name}}</h2>
                                 @foreach ($camposUsers as $campo)
                                     @php($valorCampo = $campo['valor'])
                                     @if($campo['tipo'] == 'string' OR $campo['tipo'] == 'integer')
-                                        {{ucwords($valorCampo)}}: {{$record->$valorCampo}} <br>
+                                        {{ucwords($valorCampo)}}: {{Auth::user()->$valorCampo}} <br>
                                     @else
-                                        @if($record->$valorCampo !== null)
-                                            {{ucwords($valorCampo)}}: {{date('d-m-Y', strtotime($record->$valorCampo))}} <br>
+                                        @if(Auth::user()->$valorCampo !== null)
+                                            {{ucwords($valorCampo)}}: {{date('d-m-Y', strtotime(Auth::user()->$valorCampo))}} <br>
                                         @else
                                             {{ucwords($valorCampo)}}: <br>
                                         @endif

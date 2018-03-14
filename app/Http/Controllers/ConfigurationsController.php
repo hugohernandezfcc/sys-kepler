@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Column;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\Request;
@@ -37,6 +38,24 @@ class ConfigurationsController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createinscriptions()
+    {
+        if (Auth::user()->type == "admin") {
+            return view('configurations', [
+                    'typeView' => 'inscription',
+                    'columns' => Column::where('required', '=', false)->get()
+                ]
+            );
+        } else {
+            return redirect('/home');
+        }
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -44,25 +63,61 @@ class ConfigurationsController extends Controller
      */
     public function store(Request $request)
     {
-        /*$camposUsers = Schema::getColumnListing('users');
-        $a = in_array(strtolower('Email'), $camposUsers);
-        var_dump($a);
-        if(Schema::hasColumn('users', 'email')) { //check whether users table has email column
-            var_dump('encontrado email');
-         //your logic
-        }*/
         $columnName = strtolower($request->columnName);
         if (!Schema::hasColumn('users', $columnName)) {
-            if ($request->type === 'integer') {
-                DB::statement('ALTER TABLE public.users ADD COLUMN ' . $columnName . ' integer;');
-            } else if ($request->type === 'string') {
-                DB::statement('ALTER TABLE public.users ADD COLUMN ' . $columnName . ' character varying;');
-            } else {
-                DB::statement('ALTER TABLE public.users ADD COLUMN ' . $columnName . ' timestamp(0) without time zone;');
+            $newColumn = new Column();
+            $newColumn->name = $columnName;
+            $newColumn->type = $request->type;
+            $newColumn->label = $request->columnLabel;
+            $newColumn->required = $request->columnRequired;
+            $newColumn->created_by = Auth::id();
+            if($newColumn->save()) {
+                if ($newColumn->type === 'integer') {
+                    DB::statement('ALTER TABLE public.users ADD COLUMN ' . $columnName . ' integer;');
+                } else if ($newColumn->type === 'string') {
+                    DB::statement('ALTER TABLE public.users ADD COLUMN ' . $columnName . ' character varying;');
+                } else {
+                    DB::statement('ALTER TABLE public.users ADD COLUMN ' . $columnName . ' timestamp(0) without time zone;');
+                }
             }
             return redirect('/profile');
         } else {
             return redirect('/profile');
         }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeinscriptions(Request $request)
+    {
+        $columnsName = $request->columnsName;
+        $listColumn = '';
+        foreach ($columnsName as $value) {
+            if ($value === end($columnsName)) {
+                $listColumn = $listColumn . $value;
+                break;
+            }
+            $listColumn = $listColumn . $value . '-';
+        }
+        dd($listColumn);
+    }
+    
+    /**
+     * Se obtienen los todos los campos de la tabla Users y luego se trabaja a partir de los nuevos campos
+     * que estarian despues de 'avatar'; sino hay nuevos campos se retorna un array vacio.
+     * 
+     * @return array
+     */
+    protected function camposUsers() {
+        $auxCamposUsers = Column::where('required', '=', false)->get();
+        $camposUsers=[];
+        foreach ($auxCamposUsers as $key => $column) {
+            $camposUsers[$key] = ['tipo' => $column->type, 'valor' => $column->name];
+        }
+        return $camposUsers;
     }
 }
