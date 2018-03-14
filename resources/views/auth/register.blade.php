@@ -2,7 +2,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Sys-Kepler') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('inspinia/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -27,7 +27,7 @@
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
-
+                        <input type="hidden" name="inscriptionName" value="{{ $inscriptionName }}">
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Nombre completo</label>
 
@@ -77,7 +77,20 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
-
+                        @foreach ($columns as $column)
+                            @php($valorCampo = $column->name)
+                            <div class="form-group"><label class="col-md-4 control-label">{{ucfirst($column->label)}}</label>
+                                <div class="col-md-6">
+                                @if($column->type == 'string')
+                                    <input type="text" name="{{$valorCampo}}" class="form-control" required>
+                                @elseif($column->type == 'integer')
+                                    <input type="number" name="{{$valorCampo}}" class="form-control" required>
+                                @else
+                                    <input type="date" name="{{$valorCampo}}" class="form-control" required>
+                                @endif
+                                </div>
+                            </div>
+                        @endforeach
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Column;
+use App\Inscription;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\Request;
@@ -103,7 +104,19 @@ class ConfigurationsController extends Controller
             }
             $listColumn = $listColumn . $value . '-';
         }
-        dd($listColumn);
+        $ranString = openssl_random_pseudo_bytes(6);
+        $name = bin2hex($ranString);
+        $inscription = new Inscription();
+        $inscription->name = time().$name;
+        $inscription->description = $request->description;
+        $inscription->columns_name = $listColumn;
+        $inscription->created_by = Auth::id();
+        $inscription->type_user = $request->type;
+        if ($inscription->save()) {
+            return redirect('/register/' . $inscription->name);
+        } else {
+            return redirect('/404');
+        }
     }
     
     /**

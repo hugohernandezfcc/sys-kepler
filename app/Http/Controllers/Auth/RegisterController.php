@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Column;
 use App\Inscription;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -73,20 +74,35 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        dd($data);
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        $inscription = Inscription::where('name', '=', $data['inscriptionName'])->first();
+        $columnsRequired = Column::where('required', '=', true)->get();
+        $columnsAditional = Column::whereIn('name', explode('-', $inscription->columns_name))->get();
+        $columns = $columnsRequired->merge($columnsAditional);
+        $user = new User();
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = bcrypt($data['password']);
+        $user->type = $inscription->type_user;
+        $user->inscription_id = $inscription->id;
+        foreach ($columns as $column) {
+            $columnName = $column->name;
+            $user->$columnName = $data[$columnName];
+        }
+        if ($user->save()) {
+            return $user;
+        }
     }
     
-    protected function getRegister($inscripcionId) {
-        $inscription = Inscription::where('name', '=', $inscripcionId)->first();
-        if($inscripcion) {
+    protected function getRegister($inscriptionId) {
+        $inscription = Inscription::where('name', '=', $inscriptionId)->first();
+        if($inscription) {
+            $columnsRequired = Column::where('required', '=', true)->get();
+            $columnsAditional = Column::whereIn('name', explode('-', $inscription->columns_name))->get();
+            $columns = $columnsRequired->merge($columnsAditional);
             return view('auth.register', [
                     'typeView' => 'inscription',
-                    'columns' => []//$this->camposUsers()
+                    'inscriptionName' => $inscriptionId,
+                    'columns' => $columns
                 ]
             );
         } else {

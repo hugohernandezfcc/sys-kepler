@@ -68,6 +68,17 @@
                         <div class="col-sm-10"><input type="text" name="description" class="form-control"></div>
                     </div>
                     <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Tipo de usuario</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="type" id="type" required>
+                                <option value="admin">Administrador</option>
+                                <option value="master">Master (profesor, tutor)</option>
+                                <option value="student">Estudiante</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
                     <div class="form-group ">
                         <label class="col-sm-2 control-label">Datos a ingresar por las personas a inscribirse</label>
                         <div class="col-sm-10">
