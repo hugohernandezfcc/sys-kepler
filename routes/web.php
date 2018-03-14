@@ -246,6 +246,12 @@ Route::group(['prefix' => 'profile'], function() {
         'as' => 'index'
             ]
     );
+    
+    Route::get('/inscriptions', [
+        'uses' => 'UsersController@inscriptions',
+        'as' => 'inscriptions'
+            ]
+    );
 
     Route::post('/store', [
         'uses' => 'UsersController@store',

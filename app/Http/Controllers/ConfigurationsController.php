@@ -113,7 +113,7 @@ class ConfigurationsController extends Controller
         $inscription->created_by = Auth::id();
         $inscription->type_user = $request->type;
         if ($inscription->save()) {
-            return redirect('/register/' . $inscription->name);
+            return redirect('/profile/inscriptions');
         } else {
             return redirect('/404');
         }

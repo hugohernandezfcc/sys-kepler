@@ -2,13 +2,13 @@
 
 @section('content')
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-sm-6">
+    <div class="col-sm-5">
         <h2>Perfil</h2>
         <ol class="breadcrumb">
             <li>
                 <a href="/home">Kepler</a>
             </li>
-            @if($typeView != 'form')
+            @if($typeView == 'view')
             <li class="active">
                 <strong>Perfil</strong>
             </li>
@@ -19,14 +19,22 @@
             <li class="active">
                 <strong>Editar perfil</strong>
             </li>
+            @elseif($typeView == 'list')
+            <li>
+                Perfil
+            </li>
+            <li class="active">
+                <strong>Procesos de inscripción activos</strong>
+            </li>
             @endif
 
         </ol>
     </div>
-    <div class="col-sm-6">
-        @if($typeView != 'form')
+    <div class="col-sm-7">
+        @if($typeView == 'view')
         <div class="title-action">
             @if (Auth::user()->type == "admin")
+                <a href="/profile/inscriptions" class="btn btn-primary btn-sm">Procesos de inscripción</a>
                 <a href="/configurations/createinscriptions" class="btn btn-primary btn-sm">Agregar proceso de inscripción</a>
                 <a href="/configurations/create" class="btn btn-primary btn-sm">Agregar columna tabla Users</a>
             @endif
@@ -39,6 +47,12 @@
             <a onclick="document.getElementById('form-update').submit();" class="btn btn-primary btn-sm">
                 <i class="fa fa-check"></i> Guardar
             </a>
+        </div>
+        
+        @elseif($typeView == 'list')
+
+        <div class="title-action">
+            <a href="/profile" class="btn btn-primary btn-sm">Perfil</a>
         </div>
 
 
@@ -111,6 +125,57 @@
 </div>
 @elseif($typeView == 'list')
 <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Lista de procesos de inscripción</h5>
+                    <div class="ibox-tools">
+                        <a href="/profile">
+                            Cancelar
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example" >
+                            <thead>
+                                <tr>
+                                    <th>Ruta</th>
+                                    <th>Descripción</th>
+                                    <th>Fecha de creación</th>
+                                    <th>Creado por</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach ($records as $rec)
+
+                                <tr class="gradeX">
+                                    <td>{{ '/register/'.$rec->name }}</td>
+                                    <td>{{ $rec->description }}</td>
+                                    <td>{{ $rec->created_at }}</td>
+                                    <td>{{ $rec->user->name }}</td>
+                                </tr>
+
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Ruta</th>
+                                    <th>Descripción</th>
+                                    <th>Fecha de creación</th>
+                                    <th>Creado por</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @elseif($typeView == 'view')
