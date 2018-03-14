@@ -217,7 +217,7 @@
                     responsive: true,
                     language: {
                         lengthMenu:   "Mostrar _MENU_ registros por página.",
-                        zeroRecords:  "No se ha encontrado - sorry",
+                        zeroRecords:  "No se ha encontrado",
                         info:         "Página _PAGE_ de _PAGES_",
                         infoEmpty:    "Registros no disponibles",
                         search:       "&nbsp; Buscar&nbsp;",
@@ -227,7 +227,7 @@
                             next:       " Siguiente ",
                             previous:   " Anterior "
                         },
-                        infoFiltered: "(filtered from _MAX_ total records)"
+                        infoFiltered: "(buscando de _MAX_ total registros)"
                     },
                     dom: '<"html5buttons"B>lTfgitp',
                     buttons: [

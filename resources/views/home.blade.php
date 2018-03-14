@@ -6,7 +6,7 @@
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Áreas</h5>
+                    <h5><i class="fa fa-subscript"></i> Áreas</h5>
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins">{{ $records['areas'] }}</h1>
@@ -17,7 +17,7 @@
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Asignaturas</h5>
+                    <h5><i class="fa fa-graduation-cap"></i> Asignaturas</h5>
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins">{{ $records['subjects'] }}</h1>
@@ -28,7 +28,7 @@
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Alumnos</h5>
+                    <h5><i class="fa fa-child"></i> Alumnos</h5>
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins">{{ $records['students'] }}</h1>
@@ -39,7 +39,7 @@
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Grupos</h5>
+                    <h5><i class="fa fa-group"></i> Grupos</h5>
                 </div>
                 <div class="ibox-content">
                     <h1 class="no-margins">{{ $records['groups'] }}</h1>
