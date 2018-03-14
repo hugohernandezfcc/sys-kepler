@@ -268,7 +268,7 @@
                 "scrollCollapse": true,
                 "language": {
                     "lengthMenu":   "Mostrar _MENU_ registros por página",
-                    "zeroRecords":  "No se ha encontrado - sorry",
+                    "zeroRecords":  "No se ha encontrado",
                     "info":         "Página _PAGE_ de _PAGES_",
                     "infoEmpty":    "Registros no disponibles",
                     "search":       "",

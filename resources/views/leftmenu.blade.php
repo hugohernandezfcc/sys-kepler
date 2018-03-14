@@ -40,6 +40,7 @@
                 <li><a href="/groups"><i class="fa fa-group"></i> <span class="nav-label">Grupos</span></a></li>
                 <li><a href="/cyclescontrol"><i class="fa fa-university"></i> <span class="nav-label">Ciclos escolares</span></a></li>
                 <li><a href="/areas"><i class="fa fa-subscript"></i> <span class="nav-label">Areas</span></a></li>
+                <li><a href="/profile/inscriptions"><i class="fa fa-user-plus"></i> <span class="nav-label">Procesos de inscripción</span></a></li>
                 <li>
                     <a href="#"><i class="fa fa-ellipsis-v"></i> <span class="nav-label">Contenidos</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -63,7 +64,7 @@
                     <li ><a href="/subjects"><i class="fa fa-graduation-cap"></i>  <span class="nav-label">Mis asignaturas</span></a></li>
                     <li ><a href="/articles"><i class="fa fa-copy"></i>  <span class="nav-label">Mis artículos</span></a></li>
                     <li ><a href="/forums"><i class="fa fa-question"></i>  <span class="nav-label">Foros</span></a></li>
-                    <li ><a href="/forums"><i class="fa fa-calendar"></i>  <span class="nav-label">Calendario</span></a></li>
+                    <li ><a href="/calendars"><i class="fa fa-calendar"></i>  <span class="nav-label">Calendario</span></a></li>
                 @endif
                 <li class="special_link">
                     <a href="/logout"><i class="fa fa-sign-out"></i> <span class="nav-label">Cerrar sesión</span></a>

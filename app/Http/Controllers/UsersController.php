@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Column;
 use App\Inscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -38,7 +39,6 @@ class UsersController extends Controller {
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $userId
      * @return \Illuminate\Http\Response
      */
     public function inscriptions() {
@@ -112,12 +112,10 @@ class UsersController extends Controller {
     protected function camposUsers() {
         $camposUsers=[];
         if(Auth::user()->inscription_id !== null) {
-            $aux = Inscription::where('id', '=', Auth::user()->inscription_id)->firts();
-            $auxCamposUsers = explode('-', $aux->columns_name);
-            foreach ($auxCamposUsers as $key => $value) {
-                $type = Schema::getColumnType('users', $value);
-                $camposUsers[$key] = ['tipo' => $type, 'valor' => $value];
-            }
+            $inscription = Inscription::where('id', '=', Auth::user()->inscription_id)->first();
+            $columnsRequired = Column::where('required', '=', true)->get();
+            $columnsAditional = Column::whereIn('name', explode('-', $inscription->columns_name))->get();
+            $camposUsers = $columnsRequired->merge($columnsAditional);
         }
         return $camposUsers;
     }

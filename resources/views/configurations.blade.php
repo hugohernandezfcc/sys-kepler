@@ -56,7 +56,7 @@
             <div class="ibox-title">
                 <h5>Registra la información <small>Inscripción.</small></h5>
                 <div class="ibox-tools">
-                    <a href="/profile">
+                    <a href="/profile/inscriptions">
                         Cancelar
                     </a>
                 </div>
@@ -106,8 +106,7 @@
         moveAllLabel: 'Mover todo',
         removeAllLabel: 'Quitar todo',
         filterTextClear: 'Mostrar todo',
-        filterPlaceHolder: 'Buscar',
-        showFilterInputs: false
+        filterPlaceHolder: 'Buscar'
     });
 </script>
 
@@ -136,7 +135,7 @@
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Tipo de dato</label>
+                        <label class="col-sm-2 control-label">Tipo de campo</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="type" id="type" required>
                                 <option value="integer">Número</option>
@@ -146,7 +145,7 @@
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    <div class="form-group"><label class="col-sm-2 control-label">Campo obligatorio</label>
+                    <div class="form-group"><label class="col-sm-2 control-label">Obligatorio</label>
                         <div class="col-sm-10">
                             <div class="radio">
                                 <input type="radio" name="columnRequired" id=option1" value="true" required>

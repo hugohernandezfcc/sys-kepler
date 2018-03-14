@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-sm-5">
+    <div class="col-sm-6">
         <h2>Perfil</h2>
         <ol class="breadcrumb">
             <li>
@@ -30,12 +30,10 @@
 
         </ol>
     </div>
-    <div class="col-sm-7">
+    <div class="col-sm-6">
         @if($typeView == 'view')
         <div class="title-action">
             @if (Auth::user()->type == "admin")
-                <a href="/profile/inscriptions" class="btn btn-primary btn-sm">Procesos de inscripción</a>
-                <a href="/configurations/createinscriptions" class="btn btn-primary btn-sm">Agregar proceso de inscripción</a>
                 <a href="/configurations/create" class="btn btn-primary btn-sm">Agregar columna tabla Users</a>
             @endif
             <a href="/profile/edit" class="btn btn-primary btn-sm">Editar perfil</a>
@@ -52,7 +50,7 @@
         @elseif($typeView == 'list')
 
         <div class="title-action">
-            <a href="/profile" class="btn btn-primary btn-sm">Perfil</a>
+            <a href="/configurations/createinscriptions" class="btn btn-primary btn-sm">Agregar proceso de inscripción</a>
         </div>
 
 
@@ -105,16 +103,18 @@
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    @foreach ($camposUsers as $campo)
-                        @php($valorCampo = $campo['valor'])
-                        <div class="form-group"><label class="col-sm-2 control-label">{{ucwords($valorCampo)}}</label>
-                            @if($campo['tipo'] == 'string')
-                                <div class="col-sm-10"><input type="text" name="{{$valorCampo}}" value="{{Auth::user()->$valorCampo}}" class="form-control"></div>
-                            @elseif($campo['tipo'] == 'integer')
-                                <div class="col-sm-10"><input type="number" name="{{$valorCampo}}" value="{{Auth::user()->$valorCampo}}" class="form-control"></div>
+                    @foreach ($camposUsers as $column)
+                        @php($valorCampo = $column->name)
+                        <div class="form-group"><label class="col-sm-2 control-label">{{ucfirst(($column->label != '') ? $column->label : $valorCampo)}}</label>
+                            <div class="col-sm-10">
+                            @if($column->type == 'string')
+                                <input type="text" name="{{$valorCampo}}" class="form-control" value="{{Auth::user()->$valorCampo}}" required>
+                            @elseif($column->type == 'integer')
+                                <input type="number" name="{{$valorCampo}}" class="form-control" value="{{Auth::user()->$valorCampo}}" required>
                             @else
-                                <div class="col-sm-10"><input type="date" name="{{$valorCampo}}" value="{{date('Y-m-d', strtotime(Auth::user()->$valorCampo))}}" class="form-control"></div>
+                                <input type="date" name="{{$valorCampo}}" class="form-control" value="{{date('Y-m-d', strtotime(Auth::user()->$valorCampo))}}" required>
                             @endif
+                            </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                     @endforeach
@@ -130,11 +130,6 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Lista de procesos de inscripción</h5>
-                    <div class="ibox-tools">
-                        <a href="/profile">
-                            Cancelar
-                        </a>
-                    </div>
                 </div>
                 <div class="ibox-content">
 
@@ -153,7 +148,7 @@
                                 @foreach ($records as $rec)
 
                                 <tr class="gradeX">
-                                    <td>{{ '/register/'.$rec->name }}</td>
+                                    <td>{{ asset('/register/'.$rec->name) }}</td>
                                     <td>{{ $rec->description }}</td>
                                     <td>{{ $rec->created_at }}</td>
                                     <td>{{ $rec->user->name }}</td>
@@ -190,15 +185,15 @@
                             <div class="m-b-md">
                                 <img src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" alt="image" class="img-circle" width="10%">
                                 <h2>Nombre y apellido: {{Auth::user()->name}}</h2>
-                                @foreach ($camposUsers as $campo)
-                                    @php($valorCampo = $campo['valor'])
-                                    @if($campo['tipo'] == 'string' OR $campo['tipo'] == 'integer')
-                                        {{ucwords($valorCampo)}}: {{Auth::user()->$valorCampo}} <br>
+                                @foreach ($camposUsers as $column)
+                                    @php($valorCampo = $column->name)
+                                    @if($column->type == 'string' OR $column->type == 'integer')
+                                        {{ucfirst(($column->label != '') ? $column->label : $valorCampo)}}: {{Auth::user()->$valorCampo}} <br>
                                     @else
                                         @if(Auth::user()->$valorCampo !== null)
-                                            {{ucwords($valorCampo)}}: {{date('d-m-Y', strtotime(Auth::user()->$valorCampo))}} <br>
+                                            {{ucfirst(($column->label != '') ? $column->label : $valorCampo)}}: {{date('d-m-Y', strtotime(Auth::user()->$valorCampo))}} <br>
                                         @else
-                                            {{ucwords($valorCampo)}}: <br>
+                                            {{ucfirst(($column->label != '') ? $column->label : $valorCampo)}}: <br>
                                         @endif
                                     @endif
                                 @endforeach
