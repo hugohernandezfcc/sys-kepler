@@ -11,8 +11,19 @@
   |
  */
 
-
-
+Route::group(['prefix' => 'register'], function() {
+    Route::get('/{inscriptionID}', [
+        'uses' => 'Auth\RegisterController@getRegister',
+        'as' => 'getRegister'
+        ]
+    );
+    
+    Route::post('/store', [
+        'uses' => 'Auth\RegisterController@store',
+        'as' => 'store'
+        ]
+    );
+}); 
 Auth::routes();
 Route::redirect('/', '/login', 301);
 
@@ -276,9 +287,21 @@ Route::group(['prefix' => 'configurations'], function() {
             ]
     );
     
+    Route::get('/createinscriptions', [
+        'uses' => 'ConfigurationsController@createinscriptions',
+        'as' => 'createinscriptions'
+            ]
+    );
+    
     Route::post('/addcolumn', [
         'uses' => 'ConfigurationsController@store',
         'as' => 'store'
+            ]
+    );
+    
+    Route::post('/addinscriptions', [
+        'uses' => 'ConfigurationsController@storeinscriptions',
+        'as' => 'storeinscriptions'
             ]
     );
 });

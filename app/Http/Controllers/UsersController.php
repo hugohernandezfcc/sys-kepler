@@ -29,7 +29,6 @@ class UsersController extends Controller {
     public function index() {
         return view('profile', [
             'typeView' => 'view',
-            'record' => Auth::user(),
             'camposUsers' => $this->camposUsers()
                 ]
         );
@@ -44,7 +43,6 @@ class UsersController extends Controller {
     public function edit() {
         return view('profile', [
             'typeView' => 'form',
-            'record' => Auth::user(),
             'camposUsers' => $this->camposUsers()
                 ]
         );
@@ -76,11 +74,11 @@ class UsersController extends Controller {
             $user->avatar = $filename;
         }
         
-        $auxCamposUsers = Schema::getColumnListing('users');
+        /*$auxCamposUsers = Schema::getColumnListing('users');
         for ($i=9; $i<count($auxCamposUsers); ++$i) {
             $campo = $auxCamposUsers[$i];
             $user->$campo = $request->$campo;
-        }
+        }*/
 
         if ($user->update()) {
             return redirect('/profile');
@@ -88,20 +86,19 @@ class UsersController extends Controller {
     }
     
     /**
-     * Se obtienen los todos los campos de la tabla Users y luego se trabaja a partir de los nuevos campos
-     * que estarian despues de 'avatar'; sino hay nuevos campos se retorna un array vacio.
+     * 
      * 
      * @return array
      */
     protected function camposUsers() {
-        $auxCamposUsers = Schema::getColumnListing('users');
-        for ($i=0; $i<9; ++$i) {
-            unset($auxCamposUsers[$i]);
-        }
         $camposUsers=[];
-        foreach ($auxCamposUsers as $key => $value) {
-            $type = Schema::getColumnType('users', $value);
-            $camposUsers[$key] = ['tipo' => $type, 'valor' => $value];
+        if(Auth::user()->inscription_id !== null) {
+            $aux = Inscription::where('id', '=', Auth::user()->inscription_id)->firts();
+            $auxCamposUsers = explode('-', $aux->columns_name);
+            foreach ($auxCamposUsers as $key => $value) {
+                $type = Schema::getColumnType('users', $value);
+                $camposUsers[$key] = ['tipo' => $type, 'valor' => $value];
+            }
         }
         return $camposUsers;
     }

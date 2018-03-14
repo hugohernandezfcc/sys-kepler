@@ -18,6 +18,7 @@
     <link href="{{ asset('inspinia/css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/style.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/plugins/jasny/jasny-bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('inspinia/css/plugins/dualListbox/bootstrap-duallistbox.min.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}" rel="stylesheet">
     <script src="{{ asset('inspinia/js/jquery-3.1.1.min.js') }}"></script>
 </head>

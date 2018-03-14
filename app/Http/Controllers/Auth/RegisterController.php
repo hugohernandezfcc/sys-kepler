@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Inscription;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -38,6 +39,16 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
     }
+    
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        return redirect()->to('login')->with('warning', 'El registro de usuarios está desactivado');
+    }
 
     /**
      * Get a validator for an incoming registration request.
@@ -62,10 +73,24 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        dd($data);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+    
+    protected function getRegister($inscripcionId) {
+        $inscription = Inscription::where('name', '=', $inscripcionId)->first();
+        if($inscripcion) {
+            return view('auth.register', [
+                    'typeView' => 'inscription',
+                    'columns' => []//$this->camposUsers()
+                ]
+            );
+        } else {
+            return redirect()->to('login')->with('warning', 'Id de inscripción no encontrado.');
+        }
     }
 }
