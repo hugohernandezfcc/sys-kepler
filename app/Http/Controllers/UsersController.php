@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Inscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Requests;
@@ -32,6 +33,24 @@ class UsersController extends Controller {
             'camposUsers' => $this->camposUsers()
                 ]
         );
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\User  $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function inscriptions() {
+        if (Auth::user()->type == 'admin') {
+            return view('profile', [
+                'typeView' => 'list',
+                'records' => Inscription::all()
+                    ]
+            );
+        } else {
+            return redirect('/profile');
+        }
     }
 
     /**
