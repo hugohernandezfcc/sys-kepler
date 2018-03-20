@@ -181,7 +181,7 @@
                             <div class="panel-options">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab-1" data-toggle="tab">Comentarios</a></li>
-                                    <li class=""><a href="#tab-2" data-toggle="tab">Elementos relacionados</a></li>
+                                    <li class=""><a href="#tab-2" data-toggle="tab" onclick="minificarTablas()">Elementos relacionados</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -260,191 +260,129 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-2">
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>Tareas</h5>
+                                            <div class="ibox-tools">
+                                                <a class="collapse-link">
+                                                    <i class="fa fa-chevron-up"></i>
+                                                </a>
 
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Status</th>
-                                                <th>Title</th>
-                                                <th>Start Time</th>
-                                                <th>End Time</th>
-                                                <th>Comments</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <span class="label label-primary"><i class="fa fa-check"></i> Completed</span>
-                                                </td>
-                                                <td>
-                                                    Create project in webapp
-                                                </td>
-                                                <td>
-                                                    12.07.2014 10:10:1
-                                                </td>
-                                                <td>
-                                                    14.07.2014 10:16:36
-                                                </td>
-                                                <td>
-                                                    <p class="small">
-                                                        Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="label label-primary"><i class="fa fa-check"></i> Accepted</span>
-                                                </td>
-                                                <td>
-                                                    Various versions
-                                                </td>
-                                                <td>
-                                                    12.07.2014 10:10:1
-                                                </td>
-                                                <td>
-                                                    14.07.2014 10:16:36
-                                                </td>
-                                                <td>
-                                                    <p class="small">
-                                                        Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="label label-primary"><i class="fa fa-check"></i> Sent</span>
-                                                </td>
-                                                <td>
-                                                    There are many variations
-                                                </td>
-                                                <td>
-                                                    12.07.2014 10:10:1
-                                                </td>
-                                                <td>
-                                                    14.07.2014 10:16:36
-                                                </td>
-                                                <td>
-                                                    <p class="small">
-                                                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="label label-primary"><i class="fa fa-check"></i> Reported</span>
-                                                </td>
-                                                <td>
-                                                    Latin words
-                                                </td>
-                                                <td>
-                                                    12.07.2014 10:10:1
-                                                </td>
-                                                <td>
-                                                    14.07.2014 10:16:36
-                                                </td>
-                                                <td>
-                                                    <p class="small">
-                                                        Latin words, combined with a handful of model sentence structures
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="label label-primary"><i class="fa fa-check"></i> Accepted</span>
-                                                </td>
-                                                <td>
-                                                    The generated Lorem
-                                                </td>
-                                                <td>
-                                                    12.07.2014 10:10:1
-                                                </td>
-                                                <td>
-                                                    14.07.2014 10:16:36
-                                                </td>
-                                                <td>
-                                                    <p class="small">
-                                                        The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="label label-primary"><i class="fa fa-check"></i> Sent</span>
-                                                </td>
-                                                <td>
-                                                    The first line
-                                                </td>
-                                                <td>
-                                                    12.07.2014 10:10:1
-                                                </td>
-                                                <td>
-                                                    14.07.2014 10:16:36
-                                                </td>
-                                                <td>
-                                                    <p class="small">
-                                                        The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="label label-primary"><i class="fa fa-check"></i> Reported</span>
-                                                </td>
-                                                <td>
-                                                    The standard chunk
-                                                </td>
-                                                <td>
-                                                    12.07.2014 10:10:1
-                                                </td>
-                                                <td>
-                                                    14.07.2014 10:16:36
-                                                </td>
-                                                <td>
-                                                    <p class="small">
-                                                        The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="label label-primary"><i class="fa fa-check"></i> Completed</span>
-                                                </td>
-                                                <td>
-                                                    Lorem Ipsum is that
-                                                </td>
-                                                <td>
-                                                    12.07.2014 10:10:1
-                                                </td>
-                                                <td>
-                                                    14.07.2014 10:16:36
-                                                </td>
-                                                <td>
-                                                    <p class="small">
-                                                        Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <span class="label label-primary"><i class="fa fa-check"></i> Sent</span>
-                                                </td>
-                                                <td>
-                                                    Contrary to popular
-                                                </td>
-                                                <td>
-                                                    12.07.2014 10:10:1
-                                                </td>
-                                                <td>
-                                                    14.07.2014 10:16:36
-                                                </td>
-                                                <td>
-                                                    <p class="small">
-                                                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                            </div>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <table class="table table-striped table-bordered table-hover dataTables-modal" >
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Descripción</th>
+                                                        <th>Fecha de creación</th>
+                                                        <th>Creado por</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($record->tasks as $task)
+                                                    <tr class="gradeX">
+                                                        <td>{{ $task->name }}</td>
+                                                        <td>{{ $task->description }}</td>
+                                                        <td>{{ $task->created_at }}</td>
+                                                        <td>{{ $task->user->name }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Descripción</th>
+                                                        <th>Fecha de creación</th>
+                                                        <th>Creado por</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>Modulos</h5>
+                                            <div class="ibox-tools">
+                                                <a class="collapse-link">
+                                                    <i class="fa fa-chevron-up"></i>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <table class="table table-striped table-bordered table-hover dataTables-modal" >
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Descripción</th>
+                                                        <th>Fecha de creación</th>
+                                                        <th>Creado por</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($record->modules as $modul)
+                                                    <tr class="gradeX">
+                                                        <td>{{ $modul->name }}</td>
+                                                        <td>{{ $modul->description }}</td>
+                                                        <td>{{ $modul->created_at }}</td>
+                                                        <td>{{ $modul->user->name }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Descripción</th>
+                                                        <th>Fecha de creación</th>
+                                                        <th>Creado por</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>Examenes</h5>
+                                            <div class="ibox-tools">
+                                                <a class="collapse-link">
+                                                    <i class="fa fa-chevron-up"></i>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <table class="table table-striped table-bordered table-hover dataTables-modal" >
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Descripción</th>
+                                                        <th>Fecha de creación</th>
+                                                        <th>Creado por</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($record->exams as $exam)
+                                                    <tr class="gradeX">
+                                                        <td>{{ $exam->name }}</td>
+                                                        <td>{{ $exam->description }}</td>
+                                                        <td>{{ $exam->created_at }}</td>
+                                                        <td>{{ $exam->user->name }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Descripción</th>
+                                                        <th>Fecha de creación</th>
+                                                        <th>Creado por</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -461,55 +399,33 @@
         $('#side-menu li.active').removeClass('active');
         var url = jQuery(location).attr('href').split('/')[3];
         $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
-    });
-    lista_usuarios = [];
-    trUser = '';
-    function moverUsuario(idUsuario, accion) {
-        trUser = $("#" + idUsuario)[0];
-        if (accion === 1) { 
-            lista_usuarios.push(idUsuario);
-            $("#"+idUsuario+" td:eq(3)").html('<a class="btn btn-default btn-xs" onclick="moverUsuario(' + idUsuario + ', 2)"><i class="fa fa-minus"> </i> Remover</a>');
-            $("#tabla_usuarios tr#" + idUsuario).remove();
-            $("#tabla_agregados").append(trUser);
-        } else {
-            $("#"+idUsuario+" td:eq(3)").html('<a class="btn btn-primary btn-xs" onclick="moverUsuario(' + idUsuario + ', 1)"><i class="fa fa-plus"> </i> Agregar</a>');
-            $("#tabla_agregados tr#" + idUsuario).remove();
-            $("#tabla_usuarios").append(trUser);
-            lista_usuarios = jQuery.grep(lista_usuarios, function(value) {
-                return value != idUsuario;
-            });
-        }
-        $('#users').val(lista_usuarios);
-        if ($("#buscar_usuario").val() !== '') {
-            $("#buscar_usuario").val('');
-            buscarUsuario();
-        }
-    }
-    
-    function habilitarDeshabilitarBuscador(tab) {
-        if (tab === 'tab-1') {
-            $("#buscar_usuario").prop('disabled', false);
-        } else {
-            $("#buscar_usuario").prop('disabled', true);
-        }
-    }
-    
-    function buscarUsuario() {
-        var input, filter, table, tr, td, i;
-        input = document.getElementById("buscar_usuario");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("tabla_usuarios");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                if (td.innerHTML.toUpperCase().indexOf(filter) > - 1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
+        $('.dataTables-modal').DataTable({
+                pageLength: 10,
+                responsive: true,
+                scrollCollapse: true,
+                language: {
+                    lengthMenu:   "Mostrar _MENU_ registros por página",
+                    zeroRecords:  "No se ha encontrado",
+                    info:         "Página _PAGE_ de _PAGES_",
+                    infoEmpty:    "Registros no disponibles",
+                    search:       "",
+                    paginate: {
+                        first:      "Primero",
+                        last:       "Ultimo",
+                        next:       " Siguiente ",
+                        previous:   " Anterior "
+                    },
+                    infoFiltered: "(filtrando de _MAX_ registros)"
                 }
-            }
-        }
+            });
+            $('div.dataTables_filter input').addClass('slds-input');
+            $('div.dataTables_filter input').attr("placeholder","Buscar");
+    });
+    
+    function minificarTablas() {
+        var tablas = $('.collapse-link');
+        tablas[1].click();
+        tablas[2].click();
     }
     
     function pulsar(textarea, e, tipoComentario, idParent) {

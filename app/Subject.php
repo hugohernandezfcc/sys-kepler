@@ -18,22 +18,22 @@ class Subject extends Model
 
     public function tasks()
     {
-        return $this->hasMany('App\Task');
+        return $this->hasMany('App\Task', 'subject_id', 'id');
     }
 
     public function exams()
     {
-        return $this->hasMany('App\Exam');
+        return $this->hasMany('App\Exam', 'subject_id', 'id');
     }
 
     public function modules()
     {
-        return $this->hasMany('App\Module');
+        return $this->hasMany('App\Module', 'subject_id', 'id');
     }
 
     public function rolloflists()
     {
-        return $this->hasMany('App\RollOfList');
+        return $this->hasMany('App\RollOfList', 'subject_id', 'id');
     }
 
     public function area()
