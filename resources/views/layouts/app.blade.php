@@ -91,12 +91,18 @@
     <script type="text/javascript">
         $(function () {
             var url = jQuery(location).attr('href').split('/')[3];
-            if (url == 'home') {
+            if (url === 'home') {
                 $('#side-menu li.active').removeClass('active');
                 $("#side-menu [href='/']").parent().addClass('active');
-            } else if (url == 'groups' || url == 'cyclescontrol' || url == 'areas') { 
+            } else if (url === 'groups' || url === 'cyclescontrol' || url === 'areas') { 
                 $('#side-menu li.active').removeClass('active');
                 $("#side-menu [href='/" + url +"']").parent().addClass('active');
+            } else if (url === 'profile') {
+                var aux = jQuery(location).attr('href').split('/')[4];
+                if (aux === 'inscriptions') {
+                    $('#side-menu li.active').removeClass('active');
+                    $("#side-menu [href='/profile/inscriptions']").parent().addClass('active');
+                }
             }
         });
         
