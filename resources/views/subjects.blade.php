@@ -424,8 +424,12 @@
     
     function minificarTablas() {
         var tablas = $('.collapse-link');
-        tablas[1].click();
-        tablas[2].click();
+        if (tablas[1].children[0].attributes[0].nodeValue === 'fa fa-chevron-up') {
+            tablas[1].click();
+        }
+        if (tablas[2].children[0].attributes[0].nodeValue === 'fa fa-chevron-up') {
+            tablas[2].click();
+        }
     }
     
     function pulsar(textarea, e, tipoComentario, idParent) {
