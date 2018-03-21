@@ -13,7 +13,7 @@ class Group extends Model
     ];
 
     public function subjects() {
-    	return $this->belongsToMany('App\Subject', 'apply_to', 'group_id', 'subject_id')->withPivot('name', 'created_by')->withTimestamps();
+    	return $this->belongsToMany('App\Subject', 'apply_to', 'groups_id', 'subject_id')->withPivot('name', 'created_by')->withTimestamps();
     }
 
     public function users() {

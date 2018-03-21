@@ -237,6 +237,7 @@
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab-1" data-toggle="tab">Comentarios</a></li>
                                     <li class=""><a href="#tab-2" data-toggle="tab">Miembros</a></li>
+                                    <li class=""><a href="#tab-3" data-toggle="tab" onclick="minificarTablas()">Elementos relacionados</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -335,6 +336,11 @@
 
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="tab-pane" id="tab-3">
+                                    @include('layouts._table_related', ['title' => 'Tareas asignadas', 'elements' => $record->tasks, 'nroTable' => '1'])
+                                    @include('layouts._table_related', ['title' => 'Examenes asignados', 'elements' => $record->exams, 'nroTable' => '2'])
+                                    @include('layouts._table_related', ['title' => 'Asignaturas', 'elements' => $record->subjects, 'nroTable' => '3'])
                                 </div>
                             </div>
                         </div>

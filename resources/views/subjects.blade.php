@@ -260,129 +260,9 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-2">
-                                    <div class="ibox float-e-margins">
-                                        <div class="ibox-title">
-                                            <h5>Tareas</h5>
-                                            <div class="ibox-tools">
-                                                <a class="collapse-link">
-                                                    <i class="fa fa-chevron-up"></i>
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                        <div class="ibox-content">
-                                            <table class="table table-striped table-bordered table-hover dataTables-modal" >
-                                                <thead>
-                                                    <tr>
-                                                        <th>Nombre</th>
-                                                        <th>Descripción</th>
-                                                        <th>Fecha de creación</th>
-                                                        <th>Creado por</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($record->tasks as $task)
-                                                    <tr class="gradeX">
-                                                        <td>{{ $task->name }}</td>
-                                                        <td>{{ $task->description }}</td>
-                                                        <td>{{ $task->created_at }}</td>
-                                                        <td>{{ $task->user->name }}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>Nombre</th>
-                                                        <th>Descripción</th>
-                                                        <th>Fecha de creación</th>
-                                                        <th>Creado por</th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="ibox float-e-margins">
-                                        <div class="ibox-title">
-                                            <h5>Modulos</h5>
-                                            <div class="ibox-tools">
-                                                <a class="collapse-link">
-                                                    <i class="fa fa-chevron-up"></i>
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                        <div class="ibox-content">
-                                            <table class="table table-striped table-bordered table-hover dataTables-modal" >
-                                                <thead>
-                                                    <tr>
-                                                        <th>Nombre</th>
-                                                        <th>Descripción</th>
-                                                        <th>Fecha de creación</th>
-                                                        <th>Creado por</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($record->modules as $modul)
-                                                    <tr class="gradeX">
-                                                        <td>{{ $modul->name }}</td>
-                                                        <td>{{ $modul->description }}</td>
-                                                        <td>{{ $modul->created_at }}</td>
-                                                        <td>{{ $modul->user->name }}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>Nombre</th>
-                                                        <th>Descripción</th>
-                                                        <th>Fecha de creación</th>
-                                                        <th>Creado por</th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="ibox float-e-margins">
-                                        <div class="ibox-title">
-                                            <h5>Examenes</h5>
-                                            <div class="ibox-tools">
-                                                <a class="collapse-link">
-                                                    <i class="fa fa-chevron-up"></i>
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                        <div class="ibox-content">
-                                            <table class="table table-striped table-bordered table-hover dataTables-modal" >
-                                                <thead>
-                                                    <tr>
-                                                        <th>Nombre</th>
-                                                        <th>Descripción</th>
-                                                        <th>Fecha de creación</th>
-                                                        <th>Creado por</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($record->exams as $exam)
-                                                    <tr class="gradeX">
-                                                        <td>{{ $exam->name }}</td>
-                                                        <td>{{ $exam->description }}</td>
-                                                        <td>{{ $exam->created_at }}</td>
-                                                        <td>{{ $exam->user->name }}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>Nombre</th>
-                                                        <th>Descripción</th>
-                                                        <th>Fecha de creación</th>
-                                                        <th>Creado por</th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
+                                    @include('layouts._table_related', ['title' => 'Tarea', 'elements' => $record->tasks, 'nroTable' => '1'])
+                                    @include('layouts._table_related', ['title' => 'Modulos', 'elements' => $record->modules, 'nroTable' => '2'])
+                                    @include('layouts._table_related', ['title' => 'Examenes', 'elements' => $record->exams, 'nroTable' => '3'])
                                 </div>
                             </div>
                         </div>
@@ -399,38 +279,7 @@
         $('#side-menu li.active').removeClass('active');
         var url = jQuery(location).attr('href').split('/')[3];
         $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
-        $('.dataTables-modal').DataTable({
-                pageLength: 10,
-                responsive: true,
-                scrollCollapse: true,
-                language: {
-                    lengthMenu:   "Mostrar _MENU_ registros por página",
-                    zeroRecords:  "No se ha encontrado",
-                    info:         "Página _PAGE_ de _PAGES_",
-                    infoEmpty:    "Registros no disponibles",
-                    search:       "",
-                    paginate: {
-                        first:      "Primero",
-                        last:       "Ultimo",
-                        next:       " Siguiente ",
-                        previous:   " Anterior "
-                    },
-                    infoFiltered: "(filtrando de _MAX_ registros)"
-                }
-            });
-            $('div.dataTables_filter input').addClass('slds-input');
-            $('div.dataTables_filter input').attr("placeholder","Buscar");
     });
-    
-    function minificarTablas() {
-        var tablas = $('.collapse-link');
-        if (tablas[1].children[0].attributes[0].nodeValue === 'fa fa-chevron-up') {
-            tablas[1].click();
-        }
-        if (tablas[2].children[0].attributes[0].nodeValue === 'fa fa-chevron-up') {
-            tablas[2].click();
-        }
-    }
     
     function pulsar(textarea, e, tipoComentario, idParent) {
         if (e.keyCode === 13 && !e.shiftKey) {
