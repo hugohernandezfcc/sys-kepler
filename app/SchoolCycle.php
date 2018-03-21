@@ -13,8 +13,8 @@ class SchoolCycle extends Model
     ];
 
     public function areas()
-    {$table->softDeletes();
-        return $this->hasMany('App\Area');
+    {
+        return $this->hasMany('App\Area', 'school_cycle_id', 'id');
     }
 
     public function user()

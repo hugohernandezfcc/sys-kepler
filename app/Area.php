@@ -16,6 +16,11 @@ class Area extends Model
     {
         return $this->belongsTo('App\SchoolCycle', 'school_cycle_id');
     }
+    
+    public function subjects()
+    {
+        return $this->hasMany('App\Subject', 'area_id', 'id');
+    }
 
     public function user()
     {
