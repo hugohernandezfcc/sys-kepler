@@ -16,9 +16,13 @@
             <li>
                 Grupos de la organización
             </li>
-            <li class="active">
-                <strong>Crear grupo</strong>
-            </li>
+                <li class="active">
+                @if($record->exists)
+                    <strong>Editar grupo</strong>
+                @else
+                    <strong>Crear grupo</strong>
+                @endif
+                </li>
             @endif
 
         </ol>
@@ -32,9 +36,9 @@
         @elseif($typeView == 'form')
 
         <div class="title-action">
-            <a onclick="document.getElementById('form-create').submit(); " class="btn btn-primary btn-sm">
+            <button type="submit" form="form-create" class="btn btn-primary btn-sm">
                 <i class="fa fa-check"></i> Guardar
-            </a>
+            </button>
         </div>
 
         @endif
@@ -55,16 +59,22 @@
                 </div>
             </div>
             <div class="ibox-content">
+                @if($record->exists)
+                <form method="post" action="/groups/update" id="form-create" class="form-horizontal">
+                    {{ method_field('PUT') }}
+                    <input type="hidden" name="idRecord" value="{{ $record->id }}">
+                @else
                 <form method="post" action="/groups/store" id="form-create" class="form-horizontal">
+                @endif
                     {{ csrf_field() }}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Nombre del grupo</label>
-                        <div class="col-sm-10"><input type="text" name="name" class="form-control"></div>
+                        <div class="col-sm-10"><input type="text" name="name" class="form-control" value="{{ $record->name or old('name') }}" required></div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Descripción</label>
-                        <div class="col-sm-10"><textarea name="description" class="form-control"></textarea> </div>
+                        <div class="col-sm-10"><textarea name="description" class="form-control" required>{{ $record->description or old('descripcion') }}</textarea> </div>
                     </div>
                     <div class="hr-line-dashed"></div>
 
@@ -85,13 +95,22 @@
                                         <table class="table table-striped table-hover" id="tabla_usuarios">
                                             <tbody>
                                                 @foreach ($to_related as $to)
-                                                <tr id="{{$to->id}}" name="{{$to->id}}">
-                                                    <!-- <td class="client-avatar"><img alt="image" src="img/a2.jpg"> </td> -->
-                                                    <td>{{ $to->name }}</td>
-                                                    <td class="contact-type"><i class="fa fa-envelope"> </i></td>
-                                                    <td>{{ $to->email }}</td>
-                                                    <td><a class="btn btn-primary btn-xs" onclick="moverUsuario({{$to->id}}, 1)"><i class="fa fa-plus"> </i> Agregar</a></td>
-                                                </tr>
+                                                    @php($encontrado = false)
+                                                    @foreach ($record->users as $groupUser)
+                                                        @if($groupUser->id == $to->id)
+                                                            @php($encontrado = true)
+                                                            @break
+                                                        @endif
+                                                    @endforeach
+                                                    @if(!$encontrado)
+                                                    <tr id="{{$to->id}}" name="{{$to->id}}">
+                                                        <!-- <td class="client-avatar"><img alt="image" src="img/a2.jpg"> </td> -->
+                                                        <td>{{ $to->name }}</td>
+                                                        <td class="contact-type"><i class="fa fa-envelope"> </i></td>
+                                                        <td>{{ $to->email }}</td>
+                                                        <td><a class="btn btn-primary btn-xs" onclick="moverUsuario({{$to->id}}, 1)"><i class="fa fa-plus"> </i> Agregar</a></td>
+                                                    </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -104,7 +123,29 @@
                                     <div class="table-responsive">
                                         <table id="tabla_agregados" class="table table-striped table-hover">
                                             <tbody>
-
+                                                @php($listUser = '')
+                                                @foreach ($to_related as $to)
+                                                    @php($encontrado = false)
+                                                    @foreach ($record->users as $groupUser)
+                                                        @if($groupUser->id == $to->id)
+                                                            @php($encontrado = true)
+                                                            @break
+                                                        @endif
+                                                    @endforeach
+                                                    @if($encontrado)
+                                                        @if($loop->last)
+                                                            @php($listUser = $listUser . $to->id)
+                                                        @else
+                                                            @php($listUser = $listUser . $to->id . ',')
+                                                        @endif
+                                                        <tr id="{{$to->id}}" name="{{$to->id}}">
+                                                            <td>{{ $to->name }}</td>
+                                                            <td class="contact-type"><i class="fa fa-envelope"> </i></td>
+                                                            <td>{{ $to->email }}</td>
+                                                            <td><a class="btn btn-default btn-xs" onclick="moverUsuario({{$to->id}}, 2)"><i class="fa fa-minus"> </i> Remover</a></td>
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -120,6 +161,66 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    lista_usuarios = [];
+    $(function (){
+        trUser = '';
+        if ('{{$listUser}}' === '') {
+            lista_usuarios = [];
+        } else {
+            lista_usuarios = ['{{$listUser}}'];
+        }
+        $('#users').val(lista_usuarios);
+    });
+    
+    function moverUsuario(idUsuario, accion) {
+        trUser = $("#" + idUsuario)[0];
+        if (accion === 1) { 
+            lista_usuarios.push(idUsuario);
+            $("#"+idUsuario+" td:eq(3)").html('<a class="btn btn-default btn-xs" onclick="moverUsuario(' + idUsuario + ', 2)"><i class="fa fa-minus"> </i> Remover</a>');
+            $("#tabla_usuarios tr#" + idUsuario).remove();
+            $("#tabla_agregados").append(trUser);
+        } else {
+            $("#"+idUsuario+" td:eq(3)").html('<a class="btn btn-primary btn-xs" onclick="moverUsuario(' + idUsuario + ', 1)"><i class="fa fa-plus"> </i> Agregar</a>');
+            $("#tabla_agregados tr#" + idUsuario).remove();
+            $("#tabla_usuarios").append(trUser);
+            lista_usuarios = jQuery.grep(lista_usuarios, function(value) {
+                return value != idUsuario;
+            });
+        }
+        $('#users').val(lista_usuarios);
+        if ($("#buscar_usuario").val() !== '') {
+            $("#buscar_usuario").val('');
+            buscarUsuario();
+        }
+    }
+    
+    function habilitarDeshabilitarBuscador(tab) {
+        if (tab === 'tab-1') {
+            $("#buscar_usuario").prop('disabled', false);
+        } else {
+            $("#buscar_usuario").prop('disabled', true);
+        }
+    }
+    
+    function buscarUsuario() {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("buscar_usuario");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla_usuarios");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > - 1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
 @elseif($typeView == 'list')
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -182,6 +283,7 @@
                 <div class="col-lg-12">
                     <div class="m-b-md">
                         <a href="/groups" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                        <a href="/groups/edit/{{ $record->id }}" class="btn btn-white btn-xs pull-right"> <i class="fa fa-pencil"></i> Editar</a>
                         <h2>Grupo: {{$record->name}}</h2>
                     </div>
                     @if($record->created_at->diffInMinutes() < 2)
@@ -353,56 +455,6 @@
 @endif
 
 <script>
-    lista_usuarios = [];
-    trUser = '';
-    function moverUsuario(idUsuario, accion) {
-        trUser = $("#" + idUsuario)[0];
-        if (accion === 1) { 
-            lista_usuarios.push(idUsuario);
-            $("#"+idUsuario+" td:eq(3)").html('<a class="btn btn-default btn-xs" onclick="moverUsuario(' + idUsuario + ', 2)"><i class="fa fa-minus"> </i> Remover</a>');
-            $("#tabla_usuarios tr#" + idUsuario).remove();
-            $("#tabla_agregados").append(trUser);
-        } else {
-            $("#"+idUsuario+" td:eq(3)").html('<a class="btn btn-primary btn-xs" onclick="moverUsuario(' + idUsuario + ', 1)"><i class="fa fa-plus"> </i> Agregar</a>');
-            $("#tabla_agregados tr#" + idUsuario).remove();
-            $("#tabla_usuarios").append(trUser);
-            lista_usuarios = jQuery.grep(lista_usuarios, function(value) {
-                return value != idUsuario;
-            });
-        }
-        $('#users').val(lista_usuarios);
-        if ($("#buscar_usuario").val() !== '') {
-            $("#buscar_usuario").val('');
-            buscarUsuario();
-        }
-    }
-    
-    function habilitarDeshabilitarBuscador(tab) {
-        if (tab === 'tab-1') {
-            $("#buscar_usuario").prop('disabled', false);
-        } else {
-            $("#buscar_usuario").prop('disabled', true);
-        }
-    }
-    
-    function buscarUsuario() {
-        var input, filter, table, tr, td, i;
-        input = document.getElementById("buscar_usuario");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("tabla_usuarios");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                if (td.innerHTML.toUpperCase().indexOf(filter) > - 1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-    
     function pulsar(textarea, e, tipoComentario, idParent) {
         if (e.keyCode === 13 && !e.shiftKey) {
             e.preventDefault();

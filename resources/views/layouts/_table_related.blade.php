@@ -39,32 +39,30 @@
         </table>
     </div>
 </div>
-
+@if ($nroTable === '1')
 <script>
     $(function () {
-        if ('{{ $nroTable }}' === '1') {
-            $('.dataTables-related').DataTable({
-                pageLength: 10,
-                responsive: true,
-                scrollCollapse: true,
-                language: {
-                    lengthMenu:   "Mostrar _MENU_ registros por página",
-                    zeroRecords:  "No se ha encontrado",
-                    info:         "Página _PAGE_ de _PAGES_",
-                    infoEmpty:    "Registros no disponibles",
-                    search:       "",
-                    paginate: {
-                        first:      "Primero",
-                        last:       "Ultimo",
-                        next:       " Siguiente ",
-                        previous:   " Anterior "
-                    },
-                    infoFiltered: "(filtrando de _MAX_ registros)"
-                }
-            });
-            $('div.dataTables_filter input').addClass('slds-input');
-            $('div.dataTables_filter input').attr("placeholder","Buscar");
-        }
+        $('.dataTables-related').DataTable({
+            pageLength: 10,
+            responsive: true,
+            scrollCollapse: true,
+            language: {
+                lengthMenu:   "Mostrar _MENU_ registros por página",
+                zeroRecords:  "No se ha encontrado",
+                info:         "Página _PAGE_ de _PAGES_",
+                infoEmpty:    "Registros no disponibles",
+                search:       "",
+                paginate: {
+                    first:      "Primero",
+                    last:       "Ultimo",
+                    next:       " Siguiente ",
+                    previous:   " Anterior "
+                },
+                infoFiltered: "(filtrando de _MAX_ registros)"
+            }
+        });
+        $('div.dataTables_filter input').addClass('slds-input');
+        $('div.dataTables_filter input').attr("placeholder","Buscar");
     });
     
     function minificarTablas() {
@@ -78,3 +76,4 @@
         }
     }
 </script>
+@endif
