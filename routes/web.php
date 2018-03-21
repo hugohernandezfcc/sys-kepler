@@ -179,6 +179,12 @@ Route::group(['prefix' => 'groups'], function() {
             ]
     );
 
+    Route::get('/edit/{groupId}', [
+        'uses' => 'GroupsController@edit',
+        'as' => 'edit'
+            ]
+    );
+
     Route::get('/show/{groupId}', [
         'uses' => 'GroupsController@show',
         'as' => 'show'
@@ -188,6 +194,12 @@ Route::group(['prefix' => 'groups'], function() {
     Route::post('/store', [
         'uses' => 'GroupsController@store',
         'as' => 'store'
+            ]
+    );
+
+    Route::put('/update', [
+        'uses' => 'GroupsController@update',
+        'as' => 'update'
             ]
     );
 });

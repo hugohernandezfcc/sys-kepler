@@ -56,8 +56,10 @@ class GroupsController extends Controller
      */
     public function create()
     {
+        $group = new Group();
         return view('groups', [
                 'typeView' => 'form',
+                'record' => $group,
                 'to_related' => DB::table('users')->get()
             ]
         );
@@ -136,12 +138,17 @@ class GroupsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Group  $group
+     * @param  \App\Group  $groupId
      * @return \Illuminate\Http\Response
      */
-    public function edit(Group $group)
+    public function edit($groupId)
     {
-        return view('nombre_vista')->with(['group', $group]);
+        return view('groups', [
+                'typeView' => 'form',
+                'record' => Group::find($groupId),
+                'to_related' => DB::table('users')->get()
+            ]
+        );
     }
 
     /**
@@ -151,11 +158,40 @@ class GroupsController extends Controller
      * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request)
     {
-        $group->name = $request->get('name');
-
-        $group->save();
+        $group = Group::find($request->idRecord);
+        $group->name = $request->name;
+        $group->description = $request->description;
+        $group->created_by = Auth::id();
+        if ($group->update()) {
+            $usersSelected = ($request->users !== null ? explode(',', $request->users) : null);
+            if ($group->users !== null) {
+                foreach ($group->users as $userGroup) {
+                    $encontrado = false;
+                    if ($usersSelected !== null) {
+                        foreach ($usersSelected as $key => $user) {
+                            if ($user == $userGroup->id) {
+                                $encontrado = true;
+                                unset($usersSelected[$key]);
+                                break;
+                            }
+                        }
+                    }
+                    if (!$encontrado) {
+                        $group->users()->detach($userGroup->id);
+                    }
+                }
+            }
+            if ($usersSelected !== null) {
+                foreach ($usersSelected as $userGroup) {
+                    if ($userGroup !== '') {
+                        $group->users()->attach($userGroup, ['name' => $group->name, 'created_by' => Auth::id()]);
+                    }
+                }
+            }
+            return redirect('/groups/show/' . $group->id);
+        }
     }
 
     /**
