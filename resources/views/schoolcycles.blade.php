@@ -17,7 +17,11 @@
                 Ciclos de la organización
             </li>
             <li class="active">
-                <strong>Crear ciclo</strong>
+                @if($record->exists)
+                    <strong>Editar ciclo</strong>
+                @else
+                    <strong>Crear ciclo</strong>
+                @endif
             </li>
             @endif
 
@@ -32,9 +36,9 @@
         @elseif($typeView == 'form')
 
         <div class="title-action">
-            <a onclick="document.getElementById('form-create').submit(); " class="btn btn-primary btn-sm">
+            <button type="submit" form="form-create" class="btn btn-primary btn-sm">
                 <i class="fa fa-check"></i> Guardar
-            </a>
+            </button>
         </div>
 
 
@@ -58,11 +62,17 @@
                 </div>
             </div>
             <div class="ibox-content">
+                @if($record->exists)
+                <form method="post" action="/cyclescontrol/update" id="form-create" class="form-horizontal">
+                    {{ method_field('PUT') }}
+                    <input type="hidden" name="idRecord" value="{{ $record->id }}">
+                @else
                 <form method="post" action="/cyclescontrol/store" id="form-create" class="form-horizontal">
+                @endif
                     {{ csrf_field() }}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Título</label>
-                        <div class="col-sm-10"><input type="text" name="name" class="form-control"></div>
+                        <div class="col-sm-10"><input type="text" name="name" class="form-control" value="{{ $record->name or old('name') }}" required></div>
                     </div>
                     <div class="hr-line-dashed"></div>
 
@@ -112,7 +122,7 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Descripción</label>
-                        <div class="col-sm-10"><textarea name="description" class="form-control"></textarea> </div>
+                        <div class="col-sm-10"><textarea name="description" class="form-control" required>{{ $record->description or old('descripcion') }}</textarea> </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                 </form>
@@ -120,7 +130,12 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    $(function() {
+        $('#start').val('{{$record->start}}');
+        $('#end').val('{{$record->end}}');
+    });
+</script>
 @elseif($typeView == 'list')
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
@@ -190,6 +205,7 @@
                 <div class="col-lg-12">
                     <div class="m-b-md">
                         <a href="/cyclescontrol" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                        <a href="/cyclescontrol/edit/{{ $record->id }}" class="btn btn-white btn-xs pull-right"> <i class="fa fa-pencil"></i> Editar</a>
                         <h2>Ciclo escolar: {{$record->name}}</h2>
                     </div>
                     @if($record->created_at->diffInMinutes() < 2)

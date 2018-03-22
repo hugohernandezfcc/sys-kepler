@@ -17,7 +17,11 @@
                 Áreas de la organización
             </li>
             <li class="active">
-                <strong>Crear área</strong>
+                @if($record->exists)
+                    <strong>Editar área</strong>
+                @else
+                    <strong>Crear área</strong>
+                @endif
             </li>
             @endif
 
@@ -32,9 +36,9 @@
         @elseif($typeView == 'form')
 
         <div class="title-action">
-            <a onclick="document.getElementById('form-create').submit();" class="btn btn-primary btn-sm">
+            <button type="submit" form="form-create" class="btn btn-primary btn-sm">
                 <i class="fa fa-check"></i> Guardar
-            </a>
+            </button>
         </div>
 
         @endif
@@ -57,11 +61,17 @@
                 </div>
             </div>
             <div class="ibox-content">
+                @if($record->exists)
+                <form method="post" action="/areas/update" id="form-create" class="form-horizontal">
+                    {{ method_field('PUT') }}
+                    <input type="hidden" name="idRecord" value="{{ $record->id }}">
+                @else
                 <form method="post" action="/areas/store" id="form-create" class="form-horizontal">
+                @endif
                     {{ csrf_field() }}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Nombre del área</label>
-                        <div class="col-sm-10"><input type="text" name="name" class="form-control"></div>
+                        <div class="col-sm-10"><input type="text" name="name" class="form-control" value="{{ $record->name or old('name') }}" required></div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
@@ -70,7 +80,11 @@
                             <select class="form-control" name="school_cycle_id" id="school_cycle_id">
 
                                 @foreach ($to_related as $to)
-                                <option value="{{$to->id}}">{{$to->name}}</option>
+                                    @if($record->school_cycle_id == $to->id)
+                                        <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                    @else
+                                        <option value="{{$to->id}}">{{$to->name}}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -78,7 +92,7 @@
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Descripción</label>
-                        <div class="col-sm-10"><textarea name="description" class="form-control"></textarea> </div>
+                        <div class="col-sm-10"><textarea name="description" class="form-control" required>{{ $record->description or old('descripcion') }}</textarea> </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                 </form>
@@ -153,6 +167,7 @@
                 <div class="col-lg-12">
                     <div class="m-b-md">
                         <a href="/areas" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                        <a href="/areas/edit/{{ $record->id }}" class="btn btn-white btn-xs pull-right"> <i class="fa fa-pencil"></i> Editar</a>
                         <h2>Área: {{$record->name}}</h2>
                     </div>
                     @if($record->created_at->diffInMinutes() < 2)

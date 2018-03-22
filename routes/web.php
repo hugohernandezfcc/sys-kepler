@@ -43,6 +43,12 @@ Route::group(['prefix' => 'cyclescontrol'], function() {
             ]
     );
 
+    Route::get('/edit/{schoolCycleId}', [
+        'uses' => 'SchoolCyclesController@edit',
+        'as' => 'edit'
+            ]
+    );
+
     Route::get('/show/{schoolCycleId}', [
         'uses' => 'SchoolCyclesController@show',
         'as' => 'show'
@@ -52,6 +58,12 @@ Route::group(['prefix' => 'cyclescontrol'], function() {
     Route::post('/store', [
         'uses' => 'SchoolCyclesController@store',
         'as' => 'store'
+            ]
+    );
+    
+    Route::put('/update', [
+        'uses' => 'SchoolCyclesController@update',
+        'as' => 'update'
             ]
     );
 });
@@ -69,6 +81,12 @@ Route::group(['prefix' => 'areas'], function() {
             ]
     );
 
+    Route::get('/edit/{areaId}', [
+        'uses' => 'AreasController@edit',
+        'as' => 'edit'
+            ]
+    );
+
     Route::get('/show/{areaId}', [
         'uses' => 'AreasController@show',
         'as' => 'show'
@@ -78,6 +96,12 @@ Route::group(['prefix' => 'areas'], function() {
     Route::post('/store', [
         'uses' => 'AreasController@store',
         'as' => 'store'
+            ]
+    );
+    
+    Route::put('/update', [
+        'uses' => 'AreasController@update',
+        'as' => 'update'
             ]
     );
 });
@@ -95,6 +119,12 @@ Route::group(['prefix' => 'subjects'], function() {
             ]
     );
     
+    Route::get('/edit/{subjectId}', [
+        'uses' => 'SubjectsController@edit',
+        'as' => 'edit'
+            ]
+    );
+
     Route::get('/show/{subjectId}', [
         'uses' => 'SubjectsController@show',
         'as' => 'show'
@@ -104,6 +134,12 @@ Route::group(['prefix' => 'subjects'], function() {
     Route::post('/store', [
         'uses' => 'SubjectsController@store',
         'as' => 'store'
+            ]
+    );
+    
+    Route::put('/update', [
+        'uses' => 'SubjectsController@update',
+        'as' => 'update'
             ]
     );
 });
