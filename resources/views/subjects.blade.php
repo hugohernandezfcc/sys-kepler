@@ -17,7 +17,11 @@
                 Asignaturas de la organización
             </li>
             <li class="active">
-                <strong>Crear asignatura</strong>
+                @if($record->exists)
+                    <strong>Editar asignatura</strong>
+                @else
+                    <strong>Crear asignatura</strong>
+                @endif
             </li>
             @endif
 
@@ -32,9 +36,9 @@
         @elseif($typeView == 'form')
 
         <div class="title-action">
-            <a onclick="document.getElementById('form-create').submit();" class="btn btn-primary btn-sm">
+            <button type="submit" form="form-create" class="btn btn-primary btn-sm">
                 <i class="fa fa-check"></i> Guardar
-            </a>
+            </button>
         </div>
 
 
@@ -58,11 +62,16 @@
                 </div>
             </div>
             <div class="ibox-content">
+                @if($record->exists)
+                <form method="post" action="/subjects/update" id="form-create" class="form-horizontal">
+                    {{ method_field('PUT') }}
+                    <input type="hidden" name="idRecord" value="{{ $record->id }}">
+                @else
                 <form method="post" action="/subjects/store" id="form-create" class="form-horizontal">
+                @endif
                     {{ csrf_field() }}
                     <div class="form-group"><label class="col-sm-2 control-label">Nombre de la asignatura</label>
-
-                        <div class="col-sm-10"><input type="text" name="name" class="form-control"></div>
+                        <div class="col-sm-10"><input type="text" name="name" class="form-control" value="{{ $record->name or old('name') }}" required></div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
@@ -71,7 +80,11 @@
                             <select class="form-control" name="area_id" id="area_id">
 
                                 @foreach ($to_related as $to)
-                                <option value="{{$to->id}}">{{$to->name}}</option>
+                                    @if($record->area_id == $to->id)
+                                        <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                    @else
+                                        <option value="{{$to->id}}">{{$to->name}}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -146,6 +159,7 @@
                 <div class="col-lg-12">
                     <div class="m-b-md">
                         <a href="/subjects" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                        <a href="/subjects/edit/{{ $record->id }}" class="btn btn-white btn-xs pull-right"> <i class="fa fa-pencil"></i> Editar</a>
                         <h2>Asignatura: {{$record->name}}</h2>
                     </div>
                     @if($record->created_at->diffInMinutes() < 2)

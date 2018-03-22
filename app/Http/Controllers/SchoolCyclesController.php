@@ -46,8 +46,10 @@ class SchoolCyclesController extends Controller
      */
     public function create()
     {
+        $schoolCycle = new SchoolCycle();
         return view('schoolcycles', [
-                'typeView' => 'form'
+                'typeView' => 'form',
+                'record' => $schoolCycle
             ]
         );   
     }
@@ -125,12 +127,16 @@ class SchoolCyclesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SchoolCycle  $schoolCycle
+     * @param  \App\SchoolCycle  $schoolCycleId
      * @return \Illuminate\Http\Response
      */
-    public function edit(SchoolCycle $schoolCycle)
+    public function edit($schoolCycleId)
     {
-        return view('nombre_vista')->with(['schoolCycle', $schoolCycle]);
+        return view('schoolcycles', [
+                'typeView' => 'form',
+                'record' => SchoolCycle::find($schoolCycleId)
+            ]
+        );
     }
 
     /**
@@ -140,11 +146,16 @@ class SchoolCyclesController extends Controller
      * @param  \App\SchoolCycle  $schoolCycle
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SchoolCycle $schoolCycle)
+    public function update(Request $request)
     {
-        $schoolCycle->name = $request->get('name');
-
-        $schoolCycle->save();
+        $schoolCycle = SchoolCycle::find($request->idRecord);
+        $schoolCycle->name = $request->name;
+        $schoolCycle->description = $request->description;
+        $schoolCycle->start = $request->start;
+        $schoolCycle->end = $request->end;
+        if ($schoolCycle->update()) {
+            return redirect('/cyclescontrol/show/' . $schoolCycle->id);
+        }
     }
 
     /**

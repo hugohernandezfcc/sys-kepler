@@ -43,8 +43,10 @@ class SubjectsController extends Controller
      */
     public function create()
     {
+        $subject = new Subject();
         return view('subjects', [
                 'typeView' => 'form',
+                'record' => $subject,
                 'to_related' => DB::table('areas')->get()
             ]
         );   
@@ -119,12 +121,17 @@ class SubjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Subject  $subject
+     * @param  \App\Subject  $subjectId
      * @return \Illuminate\Http\Response
      */
-    public function edit(Subject $subject)
+    public function edit($subjectId)
     {
-        return view('nombre_vista')->with(['subject', $subject]);
+        return view('subjects', [
+                'typeView' => 'form',
+                'to_related' => DB::table('areas')->get(),
+                'record' => Subject::find($subjectId)
+            ]
+        );
     }
 
     /**
@@ -134,11 +141,14 @@ class SubjectsController extends Controller
      * @param  \App\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Subject $subject)
+    public function update(Request $request)
     {
-        $subject->name = $request->get('name');
-
-        $subject->save();
+        $subject = Subject::find($request->idRecord);
+        $subject->name = $request->name;
+        $subject->area_id = $request->area_id;
+        if ($subject->update()) {
+            return redirect('/subjects/show/' . $subject->id);
+        }
     }
 
     /**

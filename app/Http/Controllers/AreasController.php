@@ -43,8 +43,10 @@ class AreasController extends Controller
      */
     public function create()
     {
+        $area = new Area();
         return view('area', [
                 'typeView' => 'form',
+                'record' => $area,
                 'to_related' => DB::table('school_cycles')->get()
             ]
         );   
@@ -119,15 +121,17 @@ class AreasController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Area  $area
+     * @param  \App\Area  $areaId
      * @return \Illuminate\Http\Response
      */
-    public function edit(Area $area)
+    public function edit($areaId)
     {
-        //Se recibe el id, que es una instanacia de la clase por lo que
-        //a través del modelo tenemos acceso a los datos de allí se retorna
-        //el objeto completo.
-        return view('nombre_vista')->with(['area', $area]);
+        return view('area', [
+                'typeView' => 'form',
+                'to_related' => DB::table('school_cycles')->get(),
+                'record' => Area::find($areaId)
+            ]
+        );
     }
 
     /**
@@ -137,11 +141,15 @@ class AreasController extends Controller
      * @param  \App\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Area $area)
+    public function update(Request $request)
     {
-        $area->name = $request->get('name');
-
-        $area->save();
+        $area = Area::find($request->idRecord);
+        $area->name = $request->name;
+        $area->description = $request->description;
+        $area->school_cycle_id = $request->school_cycle_id;
+        if ($area->update()) {
+            return redirect('/areas/show/' . $area->id);
+        }
     }
 
     /**
