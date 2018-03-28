@@ -28,7 +28,9 @@ class AddNewFieldsToSchoolCyclesTable extends Migration
     public function down()
     {
         Schema::table('school_cycles', function (Blueprint $table) {
-            //
+            $table->dropColumn('start');
+            $table->dropColumn('end');
+            $table->dropColumn('description');
         });
     }
 }
