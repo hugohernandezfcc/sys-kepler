@@ -48,9 +48,9 @@
                         <li><a href="/task"><i class="fa fa-tasks"></i> Tareas</a></li>
                         <li><a href="/test"><i class="fa fa-flask"></i> Examenes</a></li>
                         <li><a href="/list"><i class="fa fa-list"></i>  Pase de lista</a></li>
-                        <li><a href="/modules"><i class="fa fa-archive"></i> Modulos</a></li>
-                        <li>
-                            <a href="#" id="damian"><i class="fa fa-arrows-v"></i> <span class="nav-label">Contenido de modulos</span> <span class="fa arrow"></span></a>
+                        <li class="inline"><a href="/modules"><i class="fa fa-archive"></i> Modulos</a></li>
+                        <li class="inline">
+                            <a href="#" id="damian">&nbsp;<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
                                 <li><a href="/links">Links</a></li>
                                 <li><a href="/articles">Articulos</a></li>

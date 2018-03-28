@@ -12,6 +12,15 @@
             <li class="active">
                 <strong>Modulos de la organización</strong>
             </li>
+            <li>
+                Secciones:
+                <select class="inline" id="secciones">
+                    <option value="/links">Enlaces</option>
+                    <option value="/forums">Foro</option>
+                    <option value="/articles">Articulos</option>
+                </select>
+                <a href="#" class="btn btn-primary btn-xs inline" onclick="irSeccion()">Ir</a>
+            </li>
             @elseif($typeView == 'form')
             <li>
                 Modulos de la organización
@@ -347,6 +356,10 @@
             $('#comentario'+idCampo).removeClass("hidden");
         }
         $('#comentario'+idCampo+' textarea').focus();    
+    }
+    
+    function irSeccion() {
+        window.location.href = $('#secciones').val();
     }
 </script>
 @endsection
