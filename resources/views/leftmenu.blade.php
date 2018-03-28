@@ -46,9 +46,17 @@
                     <ul class="nav nav-second-level">
                         <li><a href="/subjects"><i class="fa fa-graduation-cap"></i> Asignaturas</a></li>
                         <li><a href="/task"><i class="fa fa-tasks"></i> Tareas</a></li>
+                        <li><a href="/test"><i class="fa fa-flask"></i> Examenes</a></li>
                         <li><a href="/list"><i class="fa fa-list"></i>  Pase de lista</a></li>
                         <li><a href="/modules"><i class="fa fa-archive"></i> Modulos</a></li>
-                        <li><a href="/test"><i class="fa fa-flask"></i> Examenes</a></li>
+                        <li>
+                            <a href="#" id="damian"><i class="fa fa-arrows-v"></i> <span class="nav-label">Contenido de modulos</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li><a href="/links">Links</a></li>
+                                <li><a href="/articles">Articulos</a></li>
+                                <li><a href="/forums">Foro</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 @elseif (Auth::user()->type == "student")

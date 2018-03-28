@@ -16,6 +16,26 @@ class Module extends Model
     {
         return $this->belongsTo('App\Subject', 'subject_id');
     }
+    
+    public function links()
+    {
+        return $this->hasMany('App\Link', 'module_id', 'id');
+    }
+    
+    public function articles()
+    {
+        return $this->hasMany('App\Article', 'module_id', 'id');
+    }
+    
+    public function forums()
+    {
+        return $this->hasMany('App\Forum', 'module_id', 'id');
+    }
+    
+    public function walls()
+    {
+        return $this->hasMany('App\Wall', 'module_id', 'id');
+    }
 
     public function user()
     {

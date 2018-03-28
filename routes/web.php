@@ -144,6 +144,158 @@ Route::group(['prefix' => 'subjects'], function() {
     );
 });
 
+Route::group(['prefix' => 'modules'], function() {
+    Route::get('/', [
+        'uses' => 'ModulesController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/create', [
+        'uses' => 'ModulesController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::get('/edit/{moduleId}', [
+        'uses' => 'ModulesController@edit',
+        'as' => 'edit'
+            ]
+    );
+
+    Route::get('/show/{moduleId}', [
+        'uses' => 'ModulesController@show',
+        'as' => 'show'
+            ]
+    );
+
+    Route::post('/store', [
+        'uses' => 'ModulesController@store',
+        'as' => 'store'
+            ]
+    );
+    
+    Route::put('/update', [
+        'uses' => 'ModulesController@update',
+        'as' => 'update'
+            ]
+    );
+});
+
+Route::group(['prefix' => 'links'], function() {
+    Route::get('/', [
+        'uses' => 'LinksController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/create', [
+        'uses' => 'LinksController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::get('/edit/{linkId}', [
+        'uses' => 'LinksController@edit',
+        'as' => 'edit'
+            ]
+    );
+
+    Route::get('/show/{linkId}', [
+        'uses' => 'LinksController@show',
+        'as' => 'show'
+            ]
+    );
+
+    Route::post('/store', [
+        'uses' => 'LinksController@store',
+        'as' => 'store'
+            ]
+    );
+    
+    Route::put('/update', [
+        'uses' => 'LinksController@update',
+        'as' => 'update'
+            ]
+    );
+});
+
+Route::group(['prefix' => 'articles'], function() {
+    Route::get('/', [
+        'uses' => 'ArticlesController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/create', [
+        'uses' => 'ArticlesController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::get('/edit/{articleId}', [
+        'uses' => 'ArticlesController@edit',
+        'as' => 'edit'
+            ]
+    );
+
+    Route::get('/show/{articleId}', [
+        'uses' => 'ArticlesController@show',
+        'as' => 'show'
+            ]
+    );
+
+    Route::post('/store', [
+        'uses' => 'ArticlesController@store',
+        'as' => 'store'
+            ]
+    );
+    
+    Route::put('/update', [
+        'uses' => 'ArticlesController@update',
+        'as' => 'update'
+            ]
+    );
+});
+
+Route::group(['prefix' => 'forums'], function() {
+    Route::get('/', [
+        'uses' => 'ForumsController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/create', [
+        'uses' => 'ForumsController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::get('/edit/{forumId}', [
+        'uses' => 'ForumsController@edit',
+        'as' => 'edit'
+            ]
+    );
+
+    Route::get('/show/{forumId}', [
+        'uses' => 'ForumsController@show',
+        'as' => 'show'
+            ]
+    );
+
+    Route::post('/store', [
+        'uses' => 'ForumsController@store',
+        'as' => 'store'
+            ]
+    );
+    
+    Route::put('/update', [
+        'uses' => 'ForumsController@update',
+        'as' => 'update'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'test'], function() {
     Route::get('/', [
         'uses' => 'ExamsController@index',
