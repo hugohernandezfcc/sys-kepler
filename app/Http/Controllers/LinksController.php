@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Link;
 use App\Conversation;
 use App\ItemConversation;
+use App\Module;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,16 +37,23 @@ class LinksController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\module  $moduleId
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create($moduleId = null) {
+        if ($moduleId !== null) {
+            $module = Module::find($moduleId);
+        } else {
+            $module = new Module();
+        }
         $link = new Link();
         return view('links', [
                 'typeView' => 'form',
                 'record' => $link,
-                'to_related' => DB::table('modules')->get()
+                'to_related' => DB::table('modules')->get(),
+                'module' => $module
             ]
-        );   
+        );
     }
 
     /**
@@ -117,10 +125,12 @@ class LinksController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($linkId) {
+        $module = new Module();
         return view('links', [
                 'typeView' => 'form',
                 'to_related' => DB::table('modules')->get(),
-                'record' => Link::find($linkId)
+                'record' => Link::find($linkId),
+                'module' => $module
             ]
         );
     }

@@ -195,6 +195,12 @@ Route::group(['prefix' => 'links'], function() {
             ]
     );
     
+    Route::get('/create/{moduleId}', [
+        'uses' => 'LinksController@create',
+        'as' => 'create'
+            ]
+    );
+    
     Route::get('/edit/{linkId}', [
         'uses' => 'LinksController@edit',
         'as' => 'edit'
