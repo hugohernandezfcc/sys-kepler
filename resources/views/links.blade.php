@@ -86,16 +86,27 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Modulo</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="module_id" id="module_id">
+                            @if($module->exists)
+                                <select class="form-control" name="module_id" id="module_id" disabled>
 
-                                @foreach ($to_related as $to)
-                                    @if($record->module_id == $to->id)
-                                        <option value="{{$to->id}}" selected>{{$to->name}}</option>
-                                    @else
-                                        <option value="{{$to->id}}">{{$to->name}}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                                    @foreach ($to_related as $to)
+                                        @if($module->id == $to->id)
+                                            <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            @else
+                                <select class="form-control" name="module_id" id="module_id">
+
+                                    @foreach ($to_related as $to)
+                                        @if($record->module_id == $to->id)
+                                            <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                        @else
+                                            <option value="{{$to->id}}">{{$to->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>

@@ -277,9 +277,49 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-2">
-                                    @include('layouts._table_related', ['title' => 'Link', 'elements' => $record->links, 'nroTable' => '1'])
-                                    @include('layouts._table_related', ['title' => 'Articulos', 'elements' => $record->articles, 'nroTable' => '2'])
-                                    @include('layouts._table_related', ['title' => 'Foro', 'elements' => $record->forums, 'nroTable' => '3'])
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>Enlaces</h5>
+                                            <div class="ibox-tools">
+                                                <a href="/links/create/{{ $record->id }}" class="btn btn-primary btn-xs"> <i class="fa fa-check"></i> Agregar enlace</a>
+                                                <a class="collapse-link">
+                                                    <i class="fa fa-chevron-up"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <table class="table table-striped table-bordered table-hover dataTables-related" >
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Enlace</th>
+                                                        <th>Fecha de creación</th>
+                                                        <th>Creado por</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($record->links as $element)
+                                                    <tr class="gradeX">
+                                                        <td>{{ $element->name }}</td>
+                                                        <td>{{ $element->link }}</td>
+                                                        <td>{{ $element->created_at }}</td>
+                                                        <td>{{ $element->user->name }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Enlace</th>
+                                                        <th>Fecha de creación</th>
+                                                        <th>Creado por</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    @include('layouts._table_related', ['title' => 'Articulos', 'elements' => $record->articles, 'nroTable' => '1'])
+                                    @include('layouts._table_related', ['title' => 'Foro', 'elements' => $record->forums, 'nroTable' => '2'])
                                 </div>
                             </div>
                         </div>
