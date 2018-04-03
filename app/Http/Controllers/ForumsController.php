@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Forum;
 use App\Conversation;
 use App\ItemConversation;
+use App\Module;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,14 +37,21 @@ class ForumsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\module  $moduleId
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create($moduleId = null) {
+        if ($moduleId !== null) {
+            $module = Module::find($moduleId);
+        } else {
+            $module = new Module();
+        }
         $forum = new Forum();
         return view('forums', [
                 'typeView' => 'form',
                 'record' => $forum,
-                'to_related' => DB::table('modules')->get()
+                'to_related' => DB::table('modules')->get(),
+                'module' => $module
             ]
         );
     }
@@ -61,7 +69,7 @@ class ForumsController extends Controller
         $forum->description = $request->description;
         $forum->created_by = Auth::id();
         if($forum->save()){
-            return redirect('/forums');
+            return redirect('/forums/show/' . $forum->id);
         }
     }
 
@@ -119,7 +127,8 @@ class ForumsController extends Controller
         return view('forums', [
                 'typeView' => 'form',
                 'to_related' => DB::table('modules')->get(),
-                'record' => Forum::find($forumId)
+                'record' => Forum::find($forumId),
+                'module' => new Module()
             ]
         );
     }

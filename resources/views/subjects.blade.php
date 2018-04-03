@@ -77,16 +77,26 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Área</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="area_id" id="area_id">
-
-                                @foreach ($to_related as $to)
-                                    @if($record->area_id == $to->id)
-                                        <option value="{{$to->id}}" selected>{{$to->name}}</option>
-                                    @else
-                                        <option value="{{$to->id}}">{{$to->name}}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            @if($area->exists)
+                                <select class="form-control" name="area_id" id="area_id" disabled>
+                                    @foreach ($to_related as $to)
+                                        @if($area->id == $to->id)
+                                            <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                            @break
+                                        @endif
+                                    @endforeach
+                                </select>
+                            @else
+                                <select class="form-control" name="area_id" id="area_id">
+                                    @foreach ($to_related as $to)
+                                        @if($record->area_id == $to->id)
+                                            <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                        @else
+                                            <option value="{{$to->id}}">{{$to->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -274,9 +284,9 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-2">
-                                    @include('layouts._table_related', ['title' => 'Tarea', 'elements' => $record->tasks, 'nroTable' => '1'])
-                                    @include('layouts._table_related', ['title' => 'Modulos', 'elements' => $record->modules, 'nroTable' => '2'])
-                                    @include('layouts._table_related', ['title' => 'Examenes', 'elements' => $record->exams, 'nroTable' => '3'])
+                                    @include('layouts._table_related', ['title' => 'Tarea', 'elements' => $record->tasks, 'nroTable' => '1', 'url' => "/task/create/$record->id", 'new' => 'tarea', 'button' => true])
+                                    @include('layouts._table_related', ['title' => 'Modulos', 'elements' => $record->modules, 'nroTable' => '2', 'url' => "/modules/create/$record->id", 'new' => 'modulo', 'button' => true])
+                                    @include('layouts._table_related', ['title' => 'Examenes', 'elements' => $record->exams, 'nroTable' => '3', 'url' => "/test/create/$record->id", 'new' => 'examen', 'button' => true])
                                 </div>
                             </div>
                         </div>

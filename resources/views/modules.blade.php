@@ -13,13 +13,12 @@
                 <strong>Modulos de la organización</strong>
             </li>
             <li>
-                Secciones:
-                <select class="inline" id="secciones">
+                <select class="inline" id="secciones" onchange="irSeccion()">
+                    <option value="">--Seleccionar--</option>
                     <option value="/links">Enlaces</option>
                     <option value="/forums">Foro</option>
                     <option value="/articles">Articulos</option>
                 </select>
-                <a href="#" class="btn btn-primary btn-xs inline" onclick="irSeccion()">Ir</a>
             </li>
             @elseif($typeView == 'form')
             <li>
@@ -86,16 +85,26 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Asignatura</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="subject_id" id="subject_id">
-
-                                @foreach ($to_related as $to)
-                                    @if($record->subject_id == $to->id)
-                                        <option value="{{$to->id}}" selected>{{$to->name}}</option>
-                                    @else
-                                        <option value="{{$to->id}}">{{$to->name}}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            @if($subject->exists)
+                                <select class="form-control" name="subject_id" id="subject_id" disabled>
+                                    @foreach ($to_related as $to)
+                                        @if($subject->id == $to->id)
+                                            <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                            @break
+                                        @endif
+                                    @endforeach
+                                </select>
+                            @else
+                                <select class="form-control" name="subject_id" id="subject_id">
+                                    @foreach ($to_related as $to)
+                                        @if($record->subject_id == $to->id)
+                                            <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                        @else
+                                            <option value="{{$to->id}}">{{$to->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -301,7 +310,7 @@
                                                     @foreach ($record->links as $element)
                                                     <tr class="gradeX">
                                                         <td>{{ $element->name }}</td>
-                                                        <td>{{ $element->link }}</td>
+                                                        <td><a href="{{ $element->link }}" target="_blank">{{ $element->link }}</a></td>
                                                         <td>{{ $element->created_at }}</td>
                                                         <td>{{ $element->user->name }}</td>
                                                     </tr>
@@ -318,8 +327,8 @@
                                             </table>
                                         </div>
                                     </div>
-                                    @include('layouts._table_related', ['title' => 'Articulos', 'elements' => $record->articles, 'nroTable' => '1'])
-                                    @include('layouts._table_related', ['title' => 'Foro', 'elements' => $record->forums, 'nroTable' => '2'])
+                                    @include('layouts._table_related', ['title' => 'Articulos', 'elements' => $record->articles, 'nroTable' => '1', 'url' => "/articles/create/$record->id", 'new' => 'artículo', 'button' => true])
+                                    @include('layouts._table_related', ['title' => 'Foro', 'elements' => $record->forums, 'nroTable' => '2', 'url' => "/forums/create/$record->id", 'new' => 'foro', 'button' => true])
                                 </div>
                             </div>
                         </div>

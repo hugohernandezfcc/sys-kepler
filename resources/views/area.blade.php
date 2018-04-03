@@ -77,16 +77,26 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Ciclo escolar</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="school_cycle_id" id="school_cycle_id">
-
-                                @foreach ($to_related as $to)
-                                    @if($record->school_cycle_id == $to->id)
-                                        <option value="{{$to->id}}" selected>{{$to->name}}</option>
-                                    @else
-                                        <option value="{{$to->id}}">{{$to->name}}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            @if($schoolCycle->exists)
+                                <select class="form-control" name="school_cycle_id" id="school_cycle_id" disabled>
+                                    @foreach ($to_related as $to)
+                                        @if($schoolCycle->id == $to->id)
+                                            <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                            @break
+                                        @endif
+                                    @endforeach
+                                </select>
+                            @else
+                                <select class="form-control" name="school_cycle_id" id="school_cycle_id">
+                                    @foreach ($to_related as $to)
+                                        @if($record->school_cycle_id == $to->id)
+                                            <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                        @else
+                                            <option value="{{$to->id}}">{{$to->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -282,7 +292,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-2">
-                                    @include('layouts._table_related', ['title' => 'Asignaturas', 'elements' => $record->subjects, 'nroTable' => '1'])
+                                    @include('layouts._table_related', ['title' => 'Asignaturas', 'elements' => $record->subjects, 'nroTable' => '1', 'url' => "/subjects/create/$record->id", 'new' => 'asignatura', 'button' => true])
                                 </div>
                             </div>
                         </div>

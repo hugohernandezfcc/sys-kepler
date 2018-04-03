@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Area;
 use App\Conversation;
 use App\ItemConversation;
+use App\SchoolCycle;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -39,15 +40,22 @@ class AreasController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\SchoolCycle  $schoolCycleId
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($schoolCycleId = null)
     {
+        if ($schoolCycleId !== null) {
+            $schoolCycle = SchoolCycle::find($schoolCycleId);
+        } else {
+            $schoolCycle = new SchoolCycle();
+        }
         $area = new Area();
         return view('area', [
                 'typeView' => 'form',
                 'record' => $area,
-                'to_related' => DB::table('school_cycles')->get()
+                'to_related' => DB::table('school_cycles')->get(),
+                'schoolCycle' => $schoolCycle
             ]
         );   
     }
@@ -129,7 +137,8 @@ class AreasController extends Controller
         return view('area', [
                 'typeView' => 'form',
                 'to_related' => DB::table('school_cycles')->get(),
-                'record' => Area::find($areaId)
+                'record' => Area::find($areaId),
+                'schoolCycle' => new SchoolCycle()
             ]
         );
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Subject;
 use App\Conversation;
 use App\ItemConversation;
+use App\Area;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -39,15 +40,22 @@ class SubjectsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\Area  $areaId
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($areaId = null)
     {
+        if ($areaId !== null) {
+            $area = Area::find($areaId);
+        } else {
+            $area = new Area();
+        }
         $subject = new Subject();
         return view('subjects', [
                 'typeView' => 'form',
                 'record' => $subject,
-                'to_related' => DB::table('areas')->get()
+                'to_related' => DB::table('areas')->get(),
+                'area' => $area
             ]
         );   
     }
@@ -69,7 +77,7 @@ class SubjectsController extends Controller
 
 
         if($Subject->save()){
-            return redirect('/subjects');
+            return redirect('/subjects/show/' . $subject->id);
         }
     }
 
@@ -129,7 +137,8 @@ class SubjectsController extends Controller
         return view('subjects', [
                 'typeView' => 'form',
                 'to_related' => DB::table('areas')->get(),
-                'record' => Subject::find($subjectId)
+                'record' => Subject::find($subjectId),
+                'area' => new Area()
             ]
         );
     }
