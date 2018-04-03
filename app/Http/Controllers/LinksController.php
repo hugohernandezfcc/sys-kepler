@@ -70,7 +70,7 @@ class LinksController extends Controller
         $link->link = $request->link;
         $link->created_by = Auth::id();
         if($link->save()){
-            return redirect('/links');
+            return redirect('/links/show/' . $link->id);
         }
     }
 
@@ -125,12 +125,11 @@ class LinksController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($linkId) {
-        $module = new Module();
         return view('links', [
                 'typeView' => 'form',
                 'to_related' => DB::table('modules')->get(),
                 'record' => Link::find($linkId),
-                'module' => $module
+                'module' => new Module()
             ]
         );
     }

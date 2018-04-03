@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Module;
 use App\Conversation;
 use App\ItemConversation;
+use App\Subject;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,14 +37,21 @@ class ModulesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\subject  $subjectId
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create($subjectId = null) {
+        if ($subjectId !== null) {
+            $subject = Subject::find($subjectId);
+        } else {
+            $subject = new Subject();
+        }
         $module = new Module();
         return view('modules', [
                 'typeView' => 'form',
                 'record' => $module,
-                'to_related' => DB::table('subjects')->get()
+                'to_related' => DB::table('subjects')->get(),
+                'subject' => $subject
             ]
         );   
     }
@@ -60,7 +68,7 @@ class ModulesController extends Controller
         $module->subject_id = $request->subject_id;
         $module->created_by = Auth::id();
         if($module->save()){
-            return redirect('/modules');
+            return redirect('/modules/show/' . $module->id);
         }
     }
 
@@ -119,7 +127,8 @@ class ModulesController extends Controller
         return view('modules', [
                 'typeView' => 'form',
                 'to_related' => DB::table('subjects')->get(),
-                'record' => Module::find($moduleId)
+                'record' => Module::find($moduleId),
+                'subject' => new Subject()
             ]
         );
     }

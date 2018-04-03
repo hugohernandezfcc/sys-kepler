@@ -335,7 +335,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-2">
-                                    @include('layouts._table_related', ['title' => 'Area', 'elements' => $record->areas, 'nroTable' => '1'])
+                                    @include('layouts._table_related', ['title' => 'Area', 'elements' => $record->areas, 'nroTable' => '1', 'url' => "/areas/create/$record->id", 'new' => 'área', 'button' => true])
                                 </div>
                             </div>
                         </div>

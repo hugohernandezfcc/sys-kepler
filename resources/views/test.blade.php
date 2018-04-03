@@ -78,15 +78,26 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Asignatura</label>
                         <div class="col-sm-10">
-                            <select class="form-control select-subject" name="subject_id" id="subject_id" required="true">
-                                <option></option>
-                                @foreach ($to_related as $to_subject)
-                                <option disabled="" class="font-bold">Área {{$to_subject[0]->area->name}}</option>
-                                    @foreach ($to_subject as $to)
-                                    <option value="{{$to->id}}">{{$to->name}}</option>
+                            @if($subject->exists)
+                                <select class="form-control" name="subject_id" id="subject_id" disabled>
+                                    @foreach ($to_related as $to)
+                                        @if($subject->id == $to->id)
+                                            <option value="{{$to->id}}" selected>{{$to->name}}</option>
+                                            @break
+                                        @endif
                                     @endforeach
-                                @endforeach
-                            </select>
+                                </select>
+                            @else
+                                <select class="form-control select-subject" name="subject_id" id="subject_id" required="true">
+                                    <option></option>
+                                    @foreach ($to_related as $to_subject)
+                                    <option disabled class="font-bold">Área {{$to_subject[0]->area->name}}</option>
+                                        @foreach ($to_subject as $to)
+                                        <option value="{{$to->id}}">{{$to->name}}</option>
+                                        @endforeach
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -415,8 +426,8 @@
         var btnRadio = "\'radio\'";
         var btnCheckbox = "\'checkbox\'";
         var newQuestion = '<div id="questionTest'+totalQuestion+'" class="questionTest"><div class="hr-line-dashed"></div><div class="form-group"><label class="col-sm-2 control-label">Pregunta</label><div class="col-sm-10"><input type="text" name="question'+totalQuestion+'" class="form-control" required="true"></div></div><div class="form-group">\n\
-            <label class="col-sm-2 control-label">Tipo de pregunta</label><div class="col-sm-10"><select class="form-control" name="question'+totalQuestion+'-subtype'+totalQuestion+'" id="subtype'+totalQuestion+'" onchange="tipoRespuesta(this)"><option value="Question">Respuesta corta</option>\n\
-            <option value="Single-option">Selección simple</option><option value="Multiple-option">Selección múltiple</option></select></div></div><div class="form-group" id="typeQuestion'+totalQuestion+'"><label class="col-sm-2 control-label">Espacio para respuesta</label><div class="col-sm-10">\n\
+            <label class="col-sm-2 control-label">Tipo de respuesta</label><div class="col-sm-10"><select class="form-control" name="question'+totalQuestion+'-subtype'+totalQuestion+'" id="subtype'+totalQuestion+'" onchange="tipoRespuesta(this)"><option value="Question">Caja de texto</option>\n\
+            <option value="Single-option">Botón opcional</option><option value="Multiple-option">Botón opción múltiple</option></select></div></div><div class="form-group" id="typeQuestion'+totalQuestion+'"><label class="col-sm-2 control-label">Espacio para respuesta</label><div class="col-sm-10">\n\
             <textarea id="answer'+totalQuestion+'" class="form-control" disabled="true"></textarea> </div></div><div class="form-group hidden" id="typeSingleOption'+totalQuestion+'"><label class="col-sm-2 control-label">Seleccione una opción</label><div class="col-sm-10"><div class="radio">\n\
             <input type="radio" radio="radio1" id="radio1" value="option1" checked=""><input type="text" name="question'+totalQuestion+'-option1" class="form-control" value="Opción 1" required="true"></div><div class="radio"><input type="radio" radio="radio1" id="radio2" value="option2">\n\
             <input type="text" name="question'+totalQuestion+'-option2" class="form-control" value="Opción 2" required="true"><a title="Eliminar opción" class="close block" onclick="removeOption(this)" aria-label="Close"><span aria-hidden="true">&times;</span></a></div><div class="btn-group"><br>\n\

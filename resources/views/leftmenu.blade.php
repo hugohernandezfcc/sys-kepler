@@ -52,9 +52,9 @@
                         <li class="inline">
                             <a href="#" id="damian">&nbsp;<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
-                                <li><a href="/links">Links</a></li>
-                                <li><a href="/articles">Articulos</a></li>
-                                <li><a href="/forums">Foro</a></li>
+                                <li><a href="/links"><i class="fa fa-link"></i> Enlaces</a></li>
+                                <li><a href="/articles"><i class="fa fa-sticky-note-o"></i> Articulos</a></li>
+                                <li><a href="/forums"><i class="fa fa-clone"></i> Foro</a></li>
                             </ul>
                         </li>
                     </ul>

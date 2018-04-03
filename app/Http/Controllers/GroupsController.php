@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Group;
 use App\Conversation;
 use App\ItemConversation;
+use App\Subject;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;

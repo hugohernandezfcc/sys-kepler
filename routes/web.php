@@ -81,6 +81,12 @@ Route::group(['prefix' => 'areas'], function() {
             ]
     );
 
+    Route::get('/create/{schoolCycleId}', [
+        'uses' => 'AreasController@create',
+        'as' => 'create'
+            ]
+    );
+
     Route::get('/edit/{areaId}', [
         'uses' => 'AreasController@edit',
         'as' => 'edit'
@@ -119,6 +125,12 @@ Route::group(['prefix' => 'subjects'], function() {
             ]
     );
     
+    Route::get('/create/{areaId}', [
+        'uses' => 'SubjectsController@create',
+        'as' => 'create'
+            ]
+    );
+    
     Route::get('/edit/{subjectId}', [
         'uses' => 'SubjectsController@edit',
         'as' => 'edit'
@@ -152,6 +164,12 @@ Route::group(['prefix' => 'modules'], function() {
     );
 
     Route::get('/create', [
+        'uses' => 'ModulesController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::get('/create/{subjectId}', [
         'uses' => 'ModulesController@create',
         'as' => 'create'
             ]
@@ -239,6 +257,12 @@ Route::group(['prefix' => 'articles'], function() {
             ]
     );
     
+    Route::get('/create/{moduleId}', [
+        'uses' => 'ArticlesController@create',
+        'as' => 'create'
+            ]
+    );
+    
     Route::get('/edit/{articleId}', [
         'uses' => 'ArticlesController@edit',
         'as' => 'edit'
@@ -272,6 +296,12 @@ Route::group(['prefix' => 'forums'], function() {
     );
 
     Route::get('/create', [
+        'uses' => 'ForumsController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::get('/create/{moduleId}', [
         'uses' => 'ForumsController@create',
         'as' => 'create'
             ]
@@ -315,6 +345,12 @@ Route::group(['prefix' => 'test'], function() {
             ]
     );
     
+    Route::get('/create/{subjectId}', [
+        'uses' => 'ExamsController@create',
+        'as' => 'create'
+            ]
+    );
+    
     Route::get('/show/{examId}', [
         'uses' => 'ExamsController@show',
         'as' => 'show'
@@ -336,6 +372,12 @@ Route::group(['prefix' => 'task'], function() {
     );
 
     Route::get('/create', [
+        'uses' => 'TasksController@create',
+        'as' => 'create'
+            ]
+    );
+    
+    Route::get('/create/{subjectId}', [
         'uses' => 'TasksController@create',
         'as' => 'create'
             ]
@@ -368,6 +410,12 @@ Route::group(['prefix' => 'groups'], function() {
     );
 
     Route::get('/create', [
+        'uses' => 'GroupsController@create',
+        'as' => 'create'
+            ]
+    );
+
+    Route::get('/create/{subjectId}', [
         'uses' => 'GroupsController@create',
         'as' => 'create'
             ]

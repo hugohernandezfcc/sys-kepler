@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Conversation;
 use App\ItemConversation;
+use App\Module;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,15 +38,21 @@ class ArticlesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\module  $moduleId
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create($moduleId = null) {
+        if ($moduleId !== null) {
+            $module = Module::find($moduleId);
+        } else {
+            $module = new Module();
+        }
         $article = new Article();
         return view('articles', [
                 'typeView' => 'form',
                 'record' => $article,
-                'to_related' => DB::table('modules')->get()
+                'to_related' => DB::table('modules')->get(),
+                'module' => $module
             ]
         );
     }
@@ -120,7 +127,8 @@ class ArticlesController extends Controller
         return view('articles', [
                 'typeView' => 'form',
                 'record' => Article::find($articleId),
-                'to_related' => DB::table('modules')->get()
+                'to_related' => DB::table('modules')->get(),
+                'module' => new Module()
             ]
         );
     }

@@ -8,6 +8,7 @@ use App\Group;
 use App\ApplyTask;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TasksController extends Controller
 {
@@ -50,13 +51,21 @@ class TasksController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\subject  $subjectId
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create($subjectId = null) {
+        if ($subjectId !== null) {
+            $subject = Subject::find($subjectId);
+            $to_related = DB::table('subjects')->get();
+        } else {
+            $subject = new Subject();
+            $to_related = Subject::all()->groupBy('area_id');
+        }
         return view('task', [
                 'typeView' => 'form',
-                'to_related' => Subject::all()->groupBy('area_id')
+                'to_related' => $to_related,
+                'subject' => $subject
             ]
         );
     }
