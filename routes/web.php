@@ -200,6 +200,26 @@ Route::group(['prefix' => 'modules'], function() {
     );
 });
 
+Route::group(['prefix' => 'list'], function() {
+    Route::get('/', [
+        'uses' => 'RollOfListsController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/show/{groupId}', [
+        'uses' => 'RollOfListsController@show',
+        'as' => 'show'
+            ]
+    );
+
+    Route::post('/store', [
+        'uses' => 'RollOfListsController@store',
+        'as' => 'store'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'links'], function() {
     Route::get('/', [
         'uses' => 'LinksController@index',

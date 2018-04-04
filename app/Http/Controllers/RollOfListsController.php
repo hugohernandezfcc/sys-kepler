@@ -3,46 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\RollOfList;
+use App\Group;
+use Auth;
 use Illuminate\Http\Request;
 
 class RollOfListsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index()
-    {
-        //
+    public function __construct() {
+        $this->middleware('auth');
     }
-
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function read()
-    {
-        $rollOfLists = RollOfList::all();
-
-        return $rollOfLists;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $rollOfList = new Exam();
-
-        $rollOfList->name = $request->get('name');
-        $rollOfList->created_by = $request->user()->id;
-        $rollOfList->subject_id = $request->subject()->id;
-
-        $rollOfList->save();
+    public function index() {
+        return view('list', [
+                'typeView'  => 'list',
+                'records' => Group::all()
+            ]
+        );
     }
 
     /**
@@ -51,20 +37,42 @@ class RollOfListsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        $group = Group::find($request->idRecord);
+        $asistentes = 0;
+        $missing = [];
+        foreach ($group->users as $user) {
+            $userId = $user->id;
+            if ($request->$userId === 'on') {
+                $asistentes++;
+            } else {
+                $missing[] = array('id' => $userId, 'name' => $user->name);
+            }
+        }
+        $porcentaje = ($group->users->count() != 0 ? $asistentes*100/$group->users->count() : 0);
+        $list = new RollOfList();
+        $list->name = $group->name;
+        $list->missing = json_encode($missing);
+        $list->percentage = $porcentaje;
+        $list->created_by = Auth::id();
+        $list->group_id = $group->id;
+        if($list->save()){
+            return redirect('/list');
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\RollOfList  $rollOfList
+     * @param  \App\Group  $groupId
      * @return \Illuminate\Http\Response
      */
-    public function show(RollOfList $rollOfList)
-    {
-        //
+    public function show($groupId) {
+        return view('list', [
+                'typeView' => 'view',
+                'record' => Group::find($groupId)
+            ]
+        );
     }
 
     /**
@@ -73,9 +81,8 @@ class RollOfListsController extends Controller
      * @param  \App\RollOfList  $rollOfList
      * @return \Illuminate\Http\Response
      */
-    public function edit(RollOfList $rollOfList)
-    {
-        return view('nombre_vista')->with(['rollOfList', $rollOfList])
+    public function edit(RollOfList $rollOfList) {
+        
     }
 
     /**
@@ -85,8 +92,7 @@ class RollOfListsController extends Controller
      * @param  \App\RollOfList  $rollOfList
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RollOfList $rollOfList)
-    {
+    public function update(Request $request, RollOfList $rollOfList) {
         $rollOfList->name = $request->get('name');
 
         $rollOfList->save();
@@ -98,8 +104,7 @@ class RollOfListsController extends Controller
      * @param  \App\RollOfList  $rollOfList
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RollOfList $rollOfList)
-    {
+    public function destroy(RollOfList $rollOfList) {
         $rollOfList->delete();
 
         return redirect()->route('nombre_ruta_destino');

@@ -442,7 +442,6 @@
                                 <div class="tab-pane" id="tab-3">
                                     @include('layouts._table_related', ['title' => 'Tareas asignadas', 'elements' => $record->tasks, 'nroTable' => '1', 'url' => "/task/create", 'new' => 'tarea', 'button' => false])
                                     @include('layouts._table_related', ['title' => 'Examenes asignados', 'elements' => $record->exams, 'nroTable' => '2', 'url' => "/test/create", 'new' => 'examen', 'button' => false])
-                                    @include('layouts._table_related', ['title' => 'Asignaturas', 'elements' => $record->subjects, 'nroTable' => '3', 'url' => "/subjects/create", 'new' => 'asignatura', 'button' => false])
                                 </div>
                             </div>
                         </div>
