@@ -12,6 +12,10 @@ class Wall extends Model
         'name', 'created_by', 'description', 'module_id',
     ];
 
+    public function posts() {
+        return $this->hasMany('App\Post', 'wall_id', 'id');
+    }
+
     public function module() {
         return $this->belongsTo('App\Module', 'module_id');
     }

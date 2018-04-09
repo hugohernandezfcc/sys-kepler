@@ -55,6 +55,7 @@
                                 <li><a href="/links"><i class="fa fa-link"></i> Enlaces</a></li>
                                 <li><a href="/articles"><i class="fa fa-sticky-note-o"></i> Articulos</a></li>
                                 <li><a href="/forums"><i class="fa fa-clone"></i> Foro</a></li>
+                                <li><a href="/walls"><i class="fa fa-cubes"></i> Muro</a></li>
                             </ul>
                         </li>
                     </ul>

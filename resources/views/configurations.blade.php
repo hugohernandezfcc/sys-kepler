@@ -148,7 +148,7 @@
                     <div class="form-group"><label class="col-sm-2 control-label">Obligatorio</label>
                         <div class="col-sm-10">
                             <div class="radio">
-                                <input type="radio" name="columnRequired" id=option1" value="true" required>
+                                <input type="radio" name="columnRequired" id="option1" value="true" required>
                                 <label for="columnRequired"> Si </label>
                             </div>
                             <div class="radio">

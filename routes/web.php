@@ -474,6 +474,14 @@ Route::group(['prefix' => 'conversations'], function() {
     );
 });
 
+Route::group(['prefix' => 'post'], function() {
+    Route::post('/store', [
+        'uses' => 'PostsController@store',
+        'as' => 'store'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'applytests'], function() {
     Route::post('/store', [
         'uses' => 'ApplyExamsController@store',
@@ -510,6 +518,38 @@ Route::group(['prefix' => 'applytasks'], function() {
     Route::get('/taketask/{applyTaskName}', [
         'uses' => 'ApplyTasksController@taketask',
         'as' => 'taketask'
+            ]
+    );
+});
+
+Route::group(['prefix' => 'walls'], function() {
+    Route::get('/', [
+        'uses' => 'WallsController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::get('/create', [
+        'uses' => 'WallsController@create',
+        'as' => 'create'
+            ]
+    );
+
+    Route::get('/create/{moduleId}', [
+        'uses' => 'WallsController@create',
+        'as' => 'create'
+            ]
+    );
+
+    Route::post('/store', [
+        'uses' => 'WallsController@store',
+        'as' => 'store'
+            ]
+    );
+    
+    Route::get('/show/{wallName}', [
+        'uses' => 'WallsController@show',
+        'as' => 'show'
             ]
     );
 });
