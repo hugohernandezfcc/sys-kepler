@@ -87,7 +87,8 @@
                         <label class="col-sm-2 control-label">Asignatura</label>
                         <div class="col-sm-10">
                             @if($subject->exists)
-                                <select class="form-control" name="subject_id" id="subject_id" disabled>
+                                <input type="hidden" name="subject_id" value="{{ $subject->id }}">
+                                <select class="form-control" id="subject_id" disabled>
                                     @foreach ($to_related as $to)
                                         @if($subject->id == $to->id)
                                             <option value="{{$to->id}}" selected>{{$to->name}}</option>
@@ -347,6 +348,7 @@
         $('#side-menu li.active').removeClass('active');
         var url = jQuery(location).attr('href').split('/')[3];
         $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
+        $("#side-menu [href='/" + url +"']").parent().addClass('active');
     });
     
     function pulsar(textarea, e, tipoComentario, idParent) {

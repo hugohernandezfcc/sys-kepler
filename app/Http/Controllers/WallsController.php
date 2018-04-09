@@ -6,6 +6,7 @@ use App\Wall;
 use App\Conversation;
 use App\ItemConversation;
 use App\Module;
+use App\Post;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -84,7 +85,35 @@ class WallsController extends Controller
         $wall->module_id = $request->module_id;
 
         if($wall->save()){
+            $this->storeFirstPost($wall);
             return redirect('/walls');
+        }
+    }
+
+    /**
+     * 
+     */
+    public function storeFirstPost($wall)
+    {
+        $post = new Post();
+        $post->name = $wall->name;
+        $post->body = $wall->description;
+        $post->created_by = Auth::id();
+        $post->wall_id = $wall->id;
+        if ($post->save()) {
+            $conversation = new Conversation();
+            $conversation->name = $wall->name;
+            $conversation->table = 'walls';
+            $conversation->id_record = $wall->id;
+            if ($conversation->save()) {
+                $itemConversation = new ItemConversation();
+                $itemConversation->type = 'Question';
+                $itemConversation->parent = null;
+                $itemConversation->name = $post->id;
+                $itemConversation->by = Auth::id();
+                $itemConversation->conversation = $conversation->id;
+                $itemConversation->save();
+            }
         }
     }
 

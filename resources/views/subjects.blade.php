@@ -78,7 +78,8 @@
                         <label class="col-sm-2 control-label">Área</label>
                         <div class="col-sm-10">
                             @if($area->exists)
-                                <select class="form-control" name="area_id" id="area_id" disabled>
+                                <input type="hidden" name="area_id" value="{{ $area->id }}">
+                                <select class="form-control" id="area_id" disabled>
                                     @foreach ($to_related as $to)
                                         @if($area->id == $to->id)
                                             <option value="{{$to->id}}" selected>{{$to->name}}</option>
@@ -303,6 +304,7 @@
         $('#side-menu li.active').removeClass('active');
         var url = jQuery(location).attr('href').split('/')[3];
         $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
+        $("#side-menu [href='/" + url +"']").parent().addClass('active');
     });
     
     function pulsar(textarea, e, tipoComentario, idParent) {
