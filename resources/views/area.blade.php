@@ -78,7 +78,8 @@
                         <label class="col-sm-2 control-label">Ciclo escolar</label>
                         <div class="col-sm-10">
                             @if($schoolCycle->exists)
-                                <select class="form-control" name="school_cycle_id" id="school_cycle_id" disabled>
+                                <input type="hidden" name="school_cycle_id" value="{{ $schoolCycle->id }}">
+                                <select class="form-control" id="school_cycle_id" disabled>
                                     @foreach ($to_related as $to)
                                         @if($schoolCycle->id == $to->id)
                                             <option value="{{$to->id}}" selected>{{$to->name}}</option>

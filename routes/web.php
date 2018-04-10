@@ -480,6 +480,12 @@ Route::group(['prefix' => 'post'], function() {
         'as' => 'store'
             ]
     );
+
+    Route::post('/storeLike', [
+        'uses' => 'PostsController@storeLike',
+        'as' => 'storeLike'
+            ]
+    );
 });
 
 Route::group(['prefix' => 'applytests'], function() {

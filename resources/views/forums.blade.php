@@ -83,7 +83,8 @@
                         <label class="col-sm-2 control-label">Modulo</label>
                         <div class="col-sm-10">
                             @if($module->exists)
-                                <select class="form-control" name="module_id" id="module_id" disabled>
+                                <input type="hidden" name="module_id" value="{{ $module->id }}">
+                                <select class="form-control" id="module_id" disabled>
                                     @foreach ($to_related as $to)
                                         @if($module->id == $to->id)
                                             <option value="{{$to->id}}" selected>{{$to->name}}</option>
@@ -303,6 +304,7 @@
         var url = jQuery(location).attr('href').split('/')[3];
         $("#side-menu [href='/" + url +"']").parent().parent().parent().parent().parent().addClass('active');
         $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
+        $("#side-menu [href='/" + url +"']").parent().addClass('active');
     });
     
     function pulsar(textarea, e, tipoComentario, idParent) {

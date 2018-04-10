@@ -162,6 +162,7 @@
         $('#side-menu li.active').removeClass('active');
         var url = jQuery(location).attr('href').split('/')[3];
         $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
+        $("#side-menu [href='/" + url +"']").parent().addClass('active');
     });
 </script>
 @endsection
