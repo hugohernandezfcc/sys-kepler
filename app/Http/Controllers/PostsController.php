@@ -6,6 +6,7 @@ use App\Post;
 use App\Conversation;
 use App\ItemConversation;
 use App\Wall;
+use App\Like;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +63,39 @@ class PostsController extends Controller
                 return response()->json($post);
             }
         }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeLike(Request $request)
+    {
+        $texto = '';
+        $post = Post::find($request->postId);
+        $likeAux = $post->likes->where('created_by', '=', Auth::id())->first();
+        if ($likeAux !== null) {
+            //dd($likeAux);
+            Like::destroy($likeAux->id);
+            if ($post->likes->count() - 1 === 0) {
+                $texto = ' Me gusta';
+            } else {
+                $texto = ' ' . $post->likes->count() - 1 . ' Me gusta';
+            }
+        } else {
+            $like = new Like();
+
+            $like->name = $post->name;
+            $like->body = $post->body;
+            $like->post_id = $post->id;
+            $like->created_by = Auth::id();
+            if ($like->save()) {
+                $texto = ' ' . $post->likes->count() + 1 . ' Ya no me gusta';
+            }
+        }
+        return response()->json($texto);
     }
 
     /**

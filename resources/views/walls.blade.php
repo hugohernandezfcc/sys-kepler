@@ -194,7 +194,7 @@
                         <div class="form-group">
                             <div class="col-sm-1"></div>
                             <div class="col-sm-10">
-                                <div data-sample="1" id="introduction"></div>
+                                <div data-sample="1" id="publicacion"></div>
                             </div>
                             <div class="col-sm-1"></div>
                         </div>
@@ -227,7 +227,15 @@
                                     <div class="social-body">
                                         {!! $post->body !!}<br>
                                         <div class="btn-group">
-                                            <a class="btn btn-white btn-xs" onclick=""><i class="fa fa-thumbs-up"></i>Me gusta</a>
+                                            @if($post->likes->count() > 0)
+                                                @if($post->likes->firstWhere('created_by', Auth::user()->id) !== null)
+                                                    <a class="btn btn-white btn-xs" id="prueba" onclick="likeDislike(this, {{ $post->id }})"><i class="fa fa-thumbs-up"></i> <span>{{ $post->likes->count() }} Ya no me gusta</span></a>
+                                                @else
+                                                    <a class="btn btn-white btn-xs" onclick="likeDislike(this, {{ $post->id }})"><i class="fa fa-thumbs-up"></i> <span>{{ $post->likes->count() }} Me gusta</span></a>
+                                                @endif
+                                            @else
+                                                <a class="btn btn-white btn-xs" onclick="likeDislike(this, {{ $post->id }})"><i class="fa fa-thumbs-up"></i> <span>Me gusta</span></a>
+                                            @endif
                                             <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $conversations['Question']->id }})"><i class="fa fa-comments"></i> Comentar</a>
                                         </div>
                                     </div>
@@ -286,11 +294,11 @@
 	&lt;script&gt;
 		// The inline editor should be enabled on an element with "contenteditable" attribute set to "true".
 		// Otherwise CKEditor will start in read-only mode.
-		var introduction = document.getElementById( 'introduction' );
-		introduction.setAttribute( 'contenteditable', true );
+		var publicacion = document.getElementById( 'publicacion' );
+		publicacion.setAttribute( 'contenteditable', true );
 
-		CKEDITOR.inline( 'introduction', {
-			// Allow some non-standard markup that we used in the introduction.
+		CKEDITOR.inline( 'publicacion', {
+			// Allow some non-standard markup that we used in the publicacion.
 			extraAllowedContent: 'a(documentation);abbr[title];code',
 			removePlugins: 'stylescombo',
 			// Show toolbar on startup (optional).
@@ -304,12 +312,12 @@
 		var isEditingEnabled,
 				toggle = document.getElementById( 'toggle' ),
 				reset = document.getElementById( 'reset' ),
-				introduction = document.getElementById( 'introduction' ),
-				introductionHTML = introduction.innerHTML;
+				publicacion = document.getElementById( 'publicacion' ),
+				publicacionHTML = publicacion.innerHTML;
 
 		function enableEditing() {
-			if ( !CKEDITOR.instances.introduction ) {
-				CKEDITOR.inline( 'introduction', {
+			if ( !CKEDITOR.instances.publicacion ) {
+				CKEDITOR.inline( 'publicacion', {
 					extraAllowedContent: 'a(documentation);abbr[title];code',
 					removePlugins: 'stylescombo',
 					startupFocus: true
@@ -318,8 +326,8 @@
 		}
 
 		function disableEditing() {
-			if ( CKEDITOR.instances.introduction )
-				CKEDITOR.instances.introduction.destroy();
+			if ( CKEDITOR.instances.publicacion )
+				CKEDITOR.instances.publicacion.destroy();
 		}
 
 		function toggleEditor() {
@@ -329,12 +337,12 @@
 				}*/
                 savePost();
 				disableEditing();
-				introduction.setAttribute( 'contenteditable', false );
+				publicacion.setAttribute( 'contenteditable', false );
 				this.value = 'Nueva publicación';
 				isEditingEnabled = false;
 			}
 			else {
-				introduction.setAttribute( 'contenteditable', true );
+				publicacion.setAttribute( 'contenteditable', true );
 				enableEditing();
 				this.value = 'Publicar';
 				isEditingEnabled = true;
@@ -342,9 +350,9 @@
 		}
 
         function savePost() {
-            if (introduction.innerHTML !== '<p><br></p>') {
-                post = introduction.innerHTML;
-                introduction.innerHTML = '';
+            if (publicacion.innerHTML !== '<p><br></p>') {
+                post = publicacion.innerHTML;
+                publicacion.innerHTML = '';
                 idRecord = $('#idRecord').val();
                 var imagenUsuario = '';
                 imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
@@ -379,7 +387,7 @@
 
 		function resetContent() {
 			reset.style.display = 'none';
-			introduction.innerHTML = introductionHTML;
+			publicacion.innerHTML = publicacionHTML;
 		}
 
 		function onClick( element, callback ) {
@@ -465,6 +473,28 @@
             $('#comentario'+idCampo).removeClass("hidden");
         }
         $('#comentario'+idCampo+' textarea').focus();    
+    }
+
+    function likeDislike(element, idPost) {
+        //$(element).children('span').text(' 2 Ya no me gusta');
+        $.ajax({
+            url: "/post/storeLike",
+            data: { 
+                "postId":idPost,
+                "_token": "{{ csrf_token() }}"
+                },
+            dataType: "json",
+            method: "POST",
+            success: function(result)
+            {
+                $(element).children('span').text(result);
+            },
+            error: function () {
+               //alert("fallo");
+            }
+            
+        });
+
     }
 </script>
 @endsection
