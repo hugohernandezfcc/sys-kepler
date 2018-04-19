@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@if($typeView != 'view')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-7">
         <h2>Muro</h2>
@@ -23,13 +24,6 @@
                     <strong>Crear muro</strong>
                 @endif
             </li>
-            @elseif($typeView == 'view')
-            <li>
-                Muro de la organización
-            </li>
-            <li class="active">
-                <strong>Muro del modulo {{ $record->module->name }}</strong>
-            </li>
             @endif
 
         </ol>
@@ -51,6 +45,7 @@
         @endif
     </div>
 </div>
+@endif
 
 
 
@@ -165,48 +160,60 @@
 
 @elseif($typeView == 'view')
 <input type="hidden" id="idRecord" value="{{ $record->id }}">
-<div class="wrapper wrapper-content animated fadeInUp">
-    <div class="ibox">
-        <div class="ibox-content">
-            <div class="row m-t-sm">
-                <div class="col-lg-12">
-                    <!-- <form class="form-horizontal">
+@if(!$agent->isMobile() || !$agent->isTablet())
+<div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+@endif
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <form id="form-delete" method="post" action="/walls/{{ $record->id }}">
                         {{ csrf_field() }}
-                        <input type="hidden" id="contenido" name="contenido">
+                        {{ method_field('DELETE') }}
                         <div class="form-group">
-                            <label class="col-sm-1 control-label">Publicar</label>
-                            <div class="col-sm-11"><textarea id="editor" class="form-control" required></textarea> </div>
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <div class="col-sm-5">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-default btn-xs pull-right" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</button>
+                                <a href="#redactarPublicacion" id="toggle" data-toggle="modal" class="btn btn-primary btn-xs">Nueva publicación</a>
                             </div>
-                            <div class="col-sm-2">
-                                <input type="button" class="btn btn-primary btn-sm" onclick="" value="Publicar">
-                            </div>
-                            <div class="col-sm-5">
-                            </div>
-                        </div>
-                        <br>
-                    </form> -->
-                    <form class="form-horizontal">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-10">
-                                <div data-sample="1" id="publicacion"></div>
-                            </div>
-                            <div class="col-sm-1"></div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-5"></div>
-                            <div class="col-sm-2">
-                                <input id="toggle" class="btn btn-primary btn-sm" value="Nueva publicación">
-                                <input id="reset" style="display:none" class="btn btn-warning btn-sm" value="Reestablecer">
-                            </div>
-                            <div class="col-sm-5"></div>
                         </div>
                     </form>
+                    <div class="modal fade" id="redactarPublicacion">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">Publicación</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="social-avatar inline">
+                                        <a href="#"><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
+                                    </div>
+                                    <div data-sample="1" id="publicacion" class="well inline" style="width: 80%"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onClick="savePost()" data-dismiss="modal">Publicar</button>
+                                    <button type="button" class="btn btn-default" id="cerrarPost" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                    <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">Confirmar</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h3 class="text-center">¿Esta seguro que desea eliminar el muro?</h3>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="#" id="deleteWall" class="btn btn-primary primary">Aceptar</a>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <br>
                     <div class="panel blank-panel">
                         <div class="panel-body">
@@ -287,107 +294,39 @@
                 </div>
             </div>
         </div>
+@if(!$agent->isMobile() || !$agent->isTablet())
     </div>
 </div>
+@endif
 <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
-<script type="template" data-sample="1">
-	&lt;script&gt;
-		// The inline editor should be enabled on an element with "contenteditable" attribute set to "true".
-		// Otherwise CKEditor will start in read-only mode.
-		var publicacion = document.getElementById( 'publicacion' );
-		publicacion.setAttribute( 'contenteditable', true );
-
-		CKEDITOR.inline( 'publicacion', {
-			// Allow some non-standard markup that we used in the publicacion.
-			extraAllowedContent: 'a(documentation);abbr[title];code',
-			removePlugins: 'stylescombo',
-			// Show toolbar on startup (optional).
-			startupFocus: true
-		} );
-	&lt;/script&gt;
-</script>
 <script>
-	// Sample: Inline Editing Enabled by Code
 	(function () {
 		var isEditingEnabled,
-				toggle = document.getElementById( 'toggle' ),
-				reset = document.getElementById( 'reset' ),
-				publicacion = document.getElementById( 'publicacion' ),
-				publicacionHTML = publicacion.innerHTML;
+            toggle = document.getElementById( 'toggle' ),
+            publicacion = document.getElementById( 'publicacion' ),
+            publicacionHTML = publicacion.innerHTML;
 
 		function enableEditing() {
 			if ( !CKEDITOR.instances.publicacion ) {
 				CKEDITOR.inline( 'publicacion', {
 					extraAllowedContent: 'a(documentation);abbr[title];code',
-					removePlugins: 'stylescombo',
-					startupFocus: true
+					startupFocus: true,
+                    toolbarGroups: [
+                        {"name":"basicstyles","groups":["basicstyles"]},
+                        {"name":"paragraph","groups":["list"]},
+                        {"name":"insert","groups":["insert"]}
+                    ],
+                    removeButtons: 'Subscript,Superscript,Anchor,Styles,Table,HorizontalRule,SpecialChar'
 				} );
 			}
 		}
 
-		function disableEditing() {
-			if ( CKEDITOR.instances.publicacion )
-				CKEDITOR.instances.publicacion.destroy();
-		}
-
 		function toggleEditor() {
-			if ( isEditingEnabled ) {
-				/*if ( CKEDITOR.instances.introduction && CKEDITOR.instances.introduction.checkDirty() ) {
-					reset.style.display = 'inline';
-				}*/
-                savePost();
-				disableEditing();
-				publicacion.setAttribute( 'contenteditable', false );
-				this.value = 'Nueva publicación';
-				isEditingEnabled = false;
-			}
-			else {
+			if ( !isEditingEnabled ) {
 				publicacion.setAttribute( 'contenteditable', true );
 				enableEditing();
-				this.value = 'Publicar';
 				isEditingEnabled = true;
 			}
-		}
-
-        function savePost() {
-            if (publicacion.innerHTML !== '<p><br></p>') {
-                post = publicacion.innerHTML;
-                publicacion.innerHTML = '';
-                idRecord = $('#idRecord').val();
-                var imagenUsuario = '';
-                imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
-                $.ajax({
-                    url: "/post/store",
-                    data: { 
-                        "table":'walls',
-                        "id_record":idRecord,
-                        "comentario":post,
-                        "type":'Question',
-                        "parent":null,
-                        "_token": "{{ csrf_token() }}"
-                        },
-                    dataType: "json",
-                    method: "POST",
-                    success: function(result)
-                    {
-                        var answer = "\'Answer\'";
-                        var html = '<div class="social-avatar"><a href=""><img alt="image" src="'+imagenUsuario+'"></a></div>\n\
-                        <div class="social-feed-box"><div class="social-avatar"><a href="#">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
-                        <div class="social-body">'+result.body+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="likeDislike(this, '+result.id+')"><i class="fa fa-thumbs-up"></i> <span>Me gusta</span></a><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a>\n\
-                        <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div>';
-                        $('#firstPost').after(html);
-                    },
-                    error: function () {
-                    //alert("fallo");
-                    }
-                    
-                });
-            }
-        }
-
-		function resetContent() {
-			reset.style.display = 'none';
-			publicacion.innerHTML = publicacionHTML;
 		}
 
 		function onClick( element, callback ) {
@@ -400,9 +339,52 @@
 		}
 
 		onClick( toggle, toggleEditor );
-		onClick( reset, resetContent );
 
 	})();
+
+    $('#deleteWall').click(function(){
+        $('#form-delete').submit();
+    });
+
+    $('#cerrarPost').click(function(){
+        publicacion.innerHTML = '';
+    });
+
+    function savePost() {
+        if (publicacion.innerHTML !== '<p><br></p>') {
+            post = publicacion.innerHTML;
+            publicacion.innerHTML = '';
+            idRecord = $('#idRecord').val();
+            var imagenUsuario = '';
+            imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
+            $.ajax({
+                url: "/post/store",
+                data: { 
+                    "table":'walls',
+                    "id_record":idRecord,
+                    "comentario":post,
+                    "type":'Question',
+                    "parent":null,
+                    "_token": "{{ csrf_token() }}"
+                    },
+                dataType: "json",
+                method: "POST",
+                success: function(result)
+                {
+                    var answer = "\'Answer\'";
+                    var html = '<div class="social-avatar"><a href=""><img alt="image" src="'+imagenUsuario+'"></a></div>\n\
+                    <div class="social-feed-box"><div class="social-avatar"><a href="#">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
+                    <div class="social-body">'+result.body+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="likeDislike(this, '+result.id+')"><i class="fa fa-thumbs-up"></i> <span>Me gusta</span></a><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a>\n\
+                    <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div>';
+                    $('#firstPost').after(html);
+                },
+                error: function () {
+                //alert("fallo");
+                }
+                
+            });
+        }
+    }
 </script>
 @endif
 
@@ -453,8 +435,8 @@
                     $('#ultimo_comentario').before(html);
                 } else if (result.type === 'Answer') {
                     var answer = "\'Answer to Answer\'";
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
-                    <div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"> <img alt="image" src="'+imagenUsuario+'"> </a><div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div>';
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Responder</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
+                    <div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"> <img alt="image" src="'+imagenUsuario+'"> </a><div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe una respuesta..."></textarea></div></div></div>';
                     $('#comentario'+result.parent).before(html);
                 } else {
                     var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';

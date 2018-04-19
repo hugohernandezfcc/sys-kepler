@@ -558,6 +558,12 @@ Route::group(['prefix' => 'walls'], function() {
         'as' => 'show'
             ]
     );
+
+    Route::delete('/{wallId}', [
+        'uses' => 'WallsController@destroy',
+        'as' => 'destroy'
+            ]
+    );
 });
 
 Route::group(['prefix' => 'profile'], function() {
