@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@if($typeView != 'view' AND $typeView != 'question')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-6">
         <h2>Foro</h2>
@@ -18,9 +19,9 @@
             </li>
             <li class="active">
                 @if($record->exists)
-                    <strong>Editar pregunta</strong>
+                    <strong>Editar foro</strong>
                 @else
-                    <strong>Crear pregunta</strong>
+                    <strong>Crear foro</strong>
                 @endif
             </li>
             @endif
@@ -30,7 +31,7 @@
     <div class="col-sm-6">
         @if($typeView != 'form')
         <div class="title-action">
-            <a href="/forums/create" class="btn btn-primary btn-sm">Agregar pregunta</a>
+            <a href="/forums/create" class="btn btn-primary btn-sm">Agregar foro</a>
         </div>
 
         @elseif($typeView == 'form')
@@ -40,11 +41,10 @@
                 <i class="fa fa-check"></i> Guardar
             </button>
         </div>
-
-
         @endif
     </div>
 </div>
+@endif
 
 
 
@@ -54,7 +54,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Registra la información <small>pregunta.</small></h5>
+                <h5>Registra la información <small>foro.</small></h5>
                 <div class="ibox-tools">
                     <a href="/forums">
                         Cancelar
@@ -70,10 +70,6 @@
                 <form method="post" action="/forums/store" id="form-create" class="form-horizontal">
                 @endif
                     {{ csrf_field() }}
-                    <div class="form-group"><label class="col-sm-2 control-label">Pregunta</label>
-                        <div class="col-sm-10"><input type="text" name="name" class="form-control" value="{{ $record->name or old('name') }}" required></div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Descripción</label>
                         <div class="col-sm-10"><textarea name="description" class="form-control" required>{{ $record->description or old('descripcion') }}</textarea> </div>
@@ -116,7 +112,7 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Lista de preguntas</h5>
+                    <h5>Lista de foro</h5>
                 </div>
                 <div class="ibox-content">
 
@@ -125,7 +121,7 @@
                             <thead>
                                 <tr>
                                     <th> - </th>
-                                    <th>Pregunta</th>
+                                    <th>Ruta</th>
                                     <th>Descripción</th>
                                     <th>Fecha de creación</th>
                                     <th>Creado por</th>
@@ -137,11 +133,11 @@
 
                                 <tr class="gradeX">
                                     <td> 
-                                        <a href="/forums/show/{{ $rec->id }}" class="btn btn-primary btn-xs">
+                                        <a href="/forums/show/{{ $rec->name }}" class="btn btn-primary btn-xs">
                                             <i class="fa fa-eye"></i>
                                         </a> 
                                     </td>
-                                    <td>{{ $rec->name }}</td>
+                                    <td>{{ asset('/forums/show/'.$rec->name) }}</td>
                                     <td>{{ $rec->description }}</td>
                                     <td>{{ $rec->created_at }}</td>
                                     <td>{{ $rec->user->name }}</td>
@@ -153,7 +149,7 @@
                             <tfoot>
                                 <tr>
                                     <th> - </th>
-                                    <th>Pregunta</th>
+                                    <th>Ruta</th>
                                     <th>Descripción</th>
                                     <th>Fecha de creación</th>
                                     <th>Creado por</th>
@@ -169,127 +165,248 @@
 </div>
 
 @elseif($typeView == 'view')
+<div class="wrapper wrapper-content animated fadeInUp">
+    <div class="ibox">
+        <div class="ibox-content">
+            <form id="form-delete" method="post" action="/forums/{{ $record->id }}">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+                <div class="form-group">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default btn-xs pull-right" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</button>
+                        <a href="#redactarPregunta" id="toggle" data-toggle="modal" class="btn btn-primary btn-xs">Nueva pregunta</a>
+                    </div>
+                </div>
+            </form>
+            <div class="modal fade" id="redactarPregunta">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Formular pregunta</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <form method="post" action="/questionsforums/store" id="form-create" class="form-horizontal">
+                                {{ csrf_field() }}
+                                <input type="hidden" id="idRecord" name="forumId" value="{{ $record->id }}">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Titulo</label>
+                                    <div class="col-sm-10"><input type="text" name="name" class="form-control" required></div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Descripción</label>
+                                    <div class="col-sm-10"><textarea name="body" class="form-control" required></textarea> </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" form="form-create" class="btn btn-primary btn-sm">Publicar</button>
+                            <button type="button" class="btn btn-default" id="cerrarPost" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            @include('layouts._modal_confirmation_delete', ['name' => 'foro'])
+            <br>
+        </div>
+    </div>
+    @foreach($record->questionsforums as $question)
+        @php
+            $cantComments = 0;
+            $lastComment = null;
+            $votes = 0;
+            if(count($comments) > 0) {
+                $aux = $question->itemconversation->where('conversation', '=', $comments[0]['Question']->conversation)->where('name', '=', $question->id)->first();
+                $cantComments = $question->itemconversation->where('parent', '=', $aux->id)->count();
+                $lastComment = $question->itemconversation->where('parent', '=', $aux->id)->orderBy('updated_at', 'desc')->first();
+            }
+            $votes = $question->votes->where('type', '=', 'Positivo')->count() - $question->votes->where('type', '=', 'Negativo')->count();
+        @endphp
+        <div class="vote-item">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="vote-actions">
+                        @if($question->created_by === Auth::user()->id)
+                        <button class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='No puedes votar por tu pregunta'>
+                            <i class="fa fa-chevron-up"> </i>
+                        </button>
+                        @elseif($question->votes->where('type', '=', 'Positivo')->firstwhere('by', '=', Auth::user()->id) === null)
+                        <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" id="Positivo{{$question->id}}" title='Esta pregunta es útil'>
+                            <i class="fa fa-chevron-up"> </i>
+                        </button>
+                        @else
+                        <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='Ya has votado positivamente por esta pregunta'>
+                            <i class="fa fa-chevron-up"> </i>
+                        </button>
+                        @endif
+                        <div><span id="votes{{$question->id}}">{{$votes}}</span></div>
+                        @if($question->created_by === Auth::user()->id)
+                        <button class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='No puedes votar por tu pregunta'>
+                            <i class="fa fa-chevron-down"> </i>
+                        </button>
+                        @elseif($question->votes->where('type', '=', 'Negativo')->firstwhere('by', '=', Auth::user()->id) === null)
+                        <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" id="Negativo{{$question->id}}" title='Esta pregunta no es útil'>
+                            <i class="fa fa-chevron-down"> </i>
+                        </button>
+                        @else
+                        <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='Ya has votado negativamente por esta pregunta'>
+                            <i class="fa fa-chevron-down"> </i>
+                        </button>
+                        @endif
+                    </div>
+                    <a href="/forums/{{$record->name}}/question/{{$question->id}}" class="vote-title">
+                        {{$question->name}}
+                    </a>
+                    <div class="vote-info">
+                        <i class="fa fa-comments-o"></i> <a href="#">Respuestas ({{ $cantComments }})</a>
+                        @if($lastComment !== null)
+                            <i class="fa fa-clock-o"></i> <a href="#">{{ $lastComment->created_at->diffForHumans() }}</a>
+                            <i class="fa fa-user"></i> <a href="#">{{ $lastComment->user->name }}</a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
+@elseif($typeView == 'question')
 <input type="hidden" id="idRecord" value="{{ $record->id }}">
+<input type="hidden" id="idQuestion" value="{{ $question->id }}">
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
         <div class="ibox-content">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="m-b-md">
-                        <a href="/forums" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
-                        <a href="/forums/edit/{{ $record->id }}" class="btn btn-white btn-xs pull-right"> <i class="fa fa-pencil"></i> Editar</a>
-                        <h2>Pregunta: {{$record->name}}</h2>
+                <div class="col-lg-2">
+                    @php
+                        $votes = 0;
+                        $votes = $question->votes->where('type', '=', 'Positivo')->count() - $question->votes->where('type', '=', 'Negativo')->count();
+                    @endphp
+                    <div class="vote-actions">
+                        @if($question->created_by === Auth::user()->id)
+                        <button class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='No puedes votar por tu pregunta'>
+                            <i class="fa fa-chevron-up"> </i>
+                        </button>
+                        @elseif($question->votes->where('type', '=', 'Positivo')->firstwhere('by', '=', Auth::user()->id) === null)
+                        <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" id="Positivo{{$question->id}}" title='Esta pregunta es útil'>
+                            <i class="fa fa-chevron-up"> </i>
+                        </button>
+                        @else
+                        <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='Ya has votado positivamente por esta pregunta'>
+                            <i class="fa fa-chevron-up"> </i>
+                        </button>
+                        @endif
+                        <div><span id="votes{{$question->id}}">{{$votes}}</span></div>
+                        @if($question->created_by === Auth::user()->id)
+                        <button class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='No puedes votar por tu pregunta'>
+                            <i class="fa fa-chevron-down"> </i>
+                        </button>
+                        @elseif($question->votes->where('type', '=', 'Negativo')->firstwhere('by', '=', Auth::user()->id) === null)
+                        <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" id="Negativo{{$question->id}}" title='Esta pregunta no es útil'>
+                            <i class="fa fa-chevron-down"> </i>
+                        </button>
+                        @else
+                        <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='Ya has votado negativamente por esta pregunta'>
+                            <i class="fa fa-chevron-down"> </i>
+                        </button>
+                        @endif
                     </div>
-                    @if($record->created_at->diffInMinutes() < 2)
+                </div>
+                <div class="col-lg-10">
+                    <div class="m-b-md">
+                        <div class="pull-right">
+                            <a href="/forums/show/{{$record->name}}" class="btn btn-white btn-xs"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                        </div>
+                        <h2>{{$question->name}}</h2>
+                    </div>
+                    @if($question->created_at->diffInMinutes() < 5)
                     <dl class="dl-horizontal">
-                        <span class="label label-primary pull-right">Nuevo</span>
+                        <span class="label label-primary pull-right">Nueva</span>
                     </dl>
                     @endif
-                    <h4>Descripción de la pregunta:</h4>
-                    <p>
-                        {{ $record->description }}
-                    </p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-6">
-                    <dl class="dl-horizontal">
-                        <dt>Creado por:</dt> <dd>{{$record->user->name}}</dd>
-                    </dl>
+                <div class="col-lg-1">
                 </div>
-                <div class="col-lg-6" id="cluster_info">
-                    <dl class="dl-horizontal" >
-                        <dt>Modulo:</dt> <dd>{{$record->module->name}}</dd>
-                    </dl>
+                <div class="col-lg-7">
+                    <h4><p>{!! $question->body !!}</p></h4>
+                </div>
+                <div class="col-lg-4">
+                    <div class="pull-right">
+                        <dl class="dl-horizontal">
+                            <dt>Creado por:</dt> <dd>{{$question->user->name}}</dd>
+                            <dt>Creada:</dt> <dd>{{$question->created_at->diffForHumans()}}</dd>
+                            <dd><div class="social-avatar">
+                                <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. $question->user->avatar) }}"></a>
+                            </div></dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
-
-            <div class="row m-t-sm">
-                <div class="col-lg-12">
-                    <div class="panel blank-panel">
-                        <div class="panel-heading">
-                            <div class="panel-options">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#tab-1" data-toggle="tab">Comentarios</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="tab-1">
-                                    <div class="social-feed-separated">
-                                        @foreach ($comments as $conversations)
-                                        <div class="social-avatar">
-                                            <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. $conversations['Question']->user->avatar) }}"></a>
+            <div class="hr-line-dashed"></div>
+            <div class="panel blank-panel">
+                <div class="panel-body">
+                    <div class="social-feed-separated">
+                        @foreach ($comments as $conversations)
+                                
+                            @if (count($conversations['Answer'][0]) > 0)
+                            @foreach ($conversations['Answer'][0] as $itemConversation)
+                                <div class="social-avatar">
+                                    <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
+                                </div>
+                                <div class="social-feed-box">
+                                    <div class="social-avatar">
+                                        <a href="#">{{ $itemConversation->user->name }}</a><small class="text-muted"> - {{ $itemConversation->created_at->diffForHumans() }}</small>
+                                    </div>
+                                    <div class="social-body">
+                                        <p>{{ $itemConversation->name }}</p><br>
+                                        <div class="btn-group">
+                                            <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Responder</a>
                                         </div>
-                                        <div class="social-feed-box">
-                                            <div class="social-avatar">
-                                                <a href="#">{{ $conversations['Question']->user->name }}</a><small class="text-muted"> - {{ $conversations['Question']->created_at->diffForHumans() }}</small>
-                                            </div>
-                                            <div class="social-body">
-                                                <p>{{ $conversations['Question']->name }}</p><br>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $conversations['Question']->id }})"><i class="fa fa-comments"></i> Comentar</a>
+                                    </div>
+                                    <div class="social-footer">
+
+                                        @if (count($itemConversation['AnswerToAnswer']) > 0)
+                                        @foreach ($itemConversation['AnswerToAnswer'] as $itemAnswer)
+                                            <div class="social-comment">
+                                                <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
+                                                <div class="media-body">
+                                                    <a href="#">{{ $itemAnswer->user->name }}</a>  {{ $itemAnswer->name }}<br> - <small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
                                                 </div>
                                             </div>
-                                            <div class="social-footer">
-                                                @if (count($conversations['Answer'][0]) > 0)
-                                                @foreach ($conversations['Answer'][0] as $itemConversation)
-                                                <div class="social-comment">
-                                                    <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
-                                                    <div class="media-body">
-                                                        <a href="#">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }}<br>
-                                                        <div class="btn-group">
-                                                            <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">{{ $itemConversation->created_at->diffForHumans() }}</small>
-                                                        </div>
-                                                    </div>
+                                        @endforeach
+                                        @endif
 
-                                                    @if (count($itemConversation['AnswerToAnswer']) > 0)
-                                                    @foreach ($itemConversation['AnswerToAnswer'] as $itemAnswer)
-                                                    <div class="social-comment">
-                                                        <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
-                                                        <div class="media-body">
-                                                            <a href="#">{{ $itemAnswer->user->name }}</a> {{ $itemAnswer->name }}<br><small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
-                                                        </div>
-                                                    </div>
-                                                    @endforeach
-                                                    @endif
-
-                                                    <div class="social-comment hidden" id="comentario{{ $itemConversation->id }}">
-                                                        <a href="" class="pull-left"> <img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
-                                                        <div class="media-body">
-                                                            <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer to Answer', {{ $itemConversation->id }})" placeholder="Escribe un comentario..."></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                @endforeach
-                                                @endif
-                                                <div class="social-comment hidden" id="comentario{{ $conversations['Question']->id }}">
-                                                    <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
-                                                    <div class="media-body">
-                                                        <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer', {{ $conversations['Question']->id }})" placeholder="Escribe un comentario..."></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="hr-line-dashed"></div>
-
-                                        @endforeach 
-
-                                        <div id='ultimo_comentario'>
-                                            <div class="social-avatar">
-                                                <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
-                                            </div>
+                                        <div class="social-comment hidden" id="comentario{{ $itemConversation->id }}">
+                                            <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
                                             <div class="media-body">
-                                                <textarea class="form-control" onkeypress="pulsar(this, event, 'Question', null)" placeholder="Escribe un comentario..."></textarea>
+                                                <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer to Answer', {{ $itemConversation->id }})" placeholder="Escribe una respuesta..."></textarea>
                                             </div>
                                         </div>
+                                    
+                                    </div>
+                                </div>
+                                @if(!$loop->last)
+                                    <div class="hr-line-dashed"></div>
+                                @endif
+                                @endforeach
+                                @endif
+                            
+                            <div id='ultimo_comentario' class="hr-line-dashed"></div>
+                            <div class="social-avatar">
+                                <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
+                            </div>
+                            <div class="social-feed-box">
+                                <div class="social-footer">
+                                    <div class="media-body">
+                                    <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer', {{ $conversations['Question']->id }})" placeholder="Redacta una respuesta..."></textarea>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -306,6 +423,43 @@
         $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
         $("#side-menu [href='/" + url +"']").parent().addClass('active');
     });
+
+    function vote(option, questionId) {
+        idRecord = $('#idRecord').val();
+        $.ajax({
+            url: "/votes/store",
+            data: { 
+                "option":option,
+                "id_record":idRecord,
+                "questionId":questionId,
+                "_token": "{{ csrf_token() }}"
+                },
+            dataType: "json",
+            method: "POST",
+            success: function(result)
+            {
+                $('#'+option+questionId).prop('disabled', true);
+                if(option === 'Positivo') {
+                    $('#'+option+questionId).prop('title', 'Ya has votado positivamente por esta pregunta');
+                    $('#Negativo'+questionId).prop('disabled', false);
+                    if(result.answer === 'updated') {
+                        $('#Negativo'+questionId).prop('title', 'Esta pregunta no es útil');
+                    }
+                } else {
+                    $('#'+option+questionId).prop('title', 'Ya has votado negativamente por esta pregunta');
+                    $('#Positivo'+questionId).prop('disabled', false);
+                    if(result.answer === 'updated') {
+                        $('#Positivo'+questionId).prop('title', 'Esta pregunta es útil');
+                    }
+                }
+                $('#votes'+questionId).html(result.votes);
+            },
+            error: function () {
+               //alert("fallo");
+            }
+            
+        });
+    }
     
     function pulsar(textarea, e, tipoComentario, idParent) {
         if (e.keyCode === 13 && !e.shiftKey) {
@@ -336,18 +490,13 @@
             method: "POST",
             success: function(result)
             {
-                if (result.type === 'Question') {
-                    var answer = "\'Answer\'";
-                    var html = '<div class="social-avatar"><a href=""><img alt="image" src="'+imagenUsuario+'"></a></div>\n\
+                if (result.type === 'Answer') {
+                    var answer = "\'Answer to Answer\'";
+                    var html = '<div class="hr-line-dashed"></div><div class="social-avatar"><a href=""><img alt="image" src="'+imagenUsuario+'"></a></div>\n\
                     <div class="social-feed-box"><div class="social-avatar"><a href="#">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
                     <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a>\n\
                     <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div>';
                     $('#ultimo_comentario').before(html);
-                } else if (result.type === 'Answer') {
-                    var answer = "\'Answer to Answer\'";
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
-                    <div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"> <img alt="image" src="'+imagenUsuario+'"> </a><div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div>';
-                    $('#comentario'+result.parent).before(html);
                 } else {
                     var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
                     $('#comentario'+result.parent).before(html);

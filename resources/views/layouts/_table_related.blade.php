@@ -3,7 +3,7 @@
         <h5>{{ $title }}</h5>
         <div class="ibox-tools">
             @if($button)
-                <a href="{{ $url }}" class="btn btn-primary btn-xs"> <i class="fa fa-check"></i> Agregar {{ $new }}</a>
+                <a href="{{ $url }}" class="btn btn-primary btn-xs"> <i class="fa fa-plus"></i> Agregar {{ $new }}</a>
             @endif
             <a class="collapse-link">
                 <i class="fa fa-chevron-up"></i>

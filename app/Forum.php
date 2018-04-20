@@ -12,6 +12,10 @@ class Forum extends Model
         'name', 'created_by', 'description', 'module_id',
     ];
 
+    public function questionsforums() {
+        return $this->hasMany('App\QuestionForum', 'forum_id', 'id');
+    }
+
     public function module() {
         return $this->belongsTo('App\Module', 'module_id');
     }

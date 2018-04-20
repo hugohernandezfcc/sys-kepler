@@ -7,6 +7,8 @@ use App\Conversation;
 use App\ItemConversation;
 use App\Module;
 use App\Post;
+use App\Like;
+use Jenssegers\Agent\Agent;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -126,6 +128,7 @@ class WallsController extends Controller
     public function show($wallName) {
         $wall = Wall::where('name', '=', $wallName)->first();
         if($wall) {
+            $agent = new Agent();
             $comments = [];
             $conversation = Conversation::where('table', '=', 'walls')->where('id_record', '=', $wall->id)->orderBy('created_at', 'asc')->get();
             if (count($conversation) > 0) {
@@ -136,9 +139,10 @@ class WallsController extends Controller
             return view('walls', [
                 'typeView' => 'view',
                 'record' => $wall,
-                'comments' => $comments
-            ]
-        );
+                'comments' => $comments,
+                'agent' => $agent
+                ]
+            );
         } else {
             return redirect()->to('login')->with('warning', 'Id de muro no encontrado.');
         }
@@ -183,21 +187,38 @@ class WallsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Wall $wall) {
-        $wall->name = $request->get('name');
-        $wall->description = $request->get('description');
-
-        $wall->save();
+        
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\wall  $wall
+     * @param  \App\wall  $wallId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Wall $wall) {
-        $wall->delete();
+    public function destroy($wallId) {
+        $wall = Wall::find($wallId);
 
-        return redirect()->route('nombre_ruta_destino');
+        //Eliminar las conversaciones asociadas
+        $conversation = Conversation::where('table', '=', 'walls')->where('id_record', '=', $wall->id)->first();
+        $items = $conversation->itemsconversations()->orderBy('created_at', 'desc')->get();
+        foreach ($items as $item) {
+            ItemConversation::destroy($item->id);
+        }
+        Conversation::destroy($conversation->id);
+
+        //Eliminar los Posts y los Likes de cada Post
+        $posts = $wall->posts()->get();
+        foreach ($posts as $post) {
+            $likes = $post->likes()->get();
+            foreach ($likes as $like) {
+                Like::destroy($like->id);
+            }
+            Post::destroy($post->id);
+        }
+        
+        //Finalmente se elimina el Muro
+        Wall::destroy($wall->id);
+        return redirect('/home');
     }
 }
