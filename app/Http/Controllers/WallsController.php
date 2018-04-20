@@ -126,9 +126,9 @@ class WallsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($wallName) {
-        $agent = new Agent();
         $wall = Wall::where('name', '=', $wallName)->first();
         if($wall) {
+            $agent = new Agent();
             $comments = [];
             $conversation = Conversation::where('table', '=', 'walls')->where('id_record', '=', $wall->id)->orderBy('created_at', 'asc')->get();
             if (count($conversation) > 0) {

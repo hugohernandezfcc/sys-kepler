@@ -333,9 +333,15 @@ Route::group(['prefix' => 'forums'], function() {
             ]
     );
 
-    Route::get('/show/{forumId}', [
+    Route::get('/show/{forumName}', [
         'uses' => 'ForumsController@show',
         'as' => 'show'
+            ]
+    );
+
+    Route::get('/{forumName}/question/{questionId}', [
+        'uses' => 'ForumsController@showquestion',
+        'as' => 'showquestion'
             ]
     );
 
@@ -348,6 +354,12 @@ Route::group(['prefix' => 'forums'], function() {
     Route::put('/update', [
         'uses' => 'ForumsController@update',
         'as' => 'update'
+            ]
+    );
+
+    Route::delete('/{forumId}', [
+        'uses' => 'ForumsController@destroy',
+        'as' => 'destroy'
             ]
     );
 });
@@ -469,6 +481,22 @@ Route::group(['prefix' => 'groups'], function() {
 Route::group(['prefix' => 'conversations'], function() {
     Route::post('/store', [
         'uses' => 'ConversationsController@store',
+        'as' => 'store'
+            ]
+    );
+});
+
+Route::group(['prefix' => 'questionsforums'], function() {
+    Route::post('/store', [
+        'uses' => 'QuestionsForumsController@store',
+        'as' => 'store'
+            ]
+    );
+});
+
+Route::group(['prefix' => 'votes'], function() {
+    Route::post('/store', [
+        'uses' => 'VotesController@store',
         'as' => 'store'
             ]
     );
