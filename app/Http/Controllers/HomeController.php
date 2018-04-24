@@ -32,6 +32,7 @@ class HomeController extends Controller
             $records['students'] = count(User::where('type', '=', 'student')->get());
             $records['subjects'] = count(Subject::all());
             $records['groups'] = count(Group::all());
+            $records['users'] = User::get(['name','email','created_at', 'type']);
             return view('home', [
                 'typeView'  => 'list',
                 'records' => $records
