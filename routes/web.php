@@ -486,6 +486,14 @@ Route::group(['prefix' => 'conversations'], function() {
     );
 });
 
+Route::group(['prefix' => 'search'], function() {
+    Route::get('/', [
+        'uses' => 'SearchController@index',
+        'as' => 'index'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'questionsforums'], function() {
     Route::post('/store', [
         'uses' => 'QuestionsForumsController@store',
@@ -584,6 +592,12 @@ Route::group(['prefix' => 'walls'], function() {
     Route::get('/show/{wallName}', [
         'uses' => 'WallsController@show',
         'as' => 'show'
+            ]
+    );
+    
+    Route::get('/{wallName}/detail', [
+        'uses' => 'WallsController@showdetail',
+        'as' => 'showdetail'
             ]
     );
 
