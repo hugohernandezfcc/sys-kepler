@@ -33,8 +33,8 @@ class WallsController extends Controller
         return view('walls', [
             'typeView'  => 'list',
             'records' => Wall::all()
-        ]
-    );
+            ]
+        );
     }
 
     /**
@@ -145,6 +145,32 @@ class WallsController extends Controller
             );
         } else {
             return redirect()->to('login')->with('warning', 'Id de muro no encontrado.');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\wall  $wallName
+     * @return \Illuminate\Http\Response
+     */
+    public function showdetail($wallName) {
+        $wall = Wall::where('name', '=', $wallName)->first();
+        if($wall) {
+           /* foreach ($wall->module->subject->groups as $group){
+                dd($group);
+                foreach ($group->users as $groupUser) {
+                    var_dump($groupUser);
+                }
+            }
+            dd('strop'); */
+            return view('walls', [
+                'typeView'  => 'detail',
+                'record' => $wall
+                ]
+            );
+        } else {
+            return redirect()->to('home')->with('warning', 'Id de muro no encontrado.');
         }
     }
 

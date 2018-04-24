@@ -24,6 +24,13 @@
                     <strong>Crear muro</strong>
                 @endif
             </li>
+            @elseif($typeView == 'detail')
+            <li>
+                Muro de la organización
+            </li>
+            <li class="active">
+                <strong>Usuarios con acceso al muro</strong>
+            </li>
             @endif
 
         </ol>
@@ -122,6 +129,7 @@
                         <table class="table table-striped table-bordered table-hover dataTables-example" >
                             <thead>
                                 <tr>
+                                    <th> - </th>
                                     <th>Ruta</th>
                                     <th>Descripción</th>
                                     <th>Fecha de creación</th>
@@ -129,20 +137,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-
                                 @foreach ($records as $rec)
-
                                 <tr class="gradeX">
+                                    <td> 
+                                        <a href="/walls/{{$rec->name}}/detail" class="btn btn-primary btn-xs">
+                                            <i class="fa fa-eye"></i>
+                                        </a> 
+                                    </td>
                                     <td>{{ asset('/walls/show/'.$rec->name) }}</td>
                                     <td>{{ $rec->description }}</td>
                                     <td>{{ $rec->created_at }}</td>
                                     <td>{{ $rec->user->name }}</td>
                                 </tr>
-
                                 @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th> - </th>
                                     <th>Ruta</th>
                                     <th>Descripción</th>
                                     <th>Fecha de creación</th>
@@ -151,19 +162,17 @@
                             </tfoot>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 @elseif($typeView == 'view')
 <input type="hidden" id="idRecord" value="{{ $record->id }}">
-@if(!$agent->isMobile() || !$agent->isTablet())
-<div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
-@endif
+    @if(!$agent->isMobile() || !$agent->isTablet())
+    <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+    @endif
         <div class="wrapper wrapper-content animated fadeInUp">
             <div class="ibox">
                 <div class="ibox-content">
@@ -294,10 +303,10 @@
                 </div>
             </div>
         </div>
-@if(!$agent->isMobile() || !$agent->isTablet())
+    @if(!$agent->isMobile() || !$agent->isTablet())
+        </div>
     </div>
-</div>
-@endif
+    @endif
 <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
 <script>
 	(function () {
@@ -385,6 +394,81 @@
             });
         }
     }
+</script>
+@elseif($typeView == 'detail')
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <div>
+                        <a href="/walls" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                    </div>
+                    <h5>Lista de usuarios con acceso al muro</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-detail" >
+                            <thead>
+                                <tr>
+                                    <th> Nombre </th>
+                                    <th> Correo </th>
+                                    <th> Tipo de usuario </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php($listUser = [])
+                                @foreach ($record->module->subject->groups as $group)
+                                    @foreach ($group->users as $groupUser)
+                                        @if (!in_array($groupUser->id, $listUser))
+                                            @php($listUser[] = $groupUser->id)
+                                            <tr class="gradeX">
+                                                <td>{{ $groupUser->name }}</td>
+                                                <td><i class="fa fa-envelope"> </i> {{ $groupUser->email }}</td>
+                                                <td>{{ $groupUser->type }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th> Nombre </th>
+                                    <th> Correo </th>
+                                    <th> Tipo de usuario </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.dataTables-detail').DataTable({
+            pageLength: 10,
+            responsive: true,
+            scrollCollapse: true,
+            language: {
+                lengthMenu:   "Mostrar _MENU_ registros por página",
+                zeroRecords:  "No se ha encontrado",
+                info:         "Página _PAGE_ de _PAGES_",
+                infoEmpty:    "Registros no disponibles",
+                search:       "",
+                paginate: {
+                    first:      "Primero",
+                    last:       "Ultimo",
+                    next:       " Siguiente ",
+                    previous:   " Anterior "
+                },
+                infoFiltered: "(filtrando de _MAX_ registros)"
+            }
+        });
+        $('div.dataTables_filter input').addClass('slds-input');
+        $('div.dataTables_filter input').attr("placeholder","Buscar usuario");
+    });
 </script>
 @endif
 

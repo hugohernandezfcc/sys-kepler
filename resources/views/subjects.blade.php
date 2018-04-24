@@ -101,11 +101,142 @@
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
+
+                    <!-- Lista de grupos -->
+                    <div class="input">
+                        <input type="text" placeholder="Buscar grupo " title="Escriba el nombre de un grupo" id="buscar_grupo" onkeyup="buscarGrupo()" class="input form-control">
+                    </div>
+                    <div class="clients-list">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#tab-1" onclick="habilitarDeshabilitarBuscador('tab-1')"><i class="fa fa-group"></i> Grupos</a></li>
+                            <li class=""><a data-toggle="tab" href="#tab-2" onclick="habilitarDeshabilitarBuscador('tab-2')"><i class="fa fa-plus"></i> Agregados</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="tab-1" class="tab-pane active">
+                                <div class="full-height-scroll">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover" id="tabla_grupos">
+                                            <tbody>
+                                                @foreach ($groups as $group)
+                                                    @php
+                                                    $encontrado = false;
+                                                    foreach ($record->groups as $groupSubject) {
+                                                        if($groupSubject->id == $group->id) {
+                                                            $encontrado = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    @endphp
+                                                    @if(!$encontrado)
+                                                    <tr id="{{$group->id}}" name="{{$group->id}}">
+                                                        <td>{{ $group->name }}</td>
+                                                        <td><a class="btn btn-primary btn-xs" onclick="moverGrupo({{$group->id}}, 1)"><i class="fa fa-plus"> </i> Agregar</a></td>
+                                                    </tr>
+                                                    @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tab-2" class="tab-pane">
+                                <div class="full-height-scroll">
+                                    <div class="table-responsive">
+                                        <table id="tabla_agregados" class="table table-striped table-hover">
+                                            <tbody>
+                                            @php($listGroup = [])
+                                                @foreach ($groups as $to)
+                                                    @php($encontrado = false)
+                                                    @foreach ($record->groups as $groupSubject)
+                                                        @if($groupSubject->id == $to->id)
+                                                            @php($encontrado = true)
+                                                            @break
+                                                        @endif
+                                                    @endforeach
+                                                    @if($encontrado)
+                                                        @php($listGroup[] = $to->id)
+                                                        <tr id="{{$to->id}}" name="{{$to->id}}">
+                                                            <td>{{ $to->name }}</td>
+                                                            <td><a class="btn btn-default btn-xs" onclick="moverGrupo({{$to->id}}, 2)"><i class="fa fa-minus"> </i> Remover</a></td>
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
+                                            </tbody> 
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <input name="groups" id="groups" type="hidden">
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    lista_grupos = [];
+    $(function (){
+        trUser = '';
+        @foreach ($listGroup as $groupId)
+            lista_grupos.push({{ $groupId }});
+        @endforeach
+        $('#groups').val(lista_grupos);
+    });
+    
+    function moverGrupo(idGrupo, accion) {
+        trUser = $("#" + idGrupo)[0];
+        if (accion === 1) {
+            lista_grupos.push(idGrupo);
+            $("#"+idGrupo+" td:eq(1)").html('<a class="btn btn-default btn-xs" onclick="moverGrupo(' + idGrupo + ', 2)"><i class="fa fa-minus"> </i> Remover</a>');
+            $("#tabla_grupos tr#" + idGrupo).remove();
+            $("#tabla_agregados").append(trUser);
+        } else {
+            $("#"+idGrupo+" td:eq(1)").html('<a class="btn btn-primary btn-xs" onclick="moverGrupo(' + idGrupo + ', 1)"><i class="fa fa-plus"> </i> Agregar</a>');
+            $("#tabla_agregados tr#" + idGrupo).remove();
+            $("#tabla_grupos").append(trUser);
+            lista_grupos = $.grep(lista_grupos, function(value) {
+                return value != idGrupo;
+            });
+        }
+        $('#groups').val(lista_grupos);
+        if ($("#buscar_grupo").val() !== '') {
+            $("#buscar_grupo").val('');
+            buscarGrupo();
+        }
+    }
+    
+    function habilitarDeshabilitarBuscador(tab) {
+        if (tab === 'tab-1') {
+            $("#buscar_grupo").prop('disabled', false);
+        } else {
+            $("#buscar_grupo").val('');
+            buscarGrupo();
+            $("#buscar_grupo").prop('disabled', true);
+        }
+    }
+    
+    function buscarGrupo() {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("buscar_grupo");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tabla_grupos");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > - 1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
 @elseif($typeView == 'list')
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
@@ -285,9 +416,10 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-2">
-                                    @include('layouts._table_related', ['title' => 'Tarea', 'elements' => $record->tasks, 'nroTable' => '1', 'url' => "/task/create/$record->id", 'new' => 'tarea', 'button' => true])
-                                    @include('layouts._table_related', ['title' => 'Modulos', 'elements' => $record->modules, 'nroTable' => '2', 'url' => "/modules/create/$record->id", 'new' => 'modulo', 'button' => true])
-                                    @include('layouts._table_related', ['title' => 'Examenes', 'elements' => $record->exams, 'nroTable' => '3', 'url' => "/test/create/$record->id", 'new' => 'examen', 'button' => true])
+                                    @include('layouts._table_related', ['title' => 'Grupos', 'elements' => $record->groups, 'nroTable' => '1', 'url' => "", 'new' => 'tarea', 'button' => false])
+                                    @include('layouts._table_related', ['title' => 'Tareas', 'elements' => $record->tasks, 'nroTable' => '2', 'url' => "/task/create/$record->id", 'new' => 'tarea', 'button' => true])
+                                    @include('layouts._table_related', ['title' => 'Modulos', 'elements' => $record->modules, 'nroTable' => '3', 'url' => "/modules/create/$record->id", 'new' => 'modulo', 'button' => true])
+                                    @include('layouts._table_related', ['title' => 'Examenes', 'elements' => $record->exams, 'nroTable' => '4', 'url' => "/test/create/$record->id", 'new' => 'examen', 'button' => true])
                                 </div>
                             </div>
                         </div>

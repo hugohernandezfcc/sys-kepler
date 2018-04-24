@@ -55,7 +55,8 @@ class SubjectsController extends Controller
                 'typeView' => 'form',
                 'record' => $subject,
                 'to_related' => DB::table('areas')->get(),
-                'area' => $area
+                'area' => $area,
+                'groups' => DB::table('groups')->get()
             ]
         );   
     }
@@ -68,15 +69,19 @@ class SubjectsController extends Controller
      */
     public function store(Request $request)
     {
-        $Subject = new Subject();
+        $subject = new Subject();
+        
+        $subject->name = $request->name;
+        $subject->area_id = $request->area_id;
+        $subject->created_by = Auth::id();
 
-        $Subject->name = $request->name;
-        $Subject->area_id = $request->area_id;
-
-        $Subject->created_by = Auth::id();
-
-
-        if($Subject->save()){
+        if($subject->save()){
+            if ($request->groups != null) {
+                $groups = explode(',', $request->groups);
+                foreach ($groups as $group) {
+                    $subject->groups()->attach($group, ['name' => $subject->name, 'created_by' => Auth::id()]);
+                }
+            }
             return redirect('/subjects/show/' . $subject->id);
         }
     }
@@ -138,7 +143,8 @@ class SubjectsController extends Controller
                 'typeView' => 'form',
                 'to_related' => DB::table('areas')->get(),
                 'record' => Subject::find($subjectId),
-                'area' => new Area()
+                'area' => new Area(),
+                'groups' => DB::table('groups')->get()
             ]
         );
     }
@@ -156,6 +162,31 @@ class SubjectsController extends Controller
         $subject->name = $request->name;
         $subject->area_id = $request->area_id;
         if ($subject->update()) {
+            $groupsSelected = ($request->groups !== null ? explode(',', $request->groups) : null);
+            if ($subject->groups !== null) {
+                foreach ($subject->groups as $groupSubject) {
+                    $encontrado = false;
+                    if ($groupsSelected !== null) {
+                        foreach ($groupsSelected as $key => $user) {
+                            if ($user == $groupSubject->id) {
+                                $encontrado = true;
+                                unset($groupsSelected[$key]);
+                                break;
+                            }
+                        }
+                    }
+                    if (!$encontrado) {
+                        $subject->groups()->detach($groupSubject->id);
+                    }
+                }
+            }
+            if ($groupsSelected !== null) {
+                foreach ($groupsSelected as $group) {
+                    if ($group !== '') {
+                        $subject->groups()->attach($group, ['name' => $subject->name, 'created_by' => Auth::id()]);
+                    }
+                }
+            }
             return redirect('/subjects/show/' . $subject->id);
         }
     }

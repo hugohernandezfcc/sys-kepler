@@ -123,7 +123,7 @@
                                     <div class="table-responsive">
                                         <table id="tabla_agregados" class="table table-striped table-hover">
                                             <tbody>
-                                                @php($listUser = '')
+                                                @php($listUser = [])
                                                 @foreach ($to_related as $to)
                                                     @php($encontrado = false)
                                                     @foreach ($record->users as $groupUser)
@@ -133,11 +133,7 @@
                                                         @endif
                                                     @endforeach
                                                     @if($encontrado)
-                                                        @if($loop->last)
-                                                            @php($listUser = $listUser . $to->id)
-                                                        @else
-                                                            @php($listUser = $listUser . $to->id . ',')
-                                                        @endif
+                                                        @php($listUser[] = $to->id)
                                                         <tr id="{{$to->id}}" name="{{$to->id}}">
                                                             <td>{{ $to->name }}</td>
                                                             <td class="contact-type"><i class="fa fa-envelope"> </i></td>
@@ -165,11 +161,9 @@
     lista_usuarios = [];
     $(function (){
         trUser = '';
-        if ('{{$listUser}}' === '') {
-            lista_usuarios = [];
-        } else {
-            lista_usuarios = ['{{$listUser}}'];
-        }
+        @foreach ($listUser as $userId)
+            lista_usuarios.push({{ $userId }});
+        @endforeach
         $('#users').val(lista_usuarios);
     });
     
@@ -184,7 +178,7 @@
             $("#"+idUsuario+" td:eq(3)").html('<a class="btn btn-primary btn-xs" onclick="moverUsuario(' + idUsuario + ', 1)"><i class="fa fa-plus"> </i> Agregar</a>');
             $("#tabla_agregados tr#" + idUsuario).remove();
             $("#tabla_usuarios").append(trUser);
-            lista_usuarios = jQuery.grep(lista_usuarios, function(value) {
+            lista_usuarios = $.grep(lista_usuarios, function(value) {
                 return value != idUsuario;
             });
         }
@@ -224,34 +218,34 @@
 @elseif($typeView == 'list')
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        @foreach ($records as $rec)
+    @foreach ($records as $key => $rec)
+        @if($key%3 == 0)
+            @if(!$loop->first)
+                </div>
+            @endif
+        <div class="row row-eq-height">
+        @endif
         <div class="col-lg-4">
             <div class="ibox">
                 <div class="ibox-title">
                     @if($rec->created_at->diffInMinutes() < 2)
                         <span class="label label-primary pull-right">Nuevo</span>
                     @endif
-                    <h5 class="cortar"><a href="/groups/show/{{ $rec->id }}" >
-                            {{ $rec->name }}
-                        </a></h5>
+                    <h5 class="cortar"><a href="/groups/show/{{ $rec->id }}" >{{ $rec->name }}</a></h5>
                 </div>
                 <div class="ibox-content">
                     <div class="team-members">
                         @foreach ($rec->users as $groupUser)
-                        <a href="#"><img title="{{ $groupUser->name }}" alt="member" class="img-circle" src="{{ asset('uploads/avatars/'. $groupUser->avatar) }}"> </a>
+                            @if($groupUser->type == 'master')
+                            <a href="#"><img title="{{ $groupUser->name }}" alt="member" class="img-circle" src="{{ asset('uploads/avatars/'. $groupUser->avatar) }}"> </a>
+                            @endif
                         @endforeach
                     </div>
+                    <div>
                     <h4>Descripción del grupo:</h4>
                     <p>
                         {{ $rec->description }}
                     </p>
-                    <div>
-                        <span>Progreso del curso:</span>
-                        <div class="stat-percent">48%</div>
-                        <div class="progress progress-mini">
-                            <div style="width: 48%;" class="progress-bar"></div>
-                        </div>
                     </div>
                     <div class="row  m-t-sm">
                         <div class="col-sm-4">
@@ -270,8 +264,10 @@
                 </div>
             </div>
         </div>
+        @if($loop->last)
+        </div>
+        @endif
         @endforeach
-    </div>
 </div>
 
 @elseif($typeView == 'view')
@@ -440,8 +436,9 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="tab-3">
-                                    @include('layouts._table_related', ['title' => 'Tareas asignadas', 'elements' => $record->tasks, 'nroTable' => '1', 'url' => "/task/create", 'new' => 'tarea', 'button' => false])
-                                    @include('layouts._table_related', ['title' => 'Examenes asignados', 'elements' => $record->exams, 'nroTable' => '2', 'url' => "/test/create", 'new' => 'examen', 'button' => false])
+                                    @include('layouts._table_related', ['title' => 'Asignaturas', 'elements' => $record->subjects, 'nroTable' => '1', 'url' => "", 'new' => 'asignatura', 'button' => false])
+                                    @include('layouts._table_related', ['title' => 'Tareas asignadas', 'elements' => $record->tasks, 'nroTable' => '2', 'url' => "", 'new' => 'tarea', 'button' => false])
+                                    @include('layouts._table_related', ['title' => 'Examenes asignados', 'elements' => $record->exams, 'nroTable' => '3', 'url' => "", 'new' => 'examen', 'button' => false])
                                 </div>
                             </div>
                         </div>
