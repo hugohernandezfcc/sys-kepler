@@ -105,7 +105,7 @@ class ForumsController extends Controller
                     'typeView' => 'view',
                     'record' => $forum,
                     'comments' => $comments,
-                    'questionsForums' => collect($auxQuestions)
+                    'questionsForums' => collect($auxQuestions)->sortByDesc('cantVotes')
                 ]
             );
         } else {

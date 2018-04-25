@@ -214,7 +214,7 @@
         </div>
     </div>
 
-    @foreach($questionsForums->sortByDesc('cantVotes') as $question)
+    @foreach($questionsForums as $question)
         @php
             $cantComments = 0;
             $lastComment = null;
