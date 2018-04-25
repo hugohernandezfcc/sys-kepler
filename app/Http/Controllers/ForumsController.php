@@ -94,19 +94,22 @@ class ForumsController extends Controller
 
                 $comments = $this->obtenerComentarios($questions, $conversation);
             }
-            /*dd($comments);
+            $auxQuestions = [];
             foreach($forum->questionsforums as $question) {
-                $aux = $question->itemconversation->where('conversation', '=', 17)->where('name', '=', $question->id)->first();
-                $question->itemconversation->where('parent', '=', $aux->id)->count();
-            }*/
+                $votes = 0;
+                $votes = $question->votes->where('type', '=', 'Positivo')->count() - $question->votes->where('type', '=', 'Negativo')->count();
+                $question->cantVotes = $votes;
+                $auxQuestions[] = $question;
+            }
             return view('forums', [
                     'typeView' => 'view',
                     'record' => $forum,
-                    'comments' => $comments
+                    'comments' => $comments,
+                    'questionsForums' => collect($auxQuestions)
                 ]
             );
         } else {
-            return redirect()->to('login')->with('warning', 'Id de foro no encontrado.');
+            return redirect()->to('home')->with('warning', 'Id de foro no encontrado.');
         }
     }
 
