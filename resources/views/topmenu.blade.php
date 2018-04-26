@@ -1,11 +1,11 @@
 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-        <form role="search" class="navbar-form-custom" action="search_results.html">
+        <div role="form" class="navbar-form-custom">
             <div class="form-group">
-                <input type="text" placeholder="¿Buscas algo?" class="form-control" name="top-search" id="top-search">
+                <input type="text" placeholder="¿Buscas algo?" onkeypress="globalSearch(event)" class="form-control input-sm" name="topSearch" id="topSearch">
             </div>
-        </form>
+        </div>
     </div>
     <ul class="nav navbar-top-links navbar-right">
         <li>
