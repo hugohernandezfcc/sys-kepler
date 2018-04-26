@@ -181,7 +181,6 @@
                         {{ method_field('DELETE') }}
                         <div class="form-group">
                             <div class="pull-right">
-                                <button type="button" class="btn btn-default btn-xs pull-right" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</button>
                                 <a href="#redactarPublicacion" id="toggle" data-toggle="modal" class="btn btn-primary btn-xs">Nueva publicación</a>
                             </div>
                         </div>
@@ -206,23 +205,6 @@
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
-                    <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h4 class="modal-title">Confirmar</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <h3 class="text-center">¿Esta seguro que desea eliminar el muro?</h3>
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="#" id="deleteWall" class="btn btn-primary primary">Aceptar</a>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <br>
                     <div class="panel blank-panel">
                         <div class="panel-body">
@@ -402,6 +384,7 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <div>
+                        <button type="button" class="btn btn-default btn-xs pull-right" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</button>
                         <a href="/walls" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
                     </div>
                     <h5>Lista de usuarios con acceso al muro</h5>
@@ -440,6 +423,7 @@
                             </tfoot>
                         </table>
                     </div>
+                    @include('layouts._modal_confirmation_delete', ['name' => 'muro'])
                 </div>
             </div>
         </div>
