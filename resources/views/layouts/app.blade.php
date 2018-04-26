@@ -144,7 +144,7 @@
                     success: function(result)
                     {
                         var globalResult = result.globalResult;
-                        if (globalResult.lenght > 0) {
+                        if (!$.isEmptyObject(globalResult)) {
                             for (var clave in globalResult){
                                 if (globalResult.hasOwnProperty(clave)) {
                                     var fCreated = new Date(globalResult[clave].created_at);
