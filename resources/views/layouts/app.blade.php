@@ -34,6 +34,8 @@
 
                 @yield('content')
 
+                @include('layouts._modal_global_search')
+
                 <!-- @include('footer') -->
             </div>
         </div>
@@ -105,7 +107,63 @@
                     $("#side-menu [href='/profile/inscriptions']").parent().addClass('active');
                 }
             }
+            $("#topSearch").focus(function(){
+                $(this).css("border", "1px solid green");
+            });
+            
+            $("#topSearch").focusout(function(){
+                if($(this).val() == '') {
+                    $(this).css("border", "");
+                }
+            });
+
+            $("#resultSearch").on('hidden.bs.modal', function () {
+                $('#resultSearch div.one-result').remove();
+            });
         });
+
+        function globalSearch(e) {
+            if (e.keyCode === 13 && !e.shiftKey) {
+                e.preventDefault();
+                var search = $('#topSearch').val();
+                if (search !== '') {
+                    $('#topSearch').val('');
+                    busqueda(search);
+                }
+            }
+
+            function busqueda(search) {
+                $.ajax({
+                    url: "/home/search",
+                    data: { 
+                        "search":search,
+                        "_token": "{{ csrf_token() }}"
+                        },
+                    dataType: "json",
+                    method: "POST",
+                    success: function(result)
+                    {
+                        var globalResult = result.globalResult;
+                        for (var clave in globalResult){
+                            if (globalResult.hasOwnProperty(clave)) {
+                                var fCreated = new Date(globalResult[clave].created_at);
+                                var fUpdated = new Date(globalResult[clave].updated_at);
+                                var dateCreated = fCreated.getDate() + '-' + (fCreated.getMonth()+1) + '-' + fCreated.getFullYear();
+                                var dateUpdated = fUpdated.getDate() + '-' + (fUpdated.getMonth()+1) + '-' + fUpdated.getFullYear();
+                                var html = '<div class="row one-result"><div class="col-lg-12"><div class="ibox collapsed"><div class="ibox-title"><h5>' + globalResult[clave].name + '</h5><div class="ibox-tools"><a class="collapse-link">\n\
+                                    <i class="fa fa-chevron-up"></i></a></div></div><div class="ibox-content"><div class="col-lg-3"><strong>Creado:</strong> ' + dateCreated + '</div><div class="col-lg-3">\n\
+                                    <strong>Actualizado:</strong> ' + dateUpdated + '</div><div class="col-lg-6"><strong>Creado por:</strong> ' + globalResult[clave].created_by + '</div></div></div></div></div>';
+                                $('#contentSearch').after(html);
+                            }
+                        }
+                        $('#resultSearch').modal('show');
+                    },
+                    error: function () {
+                        //alert("fallo");
+                    }
+                });
+            }
+        }
         
         var data2 = [
                 [gd(2012, 1, 1), 7], [gd(2012, 1, 2), 6], [gd(2012, 1, 3), 4], [gd(2012, 1, 4), 8],

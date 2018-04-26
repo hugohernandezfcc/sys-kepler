@@ -213,17 +213,16 @@
             <br>
         </div>
     </div>
-    @foreach($record->questionsforums as $question)
+
+    @foreach($questionsForums as $question)
         @php
             $cantComments = 0;
             $lastComment = null;
-            $votes = 0;
             if(count($comments) > 0) {
                 $aux = $question->itemconversation->where('conversation', '=', $comments[0]['Question']->conversation)->where('name', '=', $question->id)->first();
                 $cantComments = $question->itemconversation->where('parent', '=', $aux->id)->count();
                 $lastComment = $question->itemconversation->where('parent', '=', $aux->id)->orderBy('updated_at', 'desc')->first();
             }
-            $votes = $question->votes->where('type', '=', 'Positivo')->count() - $question->votes->where('type', '=', 'Negativo')->count();
         @endphp
         <div class="vote-item">
             <div class="row">
@@ -242,7 +241,7 @@
                             <i class="fa fa-chevron-up"> </i>
                         </button>
                         @endif
-                        <div><span id="votes{{$question->id}}">{{$votes}}</span></div>
+                        <div><span id="votes{{$question->id}}">{{$question->cantVotes}}</span></div>
                         @if($question->created_by === Auth::user()->id)
                         <button class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='No puedes votar por tu pregunta'>
                             <i class="fa fa-chevron-down"> </i>

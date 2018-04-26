@@ -27,7 +27,20 @@ Route::group(['prefix' => 'register'], function() {
 Auth::routes();
 Route::redirect('/', '/login', 301);
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'home'], function() {
+    Route::get('/', [
+        'uses' => 'HomeController@index',
+        'as' => 'index'
+        ]
+    )->name('home');
+    
+    Route::post('/search', [
+        'uses' => 'HomeController@search',
+        'as' => 'search'
+        ]
+    );
+});
 
 
 Route::group(['prefix' => 'cyclescontrol'], function() {
@@ -482,14 +495,6 @@ Route::group(['prefix' => 'conversations'], function() {
     Route::post('/store', [
         'uses' => 'ConversationsController@store',
         'as' => 'store'
-            ]
-    );
-});
-
-Route::group(['prefix' => 'search'], function() {
-    Route::get('/', [
-        'uses' => 'SearchController@index',
-        'as' => 'index'
             ]
     );
 });
