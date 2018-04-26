@@ -144,17 +144,22 @@
                     success: function(result)
                     {
                         var globalResult = result.globalResult;
-                        for (var clave in globalResult){
-                            if (globalResult.hasOwnProperty(clave)) {
-                                var fCreated = new Date(globalResult[clave].created_at);
-                                var fUpdated = new Date(globalResult[clave].updated_at);
-                                var dateCreated = fCreated.getDate() + '-' + (fCreated.getMonth()+1) + '-' + fCreated.getFullYear();
-                                var dateUpdated = fUpdated.getDate() + '-' + (fUpdated.getMonth()+1) + '-' + fUpdated.getFullYear();
-                                var html = '<div class="row one-result"><div class="col-lg-12"><div class="ibox collapsed"><div class="ibox-title"><h5>' + globalResult[clave].name + '</h5><div class="ibox-tools"><a class="collapse-link">\n\
-                                    <i class="fa fa-chevron-up"></i></a></div></div><div class="ibox-content"><div class="col-lg-3"><strong>Creado:</strong> ' + dateCreated + '</div><div class="col-lg-3">\n\
-                                    <strong>Actualizado:</strong> ' + dateUpdated + '</div><div class="col-lg-6"><strong>Creado por:</strong> ' + globalResult[clave].created_by + '</div></div></div></div></div>';
-                                $('#contentSearch').after(html);
+                        if (globalResult.lenght > 0) {
+                            for (var clave in globalResult){
+                                if (globalResult.hasOwnProperty(clave)) {
+                                    var fCreated = new Date(globalResult[clave].created_at);
+                                    var fUpdated = new Date(globalResult[clave].updated_at);
+                                    var dateCreated = fCreated.getDate() + '-' + (fCreated.getMonth()+1) + '-' + fCreated.getFullYear();
+                                    var dateUpdated = fUpdated.getDate() + '-' + (fUpdated.getMonth()+1) + '-' + fUpdated.getFullYear();
+                                    var html = '<div class="row one-result"><div class="col-lg-12"><div class="ibox collapsed"><div class="ibox-title"><h5>' + globalResult[clave].name + '</h5><div class="ibox-tools"><a class="collapse-link">\n\
+                                        <i class="fa fa-chevron-up"></i></a></div></div><div class="ibox-content"><div class="col-lg-3"><strong>Creado:</strong> ' + dateCreated + '</div><div class="col-lg-3">\n\
+                                        <strong>Actualizado:</strong> ' + dateUpdated + '</div><div class="col-lg-6"><strong>Creado por:</strong> ' + globalResult[clave].created_by + '</div></div></div></div></div>';
+                                    $('#contentSearch').after(html);
+                                }
                             }
+                        } else {
+                            var html = '<div class="row one-result"><div class="col-lg-12"><div class="ibox collapsed"><div class="ibox-title"><h5> No hay resultados para la busqueda "' + search + '"</h5></div></div></div></div>';
+                            $('#contentSearch').after(html);
                         }
                         $('#resultSearch').modal('show');
                     },

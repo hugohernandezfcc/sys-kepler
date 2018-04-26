@@ -176,15 +176,11 @@
         <div class="wrapper wrapper-content animated fadeInUp">
             <div class="ibox">
                 <div class="ibox-content">
-                    <form id="form-delete" method="post" action="/walls/{{ $record->id }}">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                        <div class="form-group">
-                            <div class="pull-right">
-                                <a href="#redactarPublicacion" id="toggle" data-toggle="modal" class="btn btn-primary btn-xs">Nueva publicación</a>
-                            </div>
+                    <div class="ibox-tools">
+                        <div class="pull-right">
+                            <a href="#redactarPublicacion" id="toggle" data-toggle="modal" class="btn btn-primary btn-xs">Nueva publicación</a>
                         </div>
-                    </form>
+                    </div>
                     <div class="modal fade" id="redactarPublicacion">
                         <div class="modal-dialog modal-md">
                             <div class="modal-content">
@@ -383,11 +379,17 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <div>
-                        <button type="button" class="btn btn-default btn-xs pull-right" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</button>
-                        <a href="/walls" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
-                    </div>
                     <h5>Lista de usuarios con acceso al muro</h5>
+                    <div class="ibox-tools">
+                        <form id="form-delete" method="post" action="/walls/{{ $record->id }}">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-default btn-xs pull-right" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</button>
+                                <a href="/walls" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="ibox-content">
                     <div class="table-responsive">
