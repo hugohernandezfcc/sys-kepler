@@ -161,6 +161,7 @@ class SubjectsController extends Controller
         $subject = Subject::find($request->idRecord);
         $subject->name = $request->name;
         $subject->area_id = $request->area_id;
+        $subject->touch();
         if ($subject->update()) {
             $groupsSelected = ($request->groups !== null ? explode(',', $request->groups) : null);
             if ($subject->groups !== null) {

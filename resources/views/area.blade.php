@@ -195,14 +195,14 @@
             <div class="row">
                 <div class="col-lg-5">
                     <dl class="dl-horizontal">
-
+                        <dt>Ciclo escolar:</dt> <dd> {{ $record->schoolcycle->name }} </dd>
                         <dt>Creado por:</dt> <dd>{{$record->user->name}}</dd>
-                        <dt>Entidad:</dt> <dd><a href="#" class="text-navy"> UAEH</a> </dd>
                     </dl>
                 </div>
                 <div class="col-lg-7" id="cluster_info">
                     <dl class="dl-horizontal" >
-                        <dt>Descripción:</dt> <dd>{{$record->description}}</dd>
+                        <dt>Creación:</dt> <dd>{{ $record->created_at->format('d-m-Y') }}</dd>
+                        <dt>Actualización:</dt> <dd>{{ $record->updated_at->format('d-m-Y') }}</dd>
                     </dl>
                 </div>
             </div>
