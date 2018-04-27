@@ -298,13 +298,13 @@
                     <dl class="dl-horizontal">
                         <dt>Creado por:</dt> <dd>{{$record->user->name}}</dd>
                         <dt>Número de participantes:</dt> <dd>  {{count($record->users)}}</dd>
-                        <dt>Entidad:</dt> <dd><a href="#" class="text-navy"> UAEH</a> </dd>
+                        <dt></dt> <dd></dd>
                     </dl>
                 </div>
                 <div class="col-lg-7" id="cluster_info">
                     <dl class="dl-horizontal" >
-                        <dt>Inicia:</dt> <dd>
-                        <dt>Termina:</dt> <dd>
+                        <dt>Creación:</dt> <dd>{{ $record->created_at->format('d-m-Y') }}</dd>
+                        <dt>Actualización:</dt> <dd>{{ $record->updated_at->format('d-m-Y') }}</dd>
                         <dt>Participantes:</dt>
                         <dd class="project-people">
                             @foreach ($record->users as $groupUser)

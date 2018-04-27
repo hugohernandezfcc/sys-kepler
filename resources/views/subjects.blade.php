@@ -309,23 +309,19 @@
                         <span class="label label-primary pull-right">Nuevo</span>
                     </dl>
                     @endif
-                    <h4>Descripción de la asignatura:</h4>
-                    <p>
-                        {{ $record->description }}
-                    </p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-5">
                     <dl class="dl-horizontal">
-
+                        <dt>Area:</dt> <dd>{{ $record->area->name }}</dd>
                         <dt>Creado por:</dt> <dd>{{$record->user->name}}</dd>
-                        <dt>Entidad:</dt> <dd><a href="#" class="text-navy"> UAEH</a> </dd>
                     </dl>
                 </div>
                 <div class="col-lg-7" id="cluster_info">
                     <dl class="dl-horizontal" >
-                        <dt>Descripción:</dt> <dd>{{$record->description}}</dd>
+                        <dt>Creación:</dt> <dd>{{ $record->created_at->format('d-m-Y') }}</dd>
+                        <dt>Actualización:</dt> <dd>{{ $record->updated_at->format('d-m-Y') }}</dd>
                     </dl>
                 </div>
             </div>

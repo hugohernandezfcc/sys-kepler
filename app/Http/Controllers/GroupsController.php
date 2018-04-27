@@ -164,6 +164,7 @@ class GroupsController extends Controller
         $group = Group::find($request->idRecord);
         $group->name = $request->name;
         $group->description = $request->description;
+        $group->touch();
         if ($group->update()) {
             $usersSelected = ($request->users !== null ? explode(',', $request->users) : null);
             if ($group->users !== null) {

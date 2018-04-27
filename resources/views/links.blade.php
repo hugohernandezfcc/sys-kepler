@@ -207,12 +207,14 @@
             <div class="row">
                 <div class="col-lg-6">
                     <dl class="dl-horizontal">
+                        <dt>Modulo:</dt> <dd>{{$record->module->name}}</dd>
                         <dt>Creado por:</dt> <dd>{{$record->user->name}}</dd>
                     </dl>
                 </div>
                 <div class="col-lg-6" id="cluster_info">
                     <dl class="dl-horizontal" >
-                        <dt>Modulo:</dt> <dd>{{$record->module->name}}</dd>
+                        <dt>Creación:</dt> <dd>{{ $record->created_at->format('d-m-Y') }}</dd>
+                        <dt>Actualización:</dt> <dd>{{ $record->updated_at->format('d-m-Y') }}</dd>
                     </dl>
                 </div>
             </div>

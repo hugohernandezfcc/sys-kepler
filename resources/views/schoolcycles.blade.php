@@ -223,8 +223,8 @@
                 <div class="col-lg-5">
                     <dl class="dl-horizontal">
                         <dt>Creado por:</dt> <dd>{{$record->user->name}}</dd>
-                        <dt>Número de participantes:</dt> <dd>  </dd>
-                        <dt>Entidad:</dt> <dd><a href="#" class="text-navy"> UAEH</a> </dd>
+                        <dt>Creación:</dt> <dd>{{ $record->created_at->format('d-m-Y') }}</dd>
+                        <dt>Actualización:</dt> <dd>{{ $record->updated_at->format('d-m-Y') }}</dd>
                     </dl>
                 </div>
                 <div class="col-lg-7" id="cluster_info">
