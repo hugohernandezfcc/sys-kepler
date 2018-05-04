@@ -17,7 +17,7 @@
                 Perfil
             </li>
             <li class="active">
-                <strong>Editar perfil</strong>
+                <strong>Editar datos de perfil</strong>
             </li>
             @elseif($typeView == 'list')
             <li>
@@ -36,7 +36,7 @@
             @if (Auth::user()->type == "admin")
                 <a href="/configurations/create" class="btn btn-primary btn-sm">Agregar columna tabla Users</a>
             @endif
-            <a href="/profile/edit" class="btn btn-primary btn-sm">Editar perfil</a>
+            <a href="/profile/edit" class="btn btn-primary btn-sm">Editar mis datos</a>
         </div>
 
         @elseif($typeView == 'form')
@@ -84,23 +84,6 @@
                     <div class="form-group"><label class="col-sm-2 control-label">Correo</label>
 
                         <div class="col-sm-10"><input type="text" name="email" value="{{ Auth::user()->email }}" disabled="true" class="form-control"></div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group"><label class="col-sm-2 control-label">Imagen de perfil</label>
-                        <div class="col-sm-10">
-                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                <div class="form-control" data-trigger="fileinput">
-                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                    <span class="fileinput-filename"></span>
-                                </div>
-                                <span class="input-group-addon btn btn-default btn-file">
-                                    <span class="fileinput-new">Seleccionar imagen</span>
-                                    <span class="fileinput-exists">Cambiar</span>
-                                    <input type="file" name="avatar" />
-                                </span>
-                                <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
-                            </div>
-                        </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     @foreach ($camposUsers as $column)
@@ -183,7 +166,10 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="m-b-md">
-                                <img src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" alt="image" class="img-circle" width="10%">
+                                <div class="btn-group">
+                                    <img id="profileImage" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" alt="image" class="img-circle" width="40%"><br>
+                                    <a href="#" class="btn btn-primary btn-xs" data-target="#modal" data-toggle="modal">Cambiar imagen</a>
+                                </div>
                                 <h2>Nombre y apellido: {{Auth::user()->name}}</h2>
                                 @foreach ($camposUsers as $column)
                                     @php($valorCampo = $column->name)
@@ -200,10 +186,118 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabel">Cambiar imagen de perfil</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="img-container">
+                                    <img id="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" alt="Picture">
+                                    <div class="btn-group">
+                                        <label title="Subir imagen" for="inputImage" class="btn btn-primary">
+                                            <input type="file" accept="image/*" name="file" id="inputImage" name="inputImage" class="hide">
+                                            Subir nueva imagen
+                                        </label>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="saveImageCrop">Guardar Imagen</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        var $image = document.getElementById('image');
+        var cropBoxData;
+        var canvasData;
+        var cropper;
+        $('#modal').on('shown.bs.modal', function () {
+            cropper = new Cropper($image, {
+                autoCropArea: 0.5,
+                aspectRatio: 1,
+                ready: function () {
+                    // Strict mode: set crop box data first
+                    cropper.setCropBoxData(cropBoxData).setCanvasData(canvasData);
+                }
+            });
+            var $inputImage = $("#inputImage");
+            if (window.FileReader) {
+                $inputImage.change(function() {
+
+                    var fileReader = new FileReader(),
+                            files = this.files,
+                            file;
+
+                    if (!files.length) {
+                        return;
+                    }
+
+                    file = files[0];
+
+                    if (/^image\/\w+$/.test(file.type)) {
+                        fileReader.readAsDataURL(file);
+                        fileReader.onload = function () {
+                            $inputImage.val("");
+                            cropper.reset().replace(this.result);
+                        };
+                    } else {
+                        showMessage("Please choose an image file.");
+                    }
+                });
+            } else {
+                $inputImage.addClass("hide");
+            }
+        }).on('hidden.bs.modal', function () {
+            cropBoxData = cropper.getCropBoxData();
+            canvasData = cropper.getCanvasData();
+            cropper.destroy();
+        });
+        $('#saveImageCrop').on('click', function () {
+            $('#modal .btn-primary').attr('disabled', true);
+            // Upload cropped image to server if the browser supports `HTMLCanvasElement.toBlob`
+            cropper.getCroppedCanvas().toBlob(function (blob) {
+                var formData = new FormData();
+
+                formData.append('avatar', blob);
+                formData.append('_token', "{{ csrf_token() }}");
+
+                // Use `jQuery.ajax` method
+                $.ajax('/profile/saveImage', {
+                method: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    $('#leftAvatar').attr("src", result.ruta);
+                    $('#profileImage').attr("src", result.ruta);
+                    $('#image').attr("src", result.ruta);
+                    $('#modal .btn-primary').attr('disabled', false);
+                    $('#modal').modal("hide");
+                },
+                error: function () {
+                    console.log('Upload error');
+                }
+                });
+            });
+        });
+    });
+</script>
+
 @endif
 @endsection

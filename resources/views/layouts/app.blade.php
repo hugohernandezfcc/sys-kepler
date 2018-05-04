@@ -21,6 +21,7 @@
     <link href="{{ asset('inspinia/css/plugins/jasny/jasny-bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/plugins/dualListbox/bootstrap-duallistbox.min.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}" rel="stylesheet">
+    <link href="{{ asset('inspinia/css/plugins/cropperjs/cropper.min.css')}}" rel="stylesheet">
     <script src="{{ asset('inspinia/js/jquery-3.1.1.min.js') }}"></script>
 </head>
 
@@ -90,6 +91,11 @@
 
     <!-- Select2 -->
     <script src="{{ asset('inspinia/js/plugins/select2/select2.full.min.js') }}"></script>
+
+    <!-- Image cropper -->
+    <script src="{{ asset('inspinia/js/plugins/cropperjs/cropper.min.js') }}"></script>
+    <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
+    <script src="{{ asset('inspinia/js/plugins/cropperjs/jquery-cropper.js') }}"></script>
 
     <script type="text/javascript">
         $(function () {

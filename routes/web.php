@@ -643,6 +643,12 @@ Route::group(['prefix' => 'profile'], function() {
         'as' => 'update'
             ]
     );
+
+    Route::post('/saveImage', [
+        'uses' => 'UsersController@storeImage',
+        'as' => 'storeImage'
+            ]
+    );
 });
 
 Route::group(['prefix' => 'results'], function() {
