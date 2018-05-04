@@ -93,14 +93,45 @@ class UsersController extends Controller {
             $user->avatar = $filename;
         }
         
-        /*$auxCamposUsers = Schema::getColumnListing('users');
-        for ($i=9; $i<count($auxCamposUsers); ++$i) {
-            $campo = $auxCamposUsers[$i];
-            $user->$campo = $request->$campo;
-        }*/
+        $auxCamposUsers = $this->camposUsers();
+        foreach ($auxCamposUsers as $column) {
+            $valorCampo = $column->name;
+            $user->$valorCampo = $request->$valorCampo;
+        }
 
         if ($user->update()) {
             return redirect('/profile');
+        }
+    }
+
+    
+    /**
+     * storeImage a new Image.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeImage(Request $request) {
+        if ($request->hasFile('avatar')) {
+            $user = Auth::user();
+
+            $avatar = $request->file('avatar');
+            $filename = $user->id . '.png';
+            // Delete current image before uploading new image
+            if ($user->avatar !== 'default.jpg') {
+                $file = public_path('uploads/avatars/' . $user->avatar);
+                if (File::exists($file)) {
+                    unlink($file);
+                }
+            }
+            Image::make($avatar)->resize(300, 300)->save(public_path('/uploads/avatars/' . $filename));
+
+            $user->avatar = $filename;
+            if ($user->update()) {
+                return response()->json(['state'   => 200,
+                'message' => 'success',
+                'ruta' => asset("uploads/avatars/". Auth::user()->avatar)]);
+            }
         }
     }
     

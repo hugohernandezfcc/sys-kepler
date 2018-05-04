@@ -75,7 +75,7 @@ class AccessToController extends Controller
      */
     public function edit(AccessTo $accessTo)
     {
-        return view('nombre_vista')->with(['accessTo', $accessTo])
+        return view('nombre_vista')->with(['accessTo', $accessTo]);
     }
 
     /**
