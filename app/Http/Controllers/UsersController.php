@@ -130,7 +130,7 @@ class UsersController extends Controller {
             if ($user->update()) {
                 return response()->json(['state'   => 200,
                 'message' => 'success',
-                'ruta' => asset("uploads/avatars/". Auth::user()->avatar)]);
+                'ruta' => asset("uploads/avatars/". $user->avatar)]);
             }
         }
     }
