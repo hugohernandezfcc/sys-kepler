@@ -75,7 +75,7 @@ class SchoolCyclesController extends Controller
 
 
         if($SchoolCycle->save()){
-            return redirect('/cyclescontrol/show/' . $SchoolCycle->id);
+            return redirect('/courses/show/' . $SchoolCycle->id);
         }
     }
 
@@ -154,7 +154,7 @@ class SchoolCyclesController extends Controller
         $schoolCycle->start = $request->start;
         $schoolCycle->end = $request->end;
         if ($schoolCycle->update()) {
-            return redirect('/cyclescontrol/show/' . $schoolCycle->id);
+            return redirect('/courses/show/' . $schoolCycle->id);
         }
     }
 

@@ -2,35 +2,35 @@
 
 @section('content')
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-sm-4">
-        <h2>Ciclos</h2>
+    <div class="col-sm-6">
+        <h2>Cursos</h2>
         <ol class="breadcrumb">
             <li>
                 <a href="/home">Kepler</a>
             </li>
             @if($typeView != 'form')
             <li class="active">
-                <strong>Ciclos de la organización</strong>
+                <strong>Cursos de la organización</strong>
             </li>
             @elseif($typeView == 'form')
             <li>
-                Ciclos de la organización
+                Cursos de la organización
             </li>
             <li class="active">
                 @if($record->exists)
-                    <strong>Editar ciclo</strong>
+                    <strong>Editar curso</strong>
                 @else
-                    <strong>Crear ciclo</strong>
+                    <strong>Crear curso</strong>
                 @endif
             </li>
             @endif
 
         </ol>
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-6">
         @if($typeView != 'form')
         <div class="title-action">
-            <a href="/cyclescontrol/create" class="btn btn-primary btn-sm">Agregar Ciclo</a>
+            <a href="/courses/create" class="btn btn-primary btn-sm">Agregar Curso</a>
         </div>
 
         @elseif($typeView == 'form')
@@ -54,20 +54,20 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Registra la información <small>Ciclos escolares.</small></h5>
+                <h5>Registra la información <small>Cursos.</small></h5>
                 <div class="ibox-tools">
-                    <a href="/cyclescontrol">
+                    <a href="/courses">
                         Cancelar
                     </a>
                 </div>
             </div>
             <div class="ibox-content">
                 @if($record->exists)
-                <form method="post" action="/cyclescontrol/update" id="form-create" class="form-horizontal">
+                <form method="post" action="/courses/update" id="form-create" class="form-horizontal">
                     {{ method_field('PUT') }}
                     <input type="hidden" name="idRecord" value="{{ $record->id }}">
                 @else
-                <form method="post" action="/cyclescontrol/store" id="form-create" class="form-horizontal">
+                <form method="post" action="/courses/store" id="form-create" class="form-horizontal">
                 @endif
                     {{ csrf_field() }}
                     <div class="form-group">
@@ -142,7 +142,7 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Lista de ciclos escolares</h5>
+                    <h5>Lista de cursos</h5>
                 </div>
                 <div class="ibox-content">
 
@@ -164,7 +164,7 @@
 
                                 <tr class="gradeX">
                                     <td> 
-                                        <a href="/cyclescontrol/show/{{ $rec->id }}" class="btn btn-primary btn-xs">
+                                        <a href="/courses/show/{{ $rec->id }}" class="btn btn-primary btn-xs">
                                             <i class="fa fa-eye"></i>
                                         </a> 
                                     </td>
@@ -204,16 +204,16 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="m-b-md">
-                        <a href="/cyclescontrol" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
-                        <a href="/cyclescontrol/edit/{{ $record->id }}" class="btn btn-white btn-xs pull-right"> <i class="fa fa-pencil"></i> Editar</a>
-                        <h2>Ciclo escolar: {{$record->name}}</h2>
+                        <a href="/courses" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                        <a href="/courses/edit/{{ $record->id }}" class="btn btn-white btn-xs pull-right"> <i class="fa fa-pencil"></i> Editar</a>
+                        <h2>Curso: {{$record->name}}</h2>
                     </div>
                     @if($record->created_at->diffInMinutes() < 2)
                     <dl class="dl-horizontal">
                         <span class="label label-primary pull-right">Nuevo</span>
                     </dl>
                     @endif
-                    <h4>Descripción del ciclo escolar:</h4>
+                    <h4>Descripción del curso:</h4>
                     <p>
                         {{ $record->description }}
                     </p>
@@ -243,7 +243,7 @@
                             <div class="progress progress-striped active m-b-sm">
                                 <div style="width: 2%;" class="progress-bar"></div>
                             </div>
-                            <small>El ciclo tiene <strong>0%</strong> completado.</small>
+                            <small>El curso tiene <strong>0%</strong> completado.</small>
                         </dd>
                     </dl>
                 </div>

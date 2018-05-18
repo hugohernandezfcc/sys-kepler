@@ -130,6 +130,7 @@ class UsersController extends Controller {
             if ($user->update()) {
                 return response()->json(['state'   => 200,
                 'message' => 'success',
+                'otra_ruta' => str_replace('"\"', '', asset("uploads/avatars/". $user->avatar)),
                 'ruta' => asset("uploads/avatars/". $user->avatar)]);
             }
         }

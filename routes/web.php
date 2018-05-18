@@ -43,7 +43,7 @@ Route::group(['prefix' => 'home'], function() {
 });
 
 
-Route::group(['prefix' => 'cyclescontrol'], function() {
+Route::group(['prefix' => 'courses'], function() {
     Route::get('/', [
         'uses' => 'SchoolCyclesController@index',
         'as' => 'index'
