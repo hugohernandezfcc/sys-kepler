@@ -94,7 +94,7 @@
 
     <!-- Image cropper -->
     <script src="{{ asset('inspinia/js/plugins/cropperjs/cropper.min.js') }}"></script>
-    <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
+    <!-- <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script> -->
     <script src="{{ asset('inspinia/js/plugins/cropperjs/jquery-cropper.js') }}"></script>
 
     <script type="text/javascript">
@@ -103,7 +103,7 @@
             if (url === 'home') {
                 $('#side-menu li.active').removeClass('active');
                 $("#side-menu [href='/']").parent().addClass('active');
-            } else if (url === 'groups' || url === 'cyclescontrol' || url === 'areas') { 
+            } else if (url === 'groups' || url === 'courses' || url === 'areas') { 
                 $('#side-menu li.active').removeClass('active');
                 $("#side-menu [href='/" + url +"']").parent().addClass('active');
             } else if (url === 'profile') {

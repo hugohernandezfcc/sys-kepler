@@ -192,25 +192,39 @@
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLabel">Cambiar imagen de perfil</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">Cambiar imagen de perfil</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="img-container">
-                                    <img id="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" alt="Picture">
-                                    <div class="btn-group">
-                                        <label title="Subir imagen" for="inputImage" class="btn btn-primary">
-                                            <input type="file" accept="image/*" name="file" id="inputImage" name="inputImage" class="hide">
-                                            Subir nueva imagen
-                                        </label>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="container-crop">
+                                                <img id="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" alt="Picture">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <br>
+                                            <br>
+                                            <h4>Vista previa</h4>
+                                            <br>
+                                            <div class="img-preview img-preview-sm img-circle"></div>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <div class="btn-group">
+                                                <label title="Subir imagen" for="inputImage" class="btn btn-primary">
+                                                    <input type="file" accept="image/*" name="file" id="inputImage" name="inputImage" class="hide">
+                                                    Subir nueva imagen
+                                                </label>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <button type="button" class="btn btn-primary" id="saveImageCrop">Cortar y guardar</button>
+                                            <br>
+                                            <br>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar sin modificar</button>
+                                        </div>
                                     </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" id="saveImageCrop">Guardar Imagen</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>
                         </div>
@@ -230,6 +244,7 @@
         $('#modal').on('shown.bs.modal', function () {
             cropper = new Cropper($image, {
                 autoCropArea: 0.5,
+                preview: ".img-preview",
                 aspectRatio: 1,
                 ready: function () {
                     // Strict mode: set crop box data first
@@ -269,7 +284,10 @@
             cropper.destroy();
         });
         $('#saveImageCrop').on('click', function () {
+            $('#saveImageCrop').before('<button class="buttonload btn btn-primary" disabled><i class="fa fa-spinner fa-spin"></i> Guardando</button>');
+            $('#saveImageCrop').addClass("hidden");
             $('#modal .btn-primary').attr('disabled', true);
+            $('#modal .btn-default').attr('disabled', true);
             // Upload cropped image to server if the browser supports `HTMLCanvasElement.toBlob`
             cropper.getCroppedCanvas().toBlob(function (blob) {
                 var formData = new FormData();
@@ -288,7 +306,10 @@
                     $('#profileImage').attr("src", result.ruta);
                     $('#image').attr("src", result.ruta);
                     $('#modal .btn-primary').attr('disabled', false);
-                    $('#modal').modal("hide");
+                    $('#modal .btn-default').attr('disabled', false);
+                    $('#saveImageCrop').removeClass("hidden");
+                    $('.buttonload').remove();
+                    location.reload();
                 },
                 error: function () {
                     console.log('Upload error');

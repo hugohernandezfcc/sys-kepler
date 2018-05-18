@@ -38,7 +38,7 @@
                 @if (Auth::user()->type == "admin")
                 <li><a href="/"><i class="fa fa-home"></i> <span class="nav-label">Inicio</span></a></li>
                 <li><a href="/groups"><i class="fa fa-group"></i> <span class="nav-label">Grupos</span></a></li>
-                <li><a href="/cyclescontrol"><i class="fa fa-university"></i> <span class="nav-label">Ciclos escolares</span></a></li>
+                <li><a href="/courses"><i class="fa fa-university"></i> <span class="nav-label">Cursos</span></a></li>
                 <li><a href="/areas"><i class="fa fa-subscript"></i> <span class="nav-label">Areas</span></a></li>
                 <li><a href="/profile/inscriptions"><i class="fa fa-user-plus"></i> <span class="nav-label">Procesos de inscripción</span></a></li>
                 <li>
