@@ -22,6 +22,7 @@
     <link href="{{ asset('inspinia/css/plugins/dualListbox/bootstrap-duallistbox.min.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/plugins/cropperjs/cropper.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('inspinia/css/plugins/steps/jquery.steps.css')}}" rel="stylesheet">
     <script src="{{ asset('inspinia/js/jquery-3.1.1.min.js') }}"></script>
 </head>
 
@@ -94,8 +95,13 @@
 
     <!-- Image cropper -->
     <script src="{{ asset('inspinia/js/plugins/cropperjs/cropper.min.js') }}"></script>
-    <!-- <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script> -->
     <script src="{{ asset('inspinia/js/plugins/cropperjs/jquery-cropper.js') }}"></script>
+
+    <!-- Steps -->
+    <script src="{{ asset('inspinia/js/plugins/steps/jquery.steps.min.js') }}"></script>
+
+    <!-- Jquery Validate -->
+    <script src="{{ asset('inspinia/js/plugins/validate/jquery.validate.min.js') }}"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -125,6 +131,27 @@
 
             $("#resultSearch").on('hidden.bs.modal', function () {
                 $('#resultSearch div.one-result').remove();
+            });
+
+            jQuery.extend(jQuery.validator.messages, {
+                empty: "Por favor agregue elementos para continuar",
+                required: "Este campo es obligatorio.",
+                remote: "Por favor, rellena este campo.",
+                email: "Por favor, escribe una dirección de correo válida",
+                url: "Por favor, escribe una URL válida.",
+                date: "Por favor, escribe una fecha válida.",
+                dateISO: "Por favor, escribe una fecha (ISO) válida.",
+                number: "Por favor, escribe un número entero válido.",
+                digits: "Por favor, escribe sólo dígitos.",
+                creditcard: "Por favor, escribe un número de tarjeta válido.",
+                equalTo: "Por favor, escribe el mismo valor de nuevo.",
+                accept: "Por favor, escribe un valor con una extensión aceptada.",
+                maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
+                minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
+                rangelength: jQuery.validator.format("Por favor, escribe entre {0} y {1} caracteres."),
+                range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+                max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+                min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}.")
             });
         });
 

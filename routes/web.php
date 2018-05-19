@@ -613,6 +613,20 @@ Route::group(['prefix' => 'walls'], function() {
     );
 });
 
+Route::group(['prefix' => 'fullcourse'], function() {
+    Route::get('/', [
+        'uses' => 'FullCourseController@create',
+        'as' => 'create'
+            ]
+    );
+
+    Route::post('/store', [
+        'uses' => 'FullCourseController@store',
+        'as' => 'store'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'profile'], function() {
     Route::get('/', [
         'uses' => 'UsersController@index',
