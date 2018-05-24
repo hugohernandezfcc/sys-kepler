@@ -613,7 +613,7 @@ Route::group(['prefix' => 'walls'], function() {
     );
 });
 
-Route::group(['prefix' => 'fullcourse'], function() {
+Route::group(['prefix' => 'wizard'], function() {
     Route::get('/', [
         'uses' => 'FullCourseController@create',
         'as' => 'create'

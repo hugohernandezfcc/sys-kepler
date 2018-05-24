@@ -205,8 +205,9 @@
             </div>
         </div>
         <div class="ibox-content">
-            <form id="form" action="#" class="wizard-big">
-                <h1>Generar curso</h1>
+            <form id="form" method="post" action="/wizard/store" class="wizard-big">
+                {{ csrf_field() }}
+                <h1>Cursos</h1>
                 <fieldset>
                     <h2>Información del curso</h2>
                     <div class="row">
@@ -264,7 +265,7 @@
                     <p>(*) Requerido</p>
                 </fieldset>
 
-                <h1>Generar áreas</h1>
+                <h1>Áreas</h1>
                 <fieldset>
                     <div class="row">
                         <div class="col-lg-1">
@@ -283,13 +284,13 @@
                         <div class="col-lg-2">
                         </div>
                         <div class="col-lg-9">
-                            <ul id="newAreasUl" required>
+                            <ul id="newAreasUl" class="hidden" required>
                             </ul>
                         </div>
                     </div>
                 </fieldset>
 
-                <h1>Generar asignaturas</h1>
+                <h1>Asignaturas</h1>
                 <fieldset>
                     <div class="row">
                         <div class="col-lg-1">
@@ -298,7 +299,7 @@
                             <input type="text" class="form-control" id="subjectName" placeholder="Nombre de la asignatura">
                         </div>
                         <div class="col-lg-5">
-                            <select class="form-control" id="area_id">
+                            <select class="form-control" id="areas_id">
                                 <option value="0" selected>Seleccione un área</option>
                             </select>
                         </div>
@@ -306,68 +307,102 @@
                             <button class="btn btn-default" title="Agregar una nueva asignatura" onclick="newElementSubject()" type="button"><i class="fa fa-plus"> </i></button>
                         </div>
                     </div>
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-5">
+                        <span id="areas_id-error" class="hidden">Debe seleccionar un área.</span>
+                    </div>
                     <br>
                     <div class="row">
                         <div class="col-lg-2">
                         </div>
                         <div class="col-lg-9">
-                            <ul id="newSubjectsUl" required>
+                            <ul id="newSubjectsUl" class="hidden" required>
                             </ul>
                         </div>
                     </div>
                 </fieldset>
 
-                <h1>Agregar grupos</h1>
+                <h1>Participantes</h1>
                 <fieldset>
                     <div class="row">
-                        <!-- Lista de grupos -->
-                        <div class="input">
-                            <input type="text" placeholder="Buscar grupo " title="Escriba el nombre de un grupo" id="buscar_grupo" onkeyup="buscarGrupo()" class="input form-control">
+                        <div class="col-lg-1">
                         </div>
-                        <div class="clients-list">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" href="#tab-1" onclick="habilitarDeshabilitarBuscador('tab-1')"><i class="fa fa-group"></i> Grupos</a></li>
-                                <li class=""><a data-toggle="tab" href="#tab-2" onclick="habilitarDeshabilitarBuscador('tab-2')"><i class="fa fa-plus"></i> Agregados</a></li>
-                            </ul>
-
-                            <div class="tab-content">
-                                <div id="tab-1" class="tab-pane active">
-                                    <div class="full-height-scroll">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped table-hover" id="tabla_grupos">
-                                                <tbody>
-                                                    @foreach ($groups as $group)
-                                                        <tr id="{{$group->id}}" name="{{$group->id}}">
-                                                            <td>{{ $group->name }}</td>
-                                                            <td><a class="btn btn-primary btn-xs" onclick="moverGrupo({{$group->id}}, 1)"><i class="fa fa-plus"> </i> Agregar</a></td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div id="tab-2" class="tab-pane">
-                                    <div class="full-height-scroll">
-                                        <div class="table-responsive">
-                                            <table id="tabla_agregados" class="table table-striped table-hover">
-                                                <tbody>
-                                                </tbody> 
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="col-lg-10">
+                            <!-- Lista de grupos -->
+                            <div class="input">
+                                <input type="text" placeholder="Buscar grupo " title="Escriba el nombre de un grupo" id="buscar_grupo" onkeyup="buscarGrupo()" class="input form-control">
                             </div>
-                            <input name="groups" id="groups" type="hidden">
+                            <div class="clients-list">
+                                <ul class="nav nav-tabs">
+                                    <li class="active quitarStyleLi"><a data-toggle="tab" href="#tab-1" onclick="habilitarDeshabilitarBuscador('tab-1')"><i class="fa fa-group"></i> Grupos</a></li>
+                                    <li class="quitarStyleLi"><a data-toggle="tab" href="#tab-2" onclick="habilitarDeshabilitarBuscador('tab-2')"><i class="fa fa-plus"></i> Agregados</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div id="tab-1" class="tab-pane active">
+                                        <div class="full-height-scroll">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover" id="tabla_grupos">
+                                                    <tbody>
+                                                        @foreach ($groups as $group)
+                                                            <tr id="{{$group->id}}" name="{{$group->id}}">
+                                                                <td>{{ $group->name }}</td>
+                                                                <td><a class="btn btn-primary btn-xs" onclick="moverGrupo({{$group->id}}, 1)"><i class="fa fa-plus"> </i> Agregar</a></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="tab-2" class="tab-pane">
+                                        <div class="full-height-scroll">
+                                            <div class="table-responsive">
+                                                <table id="tabla_agregados" class="table table-striped table-hover">
+                                                    <tbody>
+                                                    </tbody> 
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input name="areas" id="areas" type="hidden">
+                                <input name="subjects" id="subjects" type="hidden">
+                                <input name="groups" id="groups" type="hidden">
+                            </div>
                         </div>
                     </div>
                 </fieldset>
 
-                <h1>Finalizar</h1>
+                <h1>Fin</h1>
                 <fieldset>
-                    <h2>Terms and Conditions</h2>
-                    <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label for="acceptTerms">I agree with the Terms and Conditions.</label>
+                    <h2>Funcionalidades de colaboración por asignatura</h2>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-1"></div>
+                            <label class="col-lg-2 control-label">Seleccione las funcionalidades que desea generar</label>
+                            <div class="col-lg-2">
+                                <div class="checkbox checkbox-success">
+                                    <input id="muro" name="muro" type="checkbox" onchange="funcionalidades()"><label for="muro"> Muro </label>
+                                </div>
+                                <div class="checkbox checkbox-success">
+                                    <input id="foro" name="foro" type="checkbox" onchange="funcionalidades()"><label for="foro"> Foro </label>
+                                </div>
+                                <div class="checkbox checkbox-success">
+                                    <input id="articulo" name="articulo" type="checkbox" onchange="funcionalidades()"><label for="articulo"> Artículo </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <label class="col-lg-2 control-label select-function">Seleccione las asignaturas</label>
+                            <div class="col-lg-4 select-function">
+                                <select id="selectSubjectArea" name="selectSubjectArea[]" class="full-width" size="8" multiple>
+                                    
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </fieldset>
             </form>
         </div>
@@ -377,6 +412,11 @@
 <script>
     $(function () {
         lista_grupos = [];
+
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+        });
+        $('.select-function').addClass('hidden');
 
         $("#wizard").steps();
         $("#form").steps({
@@ -407,6 +447,12 @@
 
                 // Forbid suppressing "Warning" step if the user is to young
                 if (newIndex === 3 && $("#newSubjectsUl LI").length === 0)
+                {
+                    return false;
+                }
+
+                // Forbid suppressing "Warning" step if the user is to young
+                if (newIndex === 4 && $('#tabla_agregados tbody tr').length === 0)
                 {
                     return false;
                 }
@@ -454,6 +500,7 @@
             },
             onFinished: function (event, currentIndex)
             {
+                prepareAreasSubjects();
                 var form = $(this);
 
                 // Submit form input
@@ -463,12 +510,6 @@
             errorPlacement: function (error, element)
             {
                 element.before(error);
-            },
-            rules: {
-                confirm: {
-                    equalTo: "#password",
-                    empty: "#newAreasUl"
-                }
             }
         });
         trUser = '';
@@ -476,6 +517,16 @@
     });
 </script>
 <script type="text/javascript">
+    function funcionalidades() {
+        if ($('#muro').prop('checked') || $('#foro').prop('checked') || $('#articulo').prop('checked')) {
+            $('.select-function').removeClass('hidden');
+            $('#selectSubjectArea').attr('required', true);
+        } else {
+            $('#selectSubjectArea').attr('required', false);
+            $('.select-function').addClass('hidden');
+        }
+    }
+
     function moverGrupo(idGrupo, accion) {
         trUser = $("#" + idGrupo)[0];
         if (accion === 1) {
@@ -526,7 +577,26 @@
         }
     }
 
-    // Create a new list item when clicking on the "Add" button
+    function prepareAreasSubjects() {
+        var areas = $('#newAreasUl LI');
+        var listAreas = [];
+        var subjects = $('#newSubjectsUl LI');
+        var listSubjects = [];
+        for (var i = 0; i < areas.length; i++) {
+            var txtArea = areas[i].outerText;
+            var txt = txtArea.substring(0, txtArea.length - 1);
+            listAreas.push(txt);
+        }
+        $('#areas').val(listAreas);
+        for (var i = 0; i < subjects.length; i++) {
+            var txtSubject = subjects[i].outerText;
+            var txt = txtSubject.substring(0, txtSubject.length - 1);
+            listSubjects.push(txt);
+        }
+        $('#subjects').val(listSubjects);
+    }
+
+    // Create a new list item Area when clicking on the "Add" button
     function newElementArea() {
         var li = document.createElement("li");
         var inputValue = document.getElementById("areaName").value;
@@ -535,51 +605,98 @@
         if (inputValue === '') {
             return false;
         } else {
+            $('#newAreasUl').removeClass('hidden');
             document.getElementById("newAreasUl").appendChild(li);
-            $("#area_id").append("<option value='"+inputValue+"'>"+inputValue+"</option>");
+            var selectArea = document.getElementById("areas_id");
+            var option = document.createElement("option");
+            option.text = inputValue;
+            option.value = inputValue;
+            selectArea.add(option);
         }
         document.getElementById("areaName").value = "";
 
         var span = document.createElement("SPAN");
         var txt = document.createTextNode("\u00D7");
-        span.className = "closeElement";
         span.appendChild(txt);
+        span.className = "closeElement";
+        span.title = "Eliminar área";
         span.onclick = function() {
             var element = $(this).parent();
             var cadena = element.text();
-            var txt = cadena.substring(0, cadena.length - 1);
+            var text = cadena.substring(0, cadena.length - 1);
+            var ul = element.parent().attr('id');
             element.remove();
-            $("#area_id option[value='"+txt+"']").remove();
+            if ($('#'+ul+' LI').length === 0) {
+                $('#'+ul).addClass('hidden');
+            }
+            $("#areas_id option[value='"+text+"']").remove();
+            removeSubjectAreaName(cadena);
         }
         li.appendChild(span);
     }
 
-    // Create a new list item when clicking on the "Add" button
+    // Create a new list item Subject when clicking on the "Add" button
     function newElementSubject() {
         var li = document.createElement("li");
         var inputValue = $("#subjectName").val();
-        var selectName = $('#area_id').val();
+        var selectName = $('#areas_id').val();
         var t = document.createTextNode(inputValue + ' / ' + selectName);
         li.appendChild(t);
-        if (inputValue === '' || $('#area_id').val() === '0') {
+        if (inputValue === '') {
+            return false;
+        } else if ($('#areas_id').val() === '0') {
+            $('#areas_id-error').removeClass('hidden');
             return false;
         } else {
+            $('#newSubjectsUl').removeClass('hidden');
+            $('#areas_id-error').addClass('hidden');
             document.getElementById("newSubjectsUl").appendChild(li);
+            var selectSubjectArea = document.getElementById("selectSubjectArea");
+            var option = document.createElement("option");
+            option.text = inputValue + ' / ' + selectName;
+            option.value = inputValue + ' / ' + selectName;
+            selectSubjectArea.add(option);
         }
         $("#subjectName").val('');
-        $('#area_id').val('0');
+        $('#areas_id').val('0');
 
         var span = document.createElement("SPAN");
         var txt = document.createTextNode("\u00D7");
         span.appendChild(txt);
         span.className = "closeElement";
+        span.title = "Eliminar asignatura";
         span.onclick = function() {
             var element = $(this).parent();
             var cadena = element.text();
-            var txt = cadena.substring(0, cadena.length - 1);
+            var text = cadena.substring(0, cadena.length - 1);
+            var ul = element.parent().attr('id');
             element.remove();
+            if ($('#'+ul+' LI').length === 0) {
+                $('#'+ul).addClass('hidden');
+            }
+            $("#selectSubjectArea option[value='"+text+"']").remove();
         }
         li.appendChild(span);
+    }
+
+    function removeSubjectAreaName(areaName) {
+        var subjects = $('#newSubjectsUl LI');
+        var listDelete = [];
+        for (var i = 0; i < subjects.length; i++) {
+            var txtSubject = subjects[i].outerText;
+            if (areaName === txtSubject.substr(-areaName.length)) {
+                listDelete.push(i);
+            }
+        }
+        for (var j = 0; j < listDelete.length; j++) {
+            var txtSubject = subjects[listDelete[j]].outerText;
+            var text = txtSubject.substring(0, txtSubject.length - 1);
+            $("#selectSubjectArea option[value='"+text+"']").remove();
+            subjects[listDelete[j]].remove();
+        }
+        if ($('#newSubjectsUl LI').length === 0) {
+            $('#newSubjectsUl').addClass('hidden');
+        }
     }
 </script>
 
