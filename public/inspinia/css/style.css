@@ -8582,6 +8582,9 @@ body.md-skin {
 #newAreasUl, #newSubjectsUl {
   margin: 0;
   padding: 0;
+  border: 2px solid #000;
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #000;
 }
 
 /* Style the list items */
@@ -8591,12 +8594,19 @@ body.md-skin {
   list-style-type: none;
   background: #eee;
   transition: 0.2s;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
   
   /* make the list items unselectable */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+#newAreasUl li:last-child, #newSubjectsUl li:last-child, {
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
 }
 
 /* Set all odd list items to a different color (zebra-stripes) */
@@ -8642,4 +8652,15 @@ body.md-skin {
 .closeElement:hover {
   background-color: #f44336;
   color: white;
+}
+
+.quitarStyleLi {
+  list-style-type: none;
+}
+
+#areas_id-error {
+    color: #8a1f11;
+    display: inline-block;
+    margin-left: 1.5em;
+    font-weight: bold;
 }

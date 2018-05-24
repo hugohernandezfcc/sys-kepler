@@ -103,6 +103,9 @@
     <!-- Jquery Validate -->
     <script src="{{ asset('inspinia/js/plugins/validate/jquery.validate.min.js') }}"></script>
 
+    <!-- iCheck -->
+    <script src="{{ asset('inspinia/js/plugins/iCheck/icheck.min.js') }}"></script>
+
     <script type="text/javascript">
         $(function () {
             var url = jQuery(location).attr('href').split('/')[3];
