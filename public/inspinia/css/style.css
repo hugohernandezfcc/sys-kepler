@@ -610,6 +610,9 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
   .menu-visible-md {
     display: block !important;
   }
+  .btn-position-absolute {
+    margin-top: -20%;
+  }
 }
 @media (max-width: 767px) {
   .menu-visible-md {
@@ -7546,6 +7549,9 @@ body.rtls .footer.fixed {
   body.rtls .chat-statistic {
     margin-right: 0;
   }
+  .btn-position-absolute {
+    margin-top: -60%;
+  }
 }
 body.rtls.mini-navbar .footer.fixed,
 body.body-small.mini-navbar .footer.fixed {
@@ -8604,7 +8610,7 @@ body.md-skin {
   user-select: none;
 }
 
-#newAreasUl li:last-child, #newSubjectsUl li:last-child, {
+#newAreasUl li:last-child, #newSubjectsUl li:last-child {
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
 }
@@ -8663,4 +8669,9 @@ body.md-skin {
     display: inline-block;
     margin-left: 1.5em;
     font-weight: bold;
+}
+
+.btn-position-absolute {
+  position: absolute;
+  margin-left: 45%;
 }

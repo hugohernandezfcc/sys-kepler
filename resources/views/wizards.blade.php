@@ -45,153 +45,203 @@
 -->
 
 
-@if($typeView == 'form') 
-<br/>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Registra la información <small>Cursos.</small></h5>
-                <div class="ibox-tools">
-                    <a href="/courses">
-                        Cancelar
-                    </a>
-                </div>
+@if($typeView == 'viewCosts') 
+<div class="wrapper wrapper-content animated fadeInUp">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Wizard Costos</h5>
+            <div class="ibox-tools">
+                <a href="/home">
+                    Cancelar
+                </a>
             </div>
-            <div class="ibox-content">
-                @if($record->exists)
-                <form method="post" action="/courses/update" id="form-create" class="form-horizontal">
-                    {{ method_field('PUT') }}
-                    <input type="hidden" name="idRecord" value="{{ $record->id }}">
-                @else
-                <form method="post" action="/courses/store" id="form-create" class="form-horizontal">
-                @endif
-                    {{ csrf_field() }}
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Título</label>
-                        <div class="col-sm-10"><input type="text" name="name" class="form-control" value="{{ $record->name or old('name') }}" required></div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Inicio</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="start" id="start">
-                                <option value="">Seleccionar mes</option>
-                                <option value="Enero">Enero</option>
-                                <option value="Febrero">Febrero</option>
-                                <option value="Marzo">Marzo</option>
-                                <option value="Abril">Abril</option>
-                                <option value="Mayo">Mayo</option>
-                                <option value="Junio">Junio</option>
-                                <option value="Julio">Julio</option>
-                                <option value="Agosto">Agosto</option>
-                                <option value="Septiembre">Septiembre</option>
-                                <option value="Octubre">Octubre</option>
-                                <option value="Noviembre">Noviembre</option>
-                                <option value="Diciembre">Diciembre</option>
-                            </select>
+        </div>
+        <div class="ibox-content">
+            <form id="form" method="post" action="#" class="wizard-big">
+                {{ csrf_field() }}
+                <h1>Maestros / Tutores</h1>
+                <fieldset>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre </th>
+                                                    <th>Correo </th>
+                                                    <th>Fecha de registro </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($users['master'] as $user)
+                                                <tr>
+                                                    <td>{{ $user->name }}</td>
+                                                    <td><i class="fa fa-envelope"> </i> {{ $user->email }}</td>
+                                                    <td>{{ $user->created_at->toFormattedDateString() }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="hr-line-dashed"></div>
+                </fieldset>
 
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Fin</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="end" id="end">
-                                <option value="">Seleccionar mes</option>
-                                <option value="Enero">Enero</option>
-                                <option value="Febrero">Febrero</option>
-                                <option value="Marzo">Marzo</option>
-                                <option value="Abril">Abril</option>
-                                <option value="Mayo">Mayo</option>
-                                <option value="Junio">Junio</option>
-                                <option value="Julio">Julio</option>
-                                <option value="Agosto">Agosto</option>
-                                <option value="Septiembre">Septiembre</option>
-                                <option value="Octubre">Octubre</option>
-                                <option value="Noviembre">Noviembre</option>
-                                <option value="Diciembre">Diciembre</option>
-                            </select>
+                <h1>Estudiantes / usuarios</h1>
+                <fieldset>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre </th>
+                                                    <th>Correo </th>
+                                                    <th>Fecha de registro </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($users['student'] as $user)
+                                                <tr>
+                                                    <td>{{ $user->name }}</td>
+                                                    <td><i class="fa fa-envelope"> </i> {{ $user->email }}</td>
+                                                    <td>{{ $user->created_at->toFormattedDateString() }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="hr-line-dashed"></div>
+                </fieldset>
 
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Descripción</label>
-                        <div class="col-sm-10"><textarea name="description" class="form-control" required>{{ $record->description or old('descripcion') }}</textarea> </div>
+                <h1>Cursos</h1>
+                <fieldset>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre </th>
+                                                    <th>Descripción </th>
+                                                    <th>Inicio </th>
+                                                    <th>Fin </th>
+                                                    <th>Creado </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($courses as $course)
+                                                <tr>
+                                                    <td>{{ $course->name }}</td>
+                                                    <td>{{ $course->description }}</td>
+                                                    <td>{{ $course->start }}</td>
+                                                    <td>{{ $course->end }}</td>
+                                                    <td>{{ $course->created_at->toFormattedDateString() }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="hr-line-dashed"></div>
-                </form>
-            </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $(function() {
-        $('#start').val('{{$record->start}}');
-        $('#end').val('{{$record->end}}');
+<script>
+    $(function () {
+        $("#wizard").steps();
+        $("#form").steps({
+            bodyTag: "fieldset",
+            /* Labels */
+            labels: {
+                cancel: "Cancelar",
+                current: "paso actual:",
+                pagination: "Paginación",
+                finish: "Finalizar",
+                next: "Siguiente",
+                previous: "Anterior",
+                loading: "Cargando ..."
+            },
+            onStepChanging: function (event, currentIndex, newIndex)
+            {
+                // Always allow going backward even if the current step contains invalid fields!
+                if (currentIndex > newIndex)
+                {
+                    return true;
+                }
+
+                var form = $(this);
+
+                // Clean up if user went backward before
+                if (currentIndex < newIndex)
+                {
+                    // To remove error styles
+                    $(".body:eq(" + newIndex + ") label.error", form).remove();
+                    $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                }
+
+                // Disable validation on fields that are disabled or hidden.
+                form.validate().settings.ignore = ":disabled,:hidden";
+
+                // Start validation; Prevent going forward if false
+                return form.valid();
+            },
+            onStepChanged: function (event, currentIndex, priorIndex)
+            {
+                // Suppress (skip) "Warning" step if the user is old enough.
+                if (currentIndex === 0)
+                {
+                    //$(this).steps("next");
+                }
+
+                // Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
+                if (currentIndex === 2 && priorIndex === 3)
+                {
+                    //$(this).steps("previous");
+                }
+            },
+            onFinishing: function (event, currentIndex)
+            {
+                var form = $(this);
+
+                // Disable validation on fields that are disabled.
+                // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
+                form.validate().settings.ignore = ":disabled";
+
+                // Start validation; Prevent form submission if false
+                return form.valid();
+            },
+            onFinished: function (event, currentIndex)
+            {
+                prepareAreasSubjects();
+                var form = $(this);
+
+                // Submit form input
+                form.submit();
+            }
+        }).validate({
+            errorPlacement: function (error, element)
+            {
+                element.before(error);
+            }
+        });
     });
 </script>
-@elseif($typeView == 'list')
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Lista de cursos</h5>
-                </div>
-                <div class="ibox-content">
-
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover dataTables-example" >
-                            <thead>
-                                <tr>
-                                    <th> - </th>
-                                    <th>Nombre</th>
-                                    <th>Inicia en</th>
-                                    <th>Finaliza en</th>
-                                    <th>Fecha de creación</th>
-                                    <th>Creado por</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @foreach ($records as $rec)
-
-                                <tr class="gradeX">
-                                    <td> 
-                                        <a href="/courses/show/{{ $rec->id }}" class="btn btn-primary btn-xs">
-                                            <i class="fa fa-eye"></i>
-                                        </a> 
-                                    </td>
-                                    <td>{{ $rec->name }}</td>
-                                    <td>{{ $rec->start }}</td>
-                                    <td>{{ $rec->end }}</td>
-                                    <td>{{ $rec->created_at }}</td>
-                                    <td>{{ $rec->user->name }}</td>
-                                </tr>
-
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th> - </th>
-                                    <th>Nombre</th>
-                                    <th>Inicia en</th>
-                                    <th>Finaliza en</th>
-                                    <th>Fecha de creación</th>
-                                    <th>Creado por</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 @elseif($typeView == 'view')
 <div class="wrapper wrapper-content animated fadeInUp">

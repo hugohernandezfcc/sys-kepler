@@ -315,7 +315,9 @@
 
             if(document.getElementById('flot-dashboard-chart'))
                 $.plot($("#flot-dashboard-chart"), dataset, options);
-
+            
+            $("#costosChar").css("opacity", 0.2);
+            $("#botonCostos").removeClass("hidden");
 
             $(function(){
                 $('.dataTables-example').DataTable({
