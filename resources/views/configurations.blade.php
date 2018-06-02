@@ -56,7 +56,7 @@
             <div class="ibox-title">
                 <h5>Registra la información <small>Inscripción.</small></h5>
                 <div class="ibox-tools">
-                    <a href="/profile/inscriptions">
+                    <a href="/home">
                         Cancelar
                     </a>
                 </div>
@@ -73,13 +73,18 @@
                         <div class="col-sm-10">
                             <select class="form-control" name="type" id="type" required>
                                 <option value="admin">Administrador</option>
-                                <option value="master">Master (profesor, tutor)</option>
+                                <option value="master">Profesor / tutor</option>
                                 <option value="student">Estudiante</option>
                             </select>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group ">
+                        <div class="col-sm-12">
+                            <a href="/configurations/create" class="pull-right">
+                                ¿No hay campos? Generalos desde aquí
+                            </a>
+                        </div>
                         <label class="col-sm-2 control-label">Datos a ingresar por las personas a inscribirse</label>
                         <div class="col-sm-10">
                             <select class="form-control dual_select" multiple name="columnsName[]">
@@ -118,7 +123,7 @@
             <div class="ibox-title">
                 <h5>Registra la información <small>Columna.</small></h5>
                 <div class="ibox-tools">
-                    <a href="/profile">
+                    <a href="/profile/inscriptions">
                         Cancelar
                     </a>
                 </div>
@@ -131,7 +136,7 @@
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group"><label class="col-sm-2 control-label">Etiqueta del campo</label>
-                        <div class="col-sm-10"><input type="text" name="columnLabel" class="form-control"></div>
+                        <div class="col-sm-10"><input type="text" name="columnLabel" class="form-control" title="Este será el nombre visible del campo para los usuarios"></div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">

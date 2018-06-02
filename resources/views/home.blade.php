@@ -3,6 +3,11 @@
 @section('content')
 <div class="wrapper wrapper-content">
     <div class="row">
+        <div class="col-lg-1">
+        </div>
+        <div class="col-lg-11">
+            <h3>Panel de administración</h3>
+        </div>
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -50,7 +55,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="ibox float-e-margins">
+            <div class="ibox float-e-margins" id="costosChar">
                 <div class="ibox-title">
                     <h5>Ingresos por ciclo semestral</h5>
                     <div class="pull-right">
@@ -99,6 +104,7 @@
                 </div>
 
             </div>
+            <a id="botonCostos" href="/wizard/costs" class="btn btn-primary btn-position-absolute hidden">Configurar costos</a>
         </div>
     </div>
 

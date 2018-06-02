@@ -33,9 +33,6 @@
     <div class="col-sm-6">
         @if($typeView == 'view')
         <div class="title-action">
-            @if (Auth::user()->type == "admin")
-                <a href="/configurations/create" class="btn btn-primary btn-sm">Agregar columna tabla Users</a>
-            @endif
             <a href="/profile/edit" class="btn btn-primary btn-sm">Editar mis datos</a>
         </div>
 
@@ -50,6 +47,9 @@
         @elseif($typeView == 'list')
 
         <div class="title-action">
+            @if (Auth::user()->type == "admin")
+                <a href="/configurations/create" class="btn btn-primary btn-sm">Columna a usuarios</a>
+            @endif
             <a href="/configurations/createinscriptions" class="btn btn-primary btn-sm">Agregar proceso de inscripción</a>
         </div>
 

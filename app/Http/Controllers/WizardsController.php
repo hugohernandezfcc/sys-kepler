@@ -12,12 +12,13 @@ use App\Article;
 use App\Post;
 use App\Conversation;
 use App\ItemConversation;
+use App\User;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-class FullCourseController extends Controller
+class WizardsController extends Controller
 {
     /**
     * Create a new controller instance.
@@ -36,11 +37,25 @@ class FullCourseController extends Controller
      */
     public function create()
     {
-        return view('fullcourse', [
+        return view('wizards', [
                 'typeView' => 'view',
                 'groups' => DB::table('groups')->get()
             ]
         );   
+    }
+    
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showCosts() {
+        return view('wizards', [
+                'typeView' => 'viewCosts',
+                'courses' => SchoolCycle::all(),
+                'users' => User::where('type', '!=', 'admin')->get(['name','email','created_at', 'type'])->groupBy('type')
+            ]
+        );
     }
 
     /**

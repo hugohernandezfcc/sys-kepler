@@ -615,14 +615,20 @@ Route::group(['prefix' => 'walls'], function() {
 
 Route::group(['prefix' => 'wizard'], function() {
     Route::get('/', [
-        'uses' => 'FullCourseController@create',
+        'uses' => 'WizardsController@create',
         'as' => 'create'
             ]
     );
 
     Route::post('/store', [
-        'uses' => 'FullCourseController@store',
+        'uses' => 'WizardsController@store',
         'as' => 'store'
+            ]
+    );
+    
+    Route::get('/costs', [
+        'uses' => 'WizardsController@showCosts',
+        'as' => 'showCosts'
             ]
     );
 });
