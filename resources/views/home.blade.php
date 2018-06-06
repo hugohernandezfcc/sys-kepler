@@ -3,9 +3,7 @@
 @section('content')
 <div class="wrapper wrapper-content">
     <div class="row">
-        <div class="col-lg-1">
-        </div>
-        <div class="col-lg-11">
+        <div class="col-lg-12">
             <h3>Panel de administración</h3>
         </div>
         <div class="col-lg-3">
@@ -14,6 +12,7 @@
                     <h5><i class="fa fa-subscript"></i> Áreas</h5>
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
                     <h1 class="no-margins">{{ $records['areas'] }}</h1>
                     <small>Total de áreas activas</small>
                 </div>
@@ -25,6 +24,7 @@
                     <h5><i class="fa fa-graduation-cap"></i> Asignaturas</h5>
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
                     <h1 class="no-margins">{{ $records['subjects'] }}</h1>
                     <small>Asignaturas</small>
                 </div>
@@ -36,6 +36,7 @@
                     <h5><i class="fa fa-child"></i> Alumnos</h5>
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
                     <h1 class="no-margins">{{ $records['students'] }}</h1>
                     <small>Alumnos activos</small>
                 </div>
@@ -47,6 +48,7 @@
                     <h5><i class="fa fa-group"></i> Grupos</h5>
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
                     <h1 class="no-margins">{{ $records['groups'] }}</h1>
                     <small>Grupos</small>
                 </div>
@@ -66,6 +68,7 @@
                     </div>
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
                     <div class="row">
                         <div class="col-lg-9">
                             <div class="flot-chart">
@@ -120,6 +123,7 @@
                     </div>
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -147,5 +151,5 @@
         </div>
     </div>
 </div>
-
+@include('layouts._script_spinner_code')
 @endsection

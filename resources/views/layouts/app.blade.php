@@ -23,6 +23,7 @@
     <link href="{{ asset('inspinia/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/plugins/cropperjs/cropper.min.css')}}" rel="stylesheet">
     <link href="{{ asset('inspinia/css/plugins/steps/jquery.steps.css')}}" rel="stylesheet">
+    <link href="{{ asset('inspinia/css/plugins/toastr/toastr.min.css')}}" rel="stylesheet">
     <script src="{{ asset('inspinia/js/jquery-3.1.1.min.js') }}"></script>
 </head>
 
@@ -33,11 +34,12 @@
             @include('leftmenu')
             <div id="page-wrapper" class="gray-bg dashbard-1">
                 @include('topmenu')
-
+                
                 @yield('content')
 
                 @include('layouts._modal_global_search')
 
+                @include('layouts._script_spinner_code', ['call' => 'exists'])
                 <!-- @include('footer') -->
             </div>
         </div>

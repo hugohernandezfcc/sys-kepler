@@ -8664,7 +8664,7 @@ body.md-skin {
   list-style-type: none;
 }
 
-#areas_id-error {
+.span-error {
     color: #8a1f11;
     display: inline-block;
     margin-left: 1.5em;
@@ -8673,5 +8673,5 @@ body.md-skin {
 
 .btn-position-absolute {
   position: absolute;
-  margin-left: 45%;
+  margin-left: 41%;
 }

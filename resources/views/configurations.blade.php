@@ -64,10 +64,6 @@
             <div class="ibox-content">
                 <form method="post" action="/configurations/addinscriptions" id="form-create" class="form-horizontal">
                     {{ csrf_field() }}
-                    <div class="form-group"><label class="col-sm-2 control-label">Descripción</label>
-                        <div class="col-sm-10"><input type="text" name="description" class="form-control"></div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Tipo de usuario</label>
                         <div class="col-sm-10">
@@ -77,6 +73,10 @@
                                 <option value="student">Estudiante</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group"><label class="col-sm-2 control-label">Descripción</label>
+                        <div class="col-sm-10"><input type="text" name="description" class="form-control"></div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group ">

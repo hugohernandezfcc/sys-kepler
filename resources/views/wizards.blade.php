@@ -57,6 +57,7 @@
             </div>
         </div>
         <div class="ibox-content">
+            @include('layouts._spinner_code')
             <form id="form" method="post" action="#" class="wizard-big">
                 {{ csrf_field() }}
                 <h1>Maestros / Tutores</h1>
@@ -75,13 +76,19 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($users['master'] as $user)
-                                                <tr>
-                                                    <td>{{ $user->name }}</td>
-                                                    <td><i class="fa fa-envelope"> </i> {{ $user->email }}</td>
-                                                    <td>{{ $user->created_at->toFormattedDateString() }}</td>
-                                                </tr>
-                                                @endforeach
+                                                @if (isset($users['master']))
+                                                    @foreach ($users['master'] as $user)
+                                                    <tr>
+                                                        <td>{{ $user->name }}</td>
+                                                        <td><i class="fa fa-envelope"> </i> {{ $user->email }}</td>
+                                                        <td>{{ $user->created_at->toFormattedDateString() }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td colspan="3"><strong>No hay maestros / tutores</strong> ​dentro de Kepler. Invitar</td>
+                                                    </tr>
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -107,13 +114,19 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($users['student'] as $user)
-                                                <tr>
-                                                    <td>{{ $user->name }}</td>
-                                                    <td><i class="fa fa-envelope"> </i> {{ $user->email }}</td>
-                                                    <td>{{ $user->created_at->toFormattedDateString() }}</td>
-                                                </tr>
-                                                @endforeach
+                                                @if (isset($users['student']))
+                                                    @foreach ($users['student'] as $user)
+                                                    <tr>
+                                                        <td>{{ $user->name }}</td>
+                                                        <td><i class="fa fa-envelope"> </i> {{ $user->email }}</td>
+                                                        <td>{{ $user->created_at->toFormattedDateString() }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td colspan="3" class="text-center"><strong>No hay estudiantes / usuarios</strong> ​dentro de Kepler. <a href="/">Invitar</a></td>
+                                                    </tr>
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -163,7 +176,11 @@
     </div>
 </div>
 <script>
+    $('.ibox').children('.ibox-content').toggleClass('sk-loading');
     $(function () {
+
+        $('.tab-pane').css('height', '200px');
+
         $("#wizard").steps();
         $("#form").steps({
             bodyTag: "fieldset",
@@ -255,6 +272,7 @@
             </div>
         </div>
         <div class="ibox-content">
+            @include('layouts._spinner_code')
             <form id="form" method="post" action="/wizard/store" class="wizard-big">
                 {{ csrf_field() }}
                 <h1>Cursos</h1>
@@ -329,6 +347,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-1">
+                    </div>
+                    <div class="col-lg-11">
+                        <span id="areaName-error" class="hidden span-error">Debe agregar al menos un área.</span>
+                    </div>
                     <br>
                     <div class="row">
                         <div class="col-lg-2">
@@ -357,10 +380,13 @@
                             <button class="btn btn-default" title="Agregar una nueva asignatura" onclick="newElementSubject()" type="button"><i class="fa fa-plus"> </i></button>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-1">
                     </div>
                     <div class="col-lg-5">
-                        <span id="areas_id-error" class="hidden">Debe seleccionar un área.</span>
+                        <span id="subjectName-error" class="hidden span-error">Debe agregar al menos una asignatura.</span>
+                    </div>
+                    <div class="col-lg-5">
+                        <span id="areas_id-error" class="hidden span-error">Debe seleccionar un área.</span>
                     </div>
                     <br>
                     <div class="row">
@@ -382,6 +408,9 @@
                             <!-- Lista de grupos -->
                             <div class="input">
                                 <input type="text" placeholder="Buscar grupo " title="Escriba el nombre de un grupo" id="buscar_grupo" onkeyup="buscarGrupo()" class="input form-control">
+                            </div>
+                            <div>
+                                <span id="groups-error" class="hidden span-error">Debe agregar al menos un grupo.</span>
                             </div>
                             <div class="clients-list">
                                 <ul class="nav nav-tabs">
@@ -460,6 +489,7 @@
 </div>
 
 <script>
+    $('.ibox').children('.ibox-content').toggleClass('sk-loading');
     $(function () {
         lista_grupos = [];
 
@@ -467,6 +497,8 @@
             checkboxClass: 'icheckbox_square-green',
         });
         $('.select-function').addClass('hidden');
+
+        $('.tab-pane').height('200px');
 
         $("#wizard").steps();
         $("#form").steps({
@@ -492,18 +524,21 @@
                 // Forbid suppressing "Warning" step if the user is to young
                 if (newIndex === 2 && $("#newAreasUl LI").length === 0)
                 {
+                    $('#areaName-error').removeClass('hidden');
                     return false;
                 }
 
                 // Forbid suppressing "Warning" step if the user is to young
                 if (newIndex === 3 && $("#newSubjectsUl LI").length === 0)
                 {
+                    $('#subjectName-error').removeClass('hidden');
                     return false;
                 }
 
                 // Forbid suppressing "Warning" step if the user is to young
                 if (newIndex === 4 && $('#tabla_agregados tbody tr').length === 0)
                 {
+                    $('#groups-error').removeClass('hidden');
                     return false;
                 }
 
@@ -580,6 +615,9 @@
     function moverGrupo(idGrupo, accion) {
         trUser = $("#" + idGrupo)[0];
         if (accion === 1) {
+            if (!$('#groups-error').hasClass('hidden')) {
+                $('#groups-error').addClass('hidden');
+            }
             lista_grupos.push(idGrupo);
             $("#"+idGrupo+" td:eq(1)").html('<a class="btn btn-default btn-xs" onclick="moverGrupo(' + idGrupo + ', 2)"><i class="fa fa-minus"> </i> Remover</a>');
             $("#tabla_grupos tr#" + idGrupo).remove();
@@ -655,6 +693,7 @@
         if (inputValue === '') {
             return false;
         } else {
+            $('#areaName-error').addClass('hidden');
             $('#newAreasUl').removeClass('hidden');
             document.getElementById("newAreasUl").appendChild(li);
             var selectArea = document.getElementById("areas_id");
@@ -699,6 +738,7 @@
             return false;
         } else {
             $('#newSubjectsUl').removeClass('hidden');
+            $('#subjectName-error').addClass('hidden');
             $('#areas_id-error').addClass('hidden');
             document.getElementById("newSubjectsUl").appendChild(li);
             var selectSubjectArea = document.getElementById("selectSubjectArea");
