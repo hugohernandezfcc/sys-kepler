@@ -62,6 +62,7 @@
                 </div>
             </div>
             <div class="ibox-content">
+                @include('layouts._spinner_code')
                 <form method="post" action="/configurations/addinscriptions" id="form-create" class="form-horizontal">
                     {{ csrf_field() }}
                     <div class="form-group">
@@ -129,6 +130,7 @@
                 </div>
             </div>
             <div class="ibox-content">
+                @include('layouts._spinner_code')
                 <form method="post" action="/configurations/addcolumn" id="form-create" class="form-horizontal">
                     {{ csrf_field() }}
                     <div class="form-group"><label class="col-sm-2 control-label">Nombre del campo</label>
@@ -169,5 +171,5 @@
 </div>
 @endif
 
-
+@include('layouts._script_spinner_code')
 @endsection

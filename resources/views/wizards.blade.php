@@ -176,7 +176,6 @@
     </div>
 </div>
 <script>
-    $('.ibox').children('.ibox-content').toggleClass('sk-loading');
     $(function () {
 
         $('.tab-pane').css('height', '200px');
@@ -489,7 +488,6 @@
 </div>
 
 <script>
-    $('.ibox').children('.ibox-content').toggleClass('sk-loading');
     $(function () {
         lista_grupos = [];
 
@@ -791,5 +789,5 @@
 </script>
 
 @endif
-
+@include('layouts._script_spinner_code')
 @endsection

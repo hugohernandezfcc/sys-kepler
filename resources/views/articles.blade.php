@@ -59,6 +59,7 @@
                 </div>
             </div>
             <div class="ibox-content">
+                @include('layouts._spinner_code')
                 @if($record->exists)
                 <form method="post" action="/articles/update" id="form-create" class="form-horizontal">
                     {{ method_field('PUT') }}
@@ -132,6 +133,7 @@
                     <h5 class="cortar"><a href="/articles/show/{{ $rec->id }}" > {{ $rec->name }} </a></h5>
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
                     <div class="row  m-t-sm">
                         <div class="col-sm-6">
                             <div class="font-bold">Creado por:</div>{{ $rec->user->name }}
@@ -161,6 +163,7 @@
         <div class="col-lg-10 col-lg-offset-1">
             <div class="ibox">
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
                     <div class="pull-right">
                         <a href="/articles/edit/{{ $record->id }}" class="btn btn-white btn-xs"> <i class="fa fa-pencil"></i> Editar</a>
                         <a href="/articles" class="btn btn-white btn-xs"> <i class="fa fa-chevron-left"></i> Regresar</a>
@@ -323,4 +326,5 @@
         $('#comentario'+idCampo+' textarea').focus();    
     }
 </script>
+@include('layouts._script_spinner_code')
 @endsection

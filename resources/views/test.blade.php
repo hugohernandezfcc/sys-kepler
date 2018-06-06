@@ -63,6 +63,7 @@
                 </div>
             </div>
             <div class="ibox-content">
+                @include('layouts._spinner_code')
                 <form method="post" role='form' action="/test/store" id="form-create" class="form-horizontal">
                     {{ csrf_field() }}
                     <input name="totalQuestion" id="totalQuestion" value="1" type="hidden">
@@ -178,6 +179,7 @@
                     <h5>Lista de exámenes</h5>
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
 
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover dataTables-example" >
@@ -234,6 +236,7 @@
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
         <div class="ibox-content">
+            @include('layouts._spinner_code')
             <div class="row">
                 <div class="col-lg-12">
                     <div class="m-b-md">
@@ -584,4 +587,5 @@
         $('#comentario'+idCampo+' textarea').focus();    
     }
 </script>
+@include('layouts._script_spinner_code')
 @endsection

@@ -53,6 +53,7 @@
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
         <div class="ibox-content">
+            @include('layouts._spinner_code')
                 
             <div class="row">
                 <div class="col-lg-12">
@@ -147,6 +148,7 @@
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
         <div class="ibox-content">
+            @include('layouts._spinner_code')
                 
             <div class="row">
                 <div class="col-lg-12">
@@ -201,4 +203,5 @@
     });
     
 </script>
+@include('layouts._script_spinner_code')
 @endsection
