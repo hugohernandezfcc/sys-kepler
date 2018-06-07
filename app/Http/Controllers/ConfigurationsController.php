@@ -30,7 +30,11 @@ class ConfigurationsController extends Controller
     {
         if (Auth::user()->type == "admin") {
             if ($viewReturn !== null) {
-                $viewAux = '/configurations/createinscriptions';
+                if ($viewReturn !== 'inscriptions') {
+                    $viewAux = '/configurations/createinscriptions/' . $viewReturn;
+                } else {
+                    $viewAux = '/configurations/createinscriptions';
+                }
             } else {
                 $viewAux = null;
             }

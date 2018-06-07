@@ -78,7 +78,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Tipo de usuario</label>
                         <div class="col-sm-10">
-                            @if ($typeUser == null)
+                            @if ($typeUser === null)
                             <select class="form-control" name="type" id="type" required>
                                 <option value="admin">Administrador</option>
                                 <option value="master">Profesor / tutor</option>
@@ -86,7 +86,7 @@
                             </select>
                             @else
                             <select class="form-control" name="type" id="type" required disabled>
-                                @if ($typeUser == 'master')
+                                @if ($typeUser === 'master')
                                     <option value="master">Profesor / tutor</option>
                                 @else
                                     <option value="student">Estudiante</option>
@@ -102,7 +102,11 @@
                     <div class="hr-line-dashed"></div>
                     <div class="form-group ">
                         <div class="col-sm-12">
+                            @if ($typeUser !== null)
+                            <a href="/configurations/create/{{ $typeUser }}" class="pull-right">
+                            @else
                             <a href="/configurations/create/inscriptions" class="pull-right">
+                            @endif
                                 ¿No hay campos? Generalos desde aquí
                             </a>
                         </div>
