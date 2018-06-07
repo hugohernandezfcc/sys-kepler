@@ -50,6 +50,7 @@
                 </div>
             </div>
             <div class="ibox-content">
+                @include('layouts._spinner_code')
                 <form method="post" action="/list/store" id="form-create" class="form-horizontal">
                     {{ csrf_field() }}
                     <input type="hidden" name="idRecord" value="{{ $record->id }}">
@@ -106,6 +107,7 @@
                     <h5>Lista de grupos</h5>
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
 
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover dataTables-example" >
@@ -165,4 +167,5 @@
         $("#side-menu [href='/" + url +"']").parent().addClass('active');
     });
 </script>
+@include('layouts._script_spinner_code')
 @endsection

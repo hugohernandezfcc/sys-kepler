@@ -6,7 +6,7 @@
         if ($('.ibox-content').hasClass('sk-loading')) {
             window.setTimeout(function () {
                 $('.ibox').children('.ibox-content').toggleClass('sk-loading');
-            }, 2000);
+            }, 1500);
         }
     });
 @endif

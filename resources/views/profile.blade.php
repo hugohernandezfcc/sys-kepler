@@ -74,6 +74,7 @@
                 </div>
             </div>
             <div class="ibox-content">
+                @include('layouts._spinner_code')
                 <form enctype="multipart/form-data" method="post" action="/profile/update" id="form-update" class="form-horizontal">
                     {{ csrf_field() }}
                     <div class="form-group"><label class="col-sm-2 control-label">Nombre</label>
@@ -115,6 +116,7 @@
                     <h5>Lista de procesos de inscripción</h5>
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
 
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover dataTables-example" >
@@ -163,6 +165,7 @@
         <div class="wrapper wrapper-content animated fadeInUp">
             <div class="ibox">
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="m-b-md">
@@ -321,4 +324,5 @@
 </script>
 
 @endif
+@include('layouts._script_spinner_code')
 @endsection

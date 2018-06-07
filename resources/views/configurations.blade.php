@@ -37,6 +37,9 @@
         @elseif($typeView == 'form')
 
         <div class="title-action">
+            <a href="#" id="saveContinue" class="btn btn-primary btn-sm">
+                <i class="fa fa-check"></i> Guardar y nuevo
+            </a>
             <button type="submit" form="form-create" class="btn btn-primary btn-sm">
                 <i class="fa fa-check"></i> Guardar
             </button>
@@ -56,22 +59,40 @@
             <div class="ibox-title">
                 <h5>Registra la información <small>Inscripción.</small></h5>
                 <div class="ibox-tools">
-                    <a href="/home">
+                    @if ($typeUser === null)
+                    <a href="/profile/inscriptions">
+                    @else
+                    <a href="/wizard/costs">
+                    @endif
                         Cancelar
                     </a>
                 </div>
             </div>
             <div class="ibox-content">
+                @include('layouts._spinner_code')
                 <form method="post" action="/configurations/addinscriptions" id="form-create" class="form-horizontal">
                     {{ csrf_field() }}
+                    @if ($typeUser !== null)
+                    <input type="hidden" name="viewReturn" value="/wizard/costs">
+                    @endif
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Tipo de usuario</label>
                         <div class="col-sm-10">
+                            @if ($typeUser === null)
                             <select class="form-control" name="type" id="type" required>
                                 <option value="admin">Administrador</option>
                                 <option value="master">Profesor / tutor</option>
                                 <option value="student">Estudiante</option>
                             </select>
+                            @else
+                            <select class="form-control" name="type" id="type" required disabled>
+                                @if ($typeUser === 'master')
+                                    <option value="master">Profesor / tutor</option>
+                                @else
+                                    <option value="student">Estudiante</option>
+                                @endif
+                            </select>
+                            @endif
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -81,7 +102,11 @@
                     <div class="hr-line-dashed"></div>
                     <div class="form-group ">
                         <div class="col-sm-12">
-                            <a href="/configurations/create" class="pull-right">
+                            @if ($typeUser !== null)
+                            <a href="/configurations/create/{{ $typeUser }}" class="pull-right">
+                            @else
+                            <a href="/configurations/create/inscriptions" class="pull-right">
+                            @endif
                                 ¿No hay campos? Generalos desde aquí
                             </a>
                         </div>
@@ -123,14 +148,22 @@
             <div class="ibox-title">
                 <h5>Registra la información <small>Columna.</small></h5>
                 <div class="ibox-tools">
+                    @if ($viewReturn === null)
                     <a href="/profile/inscriptions">
+                    @else
+                    <a href="{{ $viewReturn }}">
+                    @endif
                         Cancelar
                     </a>
                 </div>
             </div>
             <div class="ibox-content">
+                @include('layouts._spinner_code')
                 <form method="post" action="/configurations/addcolumn" id="form-create" class="form-horizontal">
                     {{ csrf_field() }}
+                    @if ($viewReturn !== null)
+                    <input type="hidden" name="viewReturn" value="{{ $viewReturn }}">
+                    @endif
                     <div class="form-group"><label class="col-sm-2 control-label">Nombre del campo</label>
                         <div class="col-sm-10"><input type="text" name="columnName" class="form-control" required></div>
                     </div>
@@ -154,11 +187,11 @@
                         <div class="col-sm-10">
                             <div class="radio">
                                 <input type="radio" name="columnRequired" id="option1" value="true" required>
-                                <label for="columnRequired"> Si </label>
+                                <label for="option1">Si</label>
                             </div>
                             <div class="radio">
                                 <input type="radio" name="columnRequired" id="option2" value="false">
-                                <label for="columnRequired"> No </label>
+                                <label for="option2">No</label>
                             </div>
                         </div>
                     </div>
@@ -167,7 +200,49 @@
         </div>
     </div>
 </div>
+<!-- Toastr -->
+<script src="{{ asset('inspinia/js/plugins/toastr/toastr.min.js') }}"></script>
+
+<script type="text/javascript">
+    $(function () {
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            showMethod: 'slideDown',
+            timeOut: 4000
+        };
+    });
+
+    $("#saveContinue").click(function(){
+        var validado = $("#form-create").valid();
+        if(validado) {
+            $.ajax({
+                url: "/configurations/addcolumn/new",
+                data: $('#form-create').serialize(),
+                dataType: "json",
+                method: "POST",
+                success: function(result)
+                {
+                    if (result.result === 'ok') {
+                        toastr.success('Sigue trabajando.', 'El campo '+ result.column +' se ha creado.');
+                    } else {
+                        toastr.warning('Sigue trabajando.', 'El campo '+ result.column +' ya existe.');
+                    }
+                    $('#form-create')[0].reset();
+                },
+                error: function () {
+                //alert("fallo");
+                }
+                
+            });
+        }
+    });
+
+    $('input[type="radio"]').click(function(){
+        $('#columnRequired-error').remove();
+    });
+</script>
 @endif
 
-
+@include('layouts._script_spinner_code')
 @endsection

@@ -13,6 +13,7 @@ use App\Post;
 use App\Conversation;
 use App\ItemConversation;
 use App\User;
+use App\Inscription;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -35,11 +36,12 @@ class WizardsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($viewReturn = null)
     {
         return view('wizards', [
                 'typeView' => 'view',
-                'groups' => DB::table('groups')->get()
+                'groups' => DB::table('groups')->get(),
+                'viewReturn' => $viewReturn
             ]
         );   
     }
@@ -53,7 +55,8 @@ class WizardsController extends Controller
         return view('wizards', [
                 'typeView' => 'viewCosts',
                 'courses' => SchoolCycle::all(),
-                'users' => User::where('type', '!=', 'admin')->get(['name','email','created_at', 'type'])->groupBy('type')
+                'users' => User::where('type', '!=', 'admin')->get(['name','email','created_at', 'type'])->groupBy('type'),
+                'inscriptions' => Inscription::where('type_user', '!=', 'admin')->get()->groupBy('type_user')
             ]
         );
     }
@@ -148,6 +151,9 @@ class WizardsController extends Controller
                         }
                     }
                 }
+            }
+            if ($request->viewReturn !== null) {
+                return redirect($request->viewReturn);
             }
             return redirect('/home');
         }

@@ -85,9 +85,15 @@
                                                     </tr>
                                                     @endforeach
                                                 @else
-                                                    <tr>
-                                                        <td colspan="3"><strong>No hay maestros / tutores</strong> ​dentro de Kepler. Invitar</td>
-                                                    </tr>
+                                                    @if (isset($inscriptions['master']))
+                                                        <tr>
+                                                            <td colspan="3" class="text-center"><strong>No hay maestros / tutores</strong> ​dentro de Kepler. <a href="#modalMaster" id="openBtn" data-toggle="modal">Invitar</a></td>
+                                                        </tr>
+                                                    @else
+                                                        <tr>
+                                                            <td colspan="3" class="text-center"><strong>No hay maestros / tutores</strong> ​dentro de Kepler. <a href="/configurations/createinscriptions/master">Invitar</a></td>
+                                                        </tr>
+                                                    @endif
                                                 @endif
                                             </tbody>
                                         </table>
@@ -123,9 +129,15 @@
                                                     </tr>
                                                     @endforeach
                                                 @else
-                                                    <tr>
-                                                        <td colspan="3" class="text-center"><strong>No hay estudiantes / usuarios</strong> ​dentro de Kepler. <a href="/">Invitar</a></td>
-                                                    </tr>
+                                                    @if (isset($inscriptions['student']))
+                                                        <tr>
+                                                            <td colspan="3" class="text-center"><strong>No hay estudiantes / usuarios</strong> ​dentro de Kepler. <a href="#modalStudent" id="openBtn" data-toggle="modal">Invitar</a></td>
+                                                        </tr>
+                                                    @else
+                                                        <tr>
+                                                            <td colspan="3" class="text-center"><strong>No hay estudiantes / usuarios</strong> ​dentro de Kepler. <a href="/configurations/createinscriptions/student">Invitar</a></td>
+                                                        </tr>
+                                                    @endif
                                                 @endif
                                             </tbody>
                                         </table>
@@ -154,15 +166,21 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($courses as $course)
-                                                <tr>
-                                                    <td>{{ $course->name }}</td>
-                                                    <td>{{ $course->description }}</td>
-                                                    <td>{{ $course->start }}</td>
-                                                    <td>{{ $course->end }}</td>
-                                                    <td>{{ $course->created_at->toFormattedDateString() }}</td>
-                                                </tr>
-                                                @endforeach
+                                                @if (isset($courses))
+                                                    @foreach ($courses as $course)
+                                                    <tr>
+                                                        <td>{{ $course->name }}</td>
+                                                        <td>{{ $course->description }}</td>
+                                                        <td>{{ $course->start }}</td>
+                                                        <td>{{ $course->end }}</td>
+                                                        <td>{{ $course->created_at->toFormattedDateString() }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td colspan="5" class="text-center"><strong>No hay cursos</strong> ​dentro de Kepler. <a href="/wizard/course/costs">Invitar</a></td>
+                                                    </tr>
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -172,11 +190,103 @@
                     </div>
                 </fieldset>
             </form>
+            @if (!isset($users['master']) AND isset($inscriptions['master']))
+            <div class="modal fade" id="modalMaster">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 class="modal-title">Seleccione un proceso de inscripción</h3>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="text-center"></h5>
+                            <table class="table table-striped table-bordered table-hover dataTables-modal" >
+                                <thead>
+                                    <tr>
+                                        <th>Ruta</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha de creación</th>
+                                        <th>Creado por</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($inscriptions['master'] as $rec)
+                                    <tr class="gradeX">
+                                        <td>{{ asset('/register/'.$rec->name) }}</td>
+                                        <td>{{ $rec->description }}</td>
+                                        <td>{{ $rec->created_at }}</td>
+                                        <td>{{ $rec->user->name }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Ruta</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha de creación</th>
+                                        <th>Creado por</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default " data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            @endif
+
+            @if (!isset($users['student']) AND isset($inscriptions['student']))
+            <div class="modal fade" id="modalStudent">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 class="modal-title">Seleccione un proceso de inscripción</h3>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="text-center"></h5>
+                            <table class="table table-striped table-bordered table-hover dataTables-modal" >
+                                <thead>
+                                    <tr>
+                                        <th>Ruta</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha de creación</th>
+                                        <th>Creado por</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($inscriptions['student'] as $rec)
+                                    <tr class="gradeX">
+                                        <td>{{ asset('/register/'.$rec->name) }}</td>
+                                        <td>{{ $rec->description }}</td>
+                                        <td>{{ $rec->created_at }}</td>
+                                        <td>{{ $rec->user->name }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Ruta</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha de creación</th>
+                                        <th>Creado por</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default " data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            @endif
         </div>
     </div>
 </div>
 <script>
-    $('.ibox').children('.ibox-content').toggleClass('sk-loading');
     $(function () {
 
         $('.tab-pane').css('height', '200px');
@@ -257,7 +367,31 @@
                 element.before(error);
             }
         });
+
+        $('.dataTables-modal').DataTable({
+            pageLength: 10,
+            responsive: true,
+            "scrollCollapse": true,
+            "language": {
+                "lengthMenu":   "Mostrar _MENU_ registros por página",
+                "zeroRecords":  "No se ha encontrado",
+                "info":         "Página _PAGE_ de _PAGES_",
+                "infoEmpty":    "Registros no disponibles",
+                "search":       "",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       " Siguiente ",
+                    "previous":   " Anterior "
+                },
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            }
+        });
+        $('div.dataTables_filter input').addClass('slds-input');
+        $('div.dataTables_filter input').attr("placeholder","Buscar proceso de inscripción");
     });
+
+    
 </script>
 
 @elseif($typeView == 'view')
@@ -266,7 +400,11 @@
         <div class="ibox-title">
             <h5>Wizard</h5>
             <div class="ibox-tools">
+                @if ($viewReturn === null)
                 <a href="/home">
+                @else
+                <a href="/wizard/{{ $viewReturn }}">
+                @endif
                     Cancelar
                 </a>
             </div>
@@ -275,6 +413,9 @@
             @include('layouts._spinner_code')
             <form id="form" method="post" action="/wizard/store" class="wizard-big">
                 {{ csrf_field() }}
+                @if ($viewReturn !== null)
+                <input type="hidden" name="viewReturn" value="/wizard/costs">
+                @endif
                 <h1>Cursos</h1>
                 <fieldset>
                     <h2>Información del curso</h2>
@@ -489,7 +630,6 @@
 </div>
 
 <script>
-    $('.ibox').children('.ibox-content').toggleClass('sk-loading');
     $(function () {
         lista_grupos = [];
 
@@ -791,5 +931,5 @@
 </script>
 
 @endif
-
+@include('layouts._script_spinner_code')
 @endsection

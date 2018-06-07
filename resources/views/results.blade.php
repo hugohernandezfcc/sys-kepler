@@ -35,6 +35,7 @@
                     @endif
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
 
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover dataTables-example" >
@@ -88,6 +89,7 @@
                     @endif
                 </div>
                 <div class="ibox-content">
+                    @include('layouts._spinner_code')
 
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover dataTables-example" >
@@ -147,7 +149,5 @@
 </div>
 @endif
 
-<script>
-    
-</script>
+@include('layouts._script_spinner_code')
 @endsection

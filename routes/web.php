@@ -619,6 +619,12 @@ Route::group(['prefix' => 'wizard'], function() {
         'as' => 'create'
             ]
     );
+    
+    Route::get('/course/{viewReturn}', [
+        'uses' => 'WizardsController@create',
+        'as' => 'create'
+            ]
+    );
 
     Route::post('/store', [
         'uses' => 'WizardsController@store',
@@ -692,13 +698,31 @@ Route::group(['prefix' => 'configurations'], function() {
             ]
     );
     
+    Route::get('/create/{viewReturn}', [
+        'uses' => 'ConfigurationsController@create',
+        'as' => 'create'
+            ]
+    );
+    
     Route::get('/createinscriptions', [
         'uses' => 'ConfigurationsController@createinscriptions',
         'as' => 'createinscriptions'
             ]
     );
     
+    Route::get('/createinscriptions/{typeUser}', [
+        'uses' => 'ConfigurationsController@createinscriptions',
+        'as' => 'createinscriptions'
+            ]
+    );
+
     Route::post('/addcolumn', [
+        'uses' => 'ConfigurationsController@store',
+        'as' => 'store'
+            ]
+    );
+
+    Route::post('/addcolumn/{continue}', [
         'uses' => 'ConfigurationsController@store',
         'as' => 'store'
             ]
