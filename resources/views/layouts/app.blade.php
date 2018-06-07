@@ -124,7 +124,7 @@
                     $("#side-menu [href='/profile/inscriptions']").parent().addClass('active');
                 }
             }
-            $("#topSearch").focus(function(){
+            /*$("#topSearch").focus(function(){
                 $(this).css("border", "1px solid green");
             });
             
@@ -132,7 +132,7 @@
                 if($(this).val() == '') {
                     $(this).css("border", "");
                 }
-            });
+            });*/
 
             $("#resultSearch").on('hidden.bs.modal', function () {
                 $('#resultSearch div.one-result').remove();

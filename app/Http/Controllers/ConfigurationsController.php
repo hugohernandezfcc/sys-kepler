@@ -26,11 +26,17 @@ class ConfigurationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($viewReturn = null)
     {
         if (Auth::user()->type == "admin") {
+            if ($viewReturn !== null) {
+                $viewAux = '/configurations/createinscriptions';
+            } else {
+                $viewAux = null;
+            }
             return view('configurations', [
-                    'typeView' => 'form'
+                    'typeView' => 'form',
+                    'viewReturn' => $viewAux
                 ]
             );
         } else {
@@ -43,12 +49,13 @@ class ConfigurationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createinscriptions()
+    public function createinscriptions($typeUser = null)
     {
         if (Auth::user()->type == "admin") {
             return view('configurations', [
                     'typeView' => 'inscription',
-                    'columns' => Column::where('required', '=', false)->get()
+                    'columns' => Column::where('required', '=', false)->get(),
+                    'typeUser' => $typeUser
                 ]
             );
         } else {
@@ -62,7 +69,7 @@ class ConfigurationsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $continue = null)
     {
         $columnName = strtolower($request->columnName);
         if (!Schema::hasColumn('users', $columnName)) {
@@ -81,9 +88,19 @@ class ConfigurationsController extends Controller
                     DB::statement('ALTER TABLE public.users ADD COLUMN ' . $columnName . ' timestamp(0) without time zone;');
                 }
             }
-            return redirect('/profile');
+            if ($continue !== null) {
+                return Response()->json(array('result' => 'ok', 'column' => $columnName));
+            } elseif ($request->viewReturn !== null) {
+                return redirect($request->viewReturn);
+            }
+            return redirect('/profile/inscriptions');
         } else {
-            return redirect('/profile');
+            if ($continue !== null) {
+                return Response()->json(array('result' => '404', 'column' => $columnName));
+            } elseif ($request->viewReturn !== null) {
+                return redirect($request->viewReturn);
+            }
+            return redirect('/profile/inscriptions');
         }
     }
 
@@ -113,7 +130,11 @@ class ConfigurationsController extends Controller
         $inscription->created_by = Auth::id();
         $inscription->type_user = $request->type;
         if ($inscription->save()) {
-            return redirect('/profile/inscriptions');
+            if ($request->viewReturn !== null) {
+                return redirect($request->viewReturn);
+            } else {
+                return redirect('/profile/inscriptions');
+            }
         } else {
             return redirect('/404');
         }
