@@ -859,7 +859,6 @@
                 $('#'+ul).addClass('hidden');
             }
             $("#areas_id option[value='"+text+"']").remove();
-            removeSubjectAreaName(cadena);
         }
         li.appendChild(span);
     }
@@ -886,6 +885,7 @@
             option.text = inputValue + ' / ' + selectName;
             option.value = inputValue + ' / ' + selectName;
             selectSubjectArea.add(option);
+            noDeleteArea(selectName);
         }
         $("#subjectName").val('');
         $('#areas_id').val('0');
@@ -904,28 +904,47 @@
             if ($('#'+ul+' LI').length === 0) {
                 $('#'+ul).addClass('hidden');
             }
-            $("#selectSubjectArea option[value='"+text+"']").remove();
+            addDeleteArea(text);
         }
         li.appendChild(span);
     }
 
-    function removeSubjectAreaName(areaName) {
-        var subjects = $('#newSubjectsUl LI');
-        var listDelete = [];
-        for (var i = 0; i < subjects.length; i++) {
-            var txtSubject = subjects[i].outerText;
-            if (areaName === txtSubject.substr(-areaName.length)) {
-                listDelete.push(i);
+    function noDeleteArea(areaName) {
+        var areas = $('#newAreasUl LI');
+        for (var i = 0; i < areas.length; i++) {
+            var txt = (areas[i].outerText).substring(0, (areas[i].outerText).length - 1);
+            if (areaName === txt) {
+                areas[i].lastElementChild.className = "hidden";
+                areas[i].title = "No se puede eliminar esta área";
+                break;
             }
         }
-        for (var j = 0; j < listDelete.length; j++) {
-            var txtSubject = subjects[listDelete[j]].outerText;
-            var text = txtSubject.substring(0, txtSubject.length - 1);
-            $("#selectSubjectArea option[value='"+text+"']").remove();
-            subjects[listDelete[j]].remove();
+    }
+
+    function addDeleteArea(subjectName) {
+        var cant = 0;
+        var subjects = $('#newSubjectsUl LI');
+        for (var i = 0; i < subjects.length; i++) {
+            if (cant > 0) {
+                break;
+            } else {
+                var texto = subjects[i].outerText.split('/')[1];
+                var txt = texto.substring(1, texto.length - 1);
+                if (areaName == txt) {
+                    ++cant;
+                }
+            }
         }
-        if ($('#newSubjectsUl LI').length === 0) {
-            $('#newSubjectsUl').addClass('hidden');
+        if (cant === 0) {
+            var areas = $('#newAreasUl LI');
+            for (var i = 0; i < areas.length; i++) {
+                var txt = (areas[i].outerText).substring(0, (areas[i].outerText).length - 1);
+                areaName = (subjectName.split('/')[1]).substring(1, subjectName.length);
+                if (areaName === txt) {
+                    areas[i].lastElementChild.className = "closeElement";
+                    areas[i].title = "";
+                }
+            }
         }
     }
 </script>

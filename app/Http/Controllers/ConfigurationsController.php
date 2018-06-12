@@ -75,7 +75,8 @@ class ConfigurationsController extends Controller
      */
     public function store(Request $request, $continue = null)
     {
-        $columnName = strtolower($request->columnName);
+        $columnName = strtolower(str_replace(' ', '_', $request->columnName));
+        $auxColumnName = strtolower($request->columnName);
         if (!Schema::hasColumn('users', $columnName)) {
             $newColumn = new Column();
             $newColumn->name = $columnName;
@@ -93,14 +94,14 @@ class ConfigurationsController extends Controller
                 }
             }
             if ($continue !== null) {
-                return Response()->json(array('result' => 'ok', 'column' => $columnName));
+                return Response()->json(array('result' => 'ok', 'column' => $auxColumnName));
             } elseif ($request->viewReturn !== null) {
                 return redirect($request->viewReturn);
             }
             return redirect('/profile/inscriptions');
         } else {
             if ($continue !== null) {
-                return Response()->json(array('result' => '404', 'column' => $columnName));
+                return Response()->json(array('result' => '404', 'column' => $auxColumnName));
             } elseif ($request->viewReturn !== null) {
                 return redirect($request->viewReturn);
             }
