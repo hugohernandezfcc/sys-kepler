@@ -37,9 +37,9 @@
         @elseif($typeView == 'form')
 
         <div class="title-action">
-            <a href="#" id="saveContinue" class="btn btn-primary btn-sm">
+            <button type="button" id="saveContinue" class="btn btn-primary btn-sm">
                 <i class="fa fa-check"></i> Guardar y nuevo
-            </a>
+            </button>
             <button type="submit" form="form-create" class="btn btn-primary btn-sm">
                 <i class="fa fa-check"></i> Guardar
             </button>

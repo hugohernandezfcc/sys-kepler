@@ -79,7 +79,7 @@
                         </div>
                         @foreach ($columns as $column)
                             @php($valorCampo = $column->name)
-                            <div class="form-group"><label class="col-md-4 control-label">{{ucfirst(($column->label != '') ? $column->label : $valorCampo)}}</label>
+                            <div class="form-group"><label class="col-md-4 control-label">{{ucfirst(($column->label != '') ? $column->label : str_replace('_', ' ', $valorCampo)) }}</label>
                                 <div class="col-md-6">
                                 @if($column->type == 'string')
                                     <input type="text" name="{{$valorCampo}}" class="form-control" required>

@@ -51,7 +51,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Registra la información <small>Artículos.</small></h5>
+                <h5>Registra la información <small>Artículo.</small></h5>
                 <div class="ibox-tools">
                     <a href="/articles">
                         Cancelar
@@ -122,38 +122,86 @@
 @elseif($typeView == 'list')
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="grid">
-        @foreach ($records as $rec)
-        <div class="col-lg-4">
-            <div class="ibox">
-                <div class="ibox-title">
-                    @if($rec->created_at->diffInMinutes() < 2)
-                        <span class="label label-primary pull-right">Nuevo</span>
-                    @endif
-                    <h5 class="cortar"><a href="/articles/show/{{ $rec->id }}" > {{ $rec->name }} </a></h5>
-                </div>
-                <div class="ibox-content">
-                    @include('layouts._spinner_code')
-                    <div class="row  m-t-sm">
-                        <div class="col-sm-6">
-                            <div class="font-bold">Creado por:</div>{{ $rec->user->name }}
+    @if (count($records) !== 0)
+        <div class="grid">
+            @foreach ($records as $rec)
+            <div class="col-lg-4">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        @if($rec->created_at->diffInMinutes() < 2)
+                            <span class="label label-primary pull-right">Nuevo</span>
+                        @endif
+                        <h5 class="cortar"><a href="/articles/show/{{ $rec->id }}" > {{ $rec->name }} </a></h5>
+                    </div>
+                    <div class="ibox-content">
+                        @include('layouts._spinner_code')
+                        <div class="row  m-t-sm">
+                            <div class="col-sm-6">
+                                <div class="font-bold">Creado por:</div>{{ $rec->user->name }}
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="font-bold">Modulo:</div>{{ $rec->module->name }}
+                            </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="font-bold">Modulo:</div>{{ $rec->module->name }}
+                        <div class="hr-line-dashed"></div>
+                        <h4>Contenido:</h4>
+                        <div class="cortar_largo">
+                            <p>
+                            {!! $rec->contenido !!}
+                            </p>
                         </div>
                     </div>
-                    <div class="hr-line-dashed"></div>
-                    <h4>Contenido:</h4>
-                    <div class="cortar_largo">
-                        <p>
-                        {!! $rec->contenido !!}
-                        </p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    @else
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Lista de artículos</h5>
+                    </div>
+                    <div class="ibox-content">
+                        @include('layouts._spinner_code')
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover dataTables-example" >
+                                <thead>
+                                    <tr>
+                                        <th>Nombre del artículo</th>
+                                        <th>Fecha de creación</th>
+                                        <th>Creado por</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach ($records as $rec)
+
+                                    <tr class="gradeX">
+                                        <td>{{ $rec->name }}</td>
+                                        <td>{{ $rec->created_at }}</td>
+                                        <td>{{ $rec->user->name }}</td>
+                                    </tr>
+
+                                    @endforeach
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <th>Nombre del artículo</th>
+                                        <th>Fecha de creación</th>
+                                        <th>Creado por</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
-        @endforeach
-    </div>
+    @endif
 </div>
 
 @elseif($typeView == 'view')

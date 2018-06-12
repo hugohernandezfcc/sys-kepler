@@ -8588,9 +8588,9 @@ body.md-skin {
 #newAreasUl, #newSubjectsUl {
   margin: 0;
   padding: 0;
-  border: 2px solid #000;
-  border-bottom: 1px solid #000;
-  border-top: 1px solid #000;
+  border: 2px solid rgb(127, 127, 127);
+  border-bottom: 1px solid rgb(127, 127, 127);
+  border-top: 1px solid rgb(127, 127, 127);
 }
 
 /* Style the list items */
@@ -8600,8 +8600,8 @@ body.md-skin {
   list-style-type: none;
   background: #eee;
   transition: 0.2s;
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
+  border-top: 1px solid rgb(127, 127, 127);
+  border-bottom: 1px solid rgb(127, 127, 127);
   
   /* make the list items unselectable */
   -webkit-user-select: none;
@@ -8611,8 +8611,8 @@ body.md-skin {
 }
 
 #newAreasUl li:last-child, #newSubjectsUl li:last-child {
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
+  border-top: 1px solid rgb(127, 127, 127);
+  border-bottom: 1px solid rgb(127, 127, 127);
 }
 
 /* Set all odd list items to a different color (zebra-stripes) */
