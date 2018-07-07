@@ -79,45 +79,13 @@
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Inicio</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="start" id="start">
-                                <option value="">Seleccionar mes</option>
-                                <option value="Enero">Enero</option>
-                                <option value="Febrero">Febrero</option>
-                                <option value="Marzo">Marzo</option>
-                                <option value="Abril">Abril</option>
-                                <option value="Mayo">Mayo</option>
-                                <option value="Junio">Junio</option>
-                                <option value="Julio">Julio</option>
-                                <option value="Agosto">Agosto</option>
-                                <option value="Septiembre">Septiembre</option>
-                                <option value="Octubre">Octubre</option>
-                                <option value="Noviembre">Noviembre</option>
-                                <option value="Diciembre">Diciembre</option>
-                            </select>
-                        </div>
+                        <div class="col-sm-10"><input type="date" id="start_date" name="start_date" class="form-control" value="{{ date('Y-m-d', strtotime($record->start_date)) }}" min="{{ $hoy }}" required></div>
                     </div>
                     <div class="hr-line-dashed"></div>
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Fin</label>
-                        <div class="col-sm-10">
-                            <select class="form-control" name="end" id="end">
-                                <option value="">Seleccionar mes</option>
-                                <option value="Enero">Enero</option>
-                                <option value="Febrero">Febrero</option>
-                                <option value="Marzo">Marzo</option>
-                                <option value="Abril">Abril</option>
-                                <option value="Mayo">Mayo</option>
-                                <option value="Junio">Junio</option>
-                                <option value="Julio">Julio</option>
-                                <option value="Agosto">Agosto</option>
-                                <option value="Septiembre">Septiembre</option>
-                                <option value="Octubre">Octubre</option>
-                                <option value="Noviembre">Noviembre</option>
-                                <option value="Diciembre">Diciembre</option>
-                            </select>
-                        </div>
+                        <div class="col-sm-10"><input type="date" id="end_date" name="end_date" class="form-control" value="{{ date('Y-m-d', strtotime($record->end_date)) }}" min="{{ $hoy }}" required></div>
                     </div>
                     <div class="hr-line-dashed"></div>
 
@@ -131,12 +99,14 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $(function() {
-        $('#start').val('{{$record->start}}');
-        $('#end').val('{{$record->end}}');
-    });
-</script>
+    @if(!$record->exists)
+    <script type="text/javascript">
+        $(function() {
+            document.getElementById('start_date').valueAsDate = new Date();
+            document.getElementById('end_date').valueAsDate = new Date();
+        });
+    </script>
+    @endif
 @elseif($typeView == 'list')
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
@@ -232,8 +202,8 @@
                 </div>
                 <div class="col-lg-7" id="cluster_info">
                     <dl class="dl-horizontal" >
-                        <dt>Inicia:</dt> <dd>{{$record->start}}</dd>
-                        <dt>Termina:</dt> <dd>{{$record->end}}</dd>
+                        <dt>Inicia:</dt> <dd>{{ date('d-m-Y', strtotime($record->start_date)) }}</dd>
+                        <dt>Termina:</dt> <dd>{{ date('d-m-Y', strtotime($record->end_date)) }}</dd>
                         <dt>Docentes:</dt>
                     </dl>
                 </div>
@@ -266,76 +236,7 @@
                         <div class="panel-body">
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab-1">
-                                    <div class="social-feed-separated">
-                                        @foreach ($comments as $conversations)
-                                        <div class="social-avatar">
-                                            <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. $conversations['Question']->user->avatar) }}"></a>
-                                        </div>
-                                        <div class="social-feed-box">
-                                            <div class="social-avatar">
-                                                <a href="#">{{ $conversations['Question']->user->name }}</a><small class="text-muted"> - {{ $conversations['Question']->created_at->diffForHumans() }}</small>
-                                            </div>
-                                            <div class="social-body">
-                                                <p>{{ $conversations['Question']->name }}</p><br>
-                                                <div class="btn-group">
-                                                    <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $conversations['Question']->id }})"><i class="fa fa-comments"></i> Comentar</a>
-                                                </div>
-                                            </div>
-                                            <div class="social-footer">
-                                                @if (count($conversations['Answer'][0]) > 0)
-                                                @foreach ($conversations['Answer'][0] as $itemConversation)
-                                                <div class="social-comment">
-                                                    <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
-                                                    <div class="media-body">
-                                                        <a href="#">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }}<br>
-                                                        <div class="btn-group">
-                                                            <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">{{ $itemConversation->created_at->diffForHumans() }}</small>
-                                                        </div>
-                                                    </div>
-
-                                                    @if (count($itemConversation['AnswerToAnswer']) > 0)
-                                                    @foreach ($itemConversation['AnswerToAnswer'] as $itemAnswer)
-                                                    <div class="social-comment">
-                                                        <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
-                                                        <div class="media-body">
-                                                            <a href="#">{{ $itemAnswer->user->name }}</a> {{ $itemAnswer->name }}<br><small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
-                                                        </div>
-                                                    </div>
-                                                    @endforeach
-                                                    @endif
-
-                                                    <div class="social-comment hidden" id="comentario{{ $itemConversation->id }}">
-                                                        <a href="" class="pull-left"> <img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
-                                                        <div class="media-body">
-                                                            <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer to Answer', {{ $itemConversation->id }})" placeholder="Escribe un comentario..."></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                @endforeach
-                                                @endif
-                                                <div class="social-comment hidden" id="comentario{{ $conversations['Question']->id }}">
-                                                    <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
-                                                    <div class="media-body">
-                                                        <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer', {{ $conversations['Question']->id }})" placeholder="Escribe un comentario..."></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="hr-line-dashed"></div>
-
-                                        @endforeach 
-
-                                        <div id='ultimo_comentario'>
-                                            <div class="social-avatar">
-                                                <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
-                                            </div>
-                                            <div class="media-body">
-                                                <textarea class="form-control" onkeypress="pulsar(this, event, 'Question', null)" placeholder="Escribe un comentario..."></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @include('layouts._conversations')
                                 </div>
                                 <div class="tab-pane" id="tab-2">
                                     @include('layouts._table_related', ['title' => 'Area', 'elements' => $record->areas, 'nroTable' => '1', 'url' => "/areas/create/$record->id", 'new' => 'área', 'button' => true])
@@ -432,18 +333,18 @@
             {
                 if (result.type === 'Question') {
                     var answer = "\'Answer\'";
-                    var html = '<div class="social-avatar"><a href=""><img alt="image" src="'+imagenUsuario+'"></a></div>\n\
+                    var html = '<div class="social-avatar"><a href=""><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
                     <div class="social-feed-box"><div class="social-avatar"><a href="#">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
-                    <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a>\n\
+                    <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
                     <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div>';
                     $('#ultimo_comentario').before(html);
                 } else if (result.type === 'Answer') {
                     var answer = "\'Answer to Answer\'";
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
-                    <div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"> <img alt="image" src="'+imagenUsuario+'"> </a><div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div>';
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
+                    <div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"> <img alt="image" class="img-circle" src="'+imagenUsuario+'"> </a><div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div>';
                     $('#comentario'+result.parent).before(html);
                 } else {
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
                     $('#comentario'+result.parent).before(html);
                 }
             },

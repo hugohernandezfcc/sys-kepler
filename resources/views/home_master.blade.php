@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-xs-8 text-right">
                         <span> Grupos asignados </span>
-                        <h2 class="font-bold">10</h2>
+                        <h2 class="font-bold">{{ $records['groups'] }}</h2>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-xs-8 text-right">
                         <span> Nuevos mensajes </span>
-                        <h2 class="font-bold">17</h2>
+                        <h2 class="font-bold">{{ $records['comments'] }}</h2>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-xs-8 text-right">
                         <span> Nuevas dudas </span>
-                        <h2 class="font-bold">12</h2>
+                        <h2 class="font-bold">{{ $records['questions'] }}</h2>
                     </div>
                 </div>
             </div>
@@ -67,11 +67,11 @@
                     </h2>
                     <small>Docente de español</small>
                 </div>
-                <img src="{{ asset('inspinia/img/a4.jpg')}}" class="img-circle circle-border m-b-md" alt="profile">
+                <img id="profileImage" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" alt="image" class="img-circle circle-border m-b-md" width="40%">
                 <div>
                     <span>100 Respuestas</span> |
                     <span>350 Seguidores</span> |
-                    <span>14 Artículos</span>
+                    <span>{{ $records['articles'] }} Artículos</span>
                 </div>
             </div>
             <div class="widget-text-box">
@@ -94,11 +94,10 @@
             <div class="widget  p-lg text-center">
                 <div class="m-b-md">
                     <i class="fa fa-flash fa-4x"></i>
-                    <h1 class="m-xs">612</h1>
+                    <h1 class="m-xs">{{ $records['students'] }}</h1>
                     <h3 class="font-bold no-margins">
                         Estudiantes 
                     </h3>
-                    <small>Egresados</small>
                 </div>
             </div>
         </div>

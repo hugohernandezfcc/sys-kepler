@@ -343,7 +343,7 @@
                             <dt>Creado por:</dt> <dd>{{$question->user->name}}</dd>
                             <dt>Creada:</dt> <dd>{{$question->created_at->diffForHumans()}}</dd>
                             <dd><div class="social-avatar">
-                                <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. $question->user->avatar) }}"></a>
+                                <a href=""><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $question->user->avatar) }}"></a>
                             </div></dd>
                         </dl>
                     </div>
@@ -358,7 +358,7 @@
                             @if (count($conversations['Answer'][0]) > 0)
                             @foreach ($conversations['Answer'][0] as $itemConversation)
                                 <div class="social-avatar">
-                                    <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
+                                    <a href=""><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
                                 </div>
                                 <div class="social-feed-box">
                                     <div class="social-avatar">
@@ -375,7 +375,7 @@
                                         @if (count($itemConversation['AnswerToAnswer']) > 0)
                                         @foreach ($itemConversation['AnswerToAnswer'] as $itemAnswer)
                                             <div class="social-comment">
-                                                <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
+                                                <a href="" class="pull-left"><img class="img-circle" alt="image" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
                                                 <div class="media-body">
                                                     <a href="#">{{ $itemAnswer->user->name }}</a>  {{ $itemAnswer->name }}<br> - <small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
                                                 </div>
@@ -384,7 +384,7 @@
                                         @endif
 
                                         <div class="social-comment hidden" id="comentario{{ $itemConversation->id }}">
-                                            <a href="" class="pull-left"><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
+                                            <a href="" class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
                                             <div class="media-body">
                                                 <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer to Answer', {{ $itemConversation->id }})" placeholder="Escribe una respuesta..."></textarea>
                                             </div>
@@ -400,7 +400,7 @@
                             
                             <div id='ultimo_comentario' class="hr-line-dashed"></div>
                             <div class="social-avatar">
-                                <a href=""><img alt="image" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
+                                <a href=""><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
                             </div>
                             <div class="social-feed-box">
                                 <div class="social-footer">
@@ -495,13 +495,13 @@
             {
                 if (result.type === 'Answer') {
                     var answer = "\'Answer to Answer\'";
-                    var html = '<div class="hr-line-dashed"></div><div class="social-avatar"><a href=""><img alt="image" src="'+imagenUsuario+'"></a></div>\n\
+                    var html = '<div class="hr-line-dashed"></div><div class="social-avatar"><a href=""><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
                     <div class="social-feed-box"><div class="social-avatar"><a href="#">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
-                    <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a>\n\
+                    <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
                     <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div>';
                     $('#ultimo_comentario').before(html);
                 } else {
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
                     $('#comentario'+result.parent).before(html);
                 }
             },

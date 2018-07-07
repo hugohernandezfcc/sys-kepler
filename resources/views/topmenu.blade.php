@@ -11,6 +11,7 @@
         <li>
             <span class="m-r-sm text-muted welcome-message">Bienvenido {{ Auth::user()->name }}</span>
         </li>
+        @if (Auth::user()->type !== "master")
         <li class="dropdown">
             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                 <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
@@ -64,6 +65,7 @@
                 </li>
             </ul>
         </li>
+        @endif
         <li class="dropdown">
             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                 <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
