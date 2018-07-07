@@ -49,14 +49,12 @@ class SchoolCyclesController extends Controller
         $schoolCycle = new SchoolCycle();
         return view('schoolcycles', [
                 'typeView' => 'form',
-                'record' => $schoolCycle
+                'record' => $schoolCycle,
+                'hoy' => date('Y-m-d')
             ]
         );   
     }
-
-
     
-
     /**
      * Store a newly created resource in storage.
      *
@@ -65,11 +63,17 @@ class SchoolCyclesController extends Controller
      */
     public function store(Request $request)
     {
+        $mesStartDate = date("n", strtotime($request->start_date)) - 1;
+        $mesEndDate = date("n", strtotime($request->end_date)) - 1;
+        $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+
         $SchoolCycle = new SchoolCycle();
 
         $SchoolCycle->name = $request->name;
-        $SchoolCycle->start = $request->start;
-        $SchoolCycle->end = $request->end;
+        $SchoolCycle->start = $meses[$mesStartDate];
+        $SchoolCycle->end = $meses[$mesEndDate];
+        $SchoolCycle->start_date = $request->start_date;
+        $SchoolCycle->end_date = $request->end_date;
         $SchoolCycle->description = $request->description;
         $SchoolCycle->created_by = Auth::id();
 
@@ -134,7 +138,8 @@ class SchoolCyclesController extends Controller
     {
         return view('schoolcycles', [
                 'typeView' => 'form',
-                'record' => SchoolCycle::find($schoolCycleId)
+                'record' => SchoolCycle::find($schoolCycleId),
+                'hoy' => date('Y-m-d')
             ]
         );
     }
@@ -148,11 +153,17 @@ class SchoolCyclesController extends Controller
      */
     public function update(Request $request)
     {
+        $mesStartDate = date("n", strtotime($request->start_date)) - 1;
+        $mesEndDate = date("n", strtotime($request->end_date)) - 1;
+        $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+
         $schoolCycle = SchoolCycle::find($request->idRecord);
         $schoolCycle->name = $request->name;
+        $schoolCycle->start = $meses[$mesStartDate];
+        $schoolCycle->end = $meses[$mesEndDate];
+        $schoolCycle->start_date = $request->start_date;
+        $schoolCycle->end_date = $request->end_date;
         $schoolCycle->description = $request->description;
-        $schoolCycle->start = $request->start;
-        $schoolCycle->end = $request->end;
         if ($schoolCycle->update()) {
             return redirect('/courses/show/' . $schoolCycle->id);
         }

@@ -41,7 +41,8 @@ class WizardsController extends Controller
         return view('wizards', [
                 'typeView' => 'view',
                 'groups' => DB::table('groups')->get(),
-                'viewReturn' => $viewReturn
+                'viewReturn' => $viewReturn,
+                'hoy' => date('Y-m-d')
             ]
         );   
     }
@@ -69,11 +70,17 @@ class WizardsController extends Controller
      */
     public function store(Request $request)
     {
+        $mesStartDate = date("n", strtotime($request->start_date)) - 1;
+        $mesEndDate = date("n", strtotime($request->end_date)) - 1;
+        $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+
         $SchoolCycle = new SchoolCycle();
 
         $SchoolCycle->name = $request->name;
-        $SchoolCycle->start = $request->start;
-        $SchoolCycle->end = $request->end;
+        $SchoolCycle->start = $meses[$mesStartDate];
+        $SchoolCycle->end = $meses[$mesEndDate];
+        $SchoolCycle->start_date = $request->start_date;
+        $SchoolCycle->end_date = $request->end_date;
         $SchoolCycle->description = $request->description;
         $SchoolCycle->created_by = Auth::id();
 

@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Area;
+use App\Article;
+use App\Conversation;
+use App\Forum;
 use App\Group;
+use App\ItemConversation;
+use App\QuestionForum;
 use App\Subject;
 use App\User;
 use Illuminate\Http\Request;
@@ -42,7 +47,51 @@ class HomeController extends Controller
         } elseif (Auth::user()->type == "student") {
             return view('home_student');
         } else {
-            return view('home_master');
+            $records['groups'] = $records['comments'] = $records['questions'] = $records['students'] = 0;
+            $groups = Group::all();
+            foreach ($groups as $group) {
+                $cont_students = 0;
+                $encontrado = false;
+                $cont_user = count($group->users);
+                foreach ($group->users as $key => $user) {
+                    if ($cont_user-1 === $key) {
+                        if ($user->type == 'student') {
+                            $cont_students++;
+                            if ($encontrado) {
+                                $records['students'] += $cont_students;
+                            }
+                        } else if (Auth::id() == $user->id) {
+                            $records['groups']++;
+                            $records['students'] += $cont_students;
+                        } else if ($encontrado) {
+                            $records['students'] += $cont_students;
+                        }
+                        break;
+                    }
+                    if ($user->type == 'student') {
+                        $cont_students++;
+                    } else if (Auth::id() == $user->id) {
+                        $records['groups']++;
+                        $encontrado = true;
+                    }
+                }
+            }
+            $articles = Article::where('created_by', '=', Auth::id())->get();
+            $records['articles'] = count($articles);
+            foreach ($articles as $article) {
+                $conversations = Conversation::where('table', '=', 'articles')->where('id_record', '=', $article->id)->get();
+                foreach ($conversations as $conversation) {
+                    $records['comments'] += count(ItemConversation::where('conversation', '=', $conversation->id)->get());
+                }
+            }
+            $forums = Forum::where('created_by', '=', Auth::id())->get();
+            foreach ($forums as $forum) {
+                $records['questions'] += count(QuestionForum::where('forum_id', '=', $forum->id)->get());
+            }
+            return view('home_master', [
+                'records' => $records
+                ]
+            );
         }
     }
 

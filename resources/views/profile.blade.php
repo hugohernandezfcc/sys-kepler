@@ -89,7 +89,7 @@
                     <div class="hr-line-dashed"></div>
                     @foreach ($camposUsers as $column)
                         @php($valorCampo = $column->name)
-                        <div class="form-group"><label class="col-sm-2 control-label">{{ucfirst(($column->label != '') ? $column->label : $valorCampo)}}</label>
+                        <div class="form-group"><label class="col-sm-2 control-label">{{ucfirst(($column->label != '') ? $column->label : str_replace('_', ' ', $valorCampo))}}</label>
                             <div class="col-sm-10">
                             @if($column->type == 'string')
                                 <input type="text" name="{{$valorCampo}}" class="form-control" value="{{Auth::user()->$valorCampo}}" required>
@@ -177,12 +177,12 @@
                                 @foreach ($camposUsers as $column)
                                     @php($valorCampo = $column->name)
                                     @if($column->type == 'string' OR $column->type == 'integer')
-                                        {{ucfirst(($column->label != '') ? $column->label : $valorCampo)}}: {{Auth::user()->$valorCampo}} <br>
+                                        {{ucfirst(($column->label != '') ? $column->label : str_replace('_', ' ', $valorCampo))}}: {{Auth::user()->$valorCampo}} <br>
                                     @else
                                         @if(Auth::user()->$valorCampo !== null)
-                                            {{ucfirst(($column->label != '') ? $column->label : $valorCampo)}}: {{date('d-m-Y', strtotime(Auth::user()->$valorCampo))}} <br>
+                                            {{ucfirst(($column->label != '') ? $column->label : str_replace('_', ' ', $valorCampo))}}: {{date('d-m-Y', strtotime(Auth::user()->$valorCampo))}} <br>
                                         @else
-                                            {{ucfirst(($column->label != '') ? $column->label : $valorCampo)}}: <br>
+                                            {{ucfirst(($column->label != '') ? $column->label : str_replace('_', ' ', $valorCampo))}}: <br>
                                         @endif
                                     @endif
                                 @endforeach

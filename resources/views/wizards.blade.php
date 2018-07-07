@@ -433,40 +433,12 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Inicio *</label>
-                                <select class="form-control" name="start" id="start" required>
-                                    <option value="">Seleccionar mes</option>
-                                    <option value="Enero">Enero</option>
-                                    <option value="Febrero">Febrero</option>
-                                    <option value="Marzo">Marzo</option>
-                                    <option value="Abril">Abril</option>
-                                    <option value="Mayo">Mayo</option>
-                                    <option value="Junio">Junio</option>
-                                    <option value="Julio">Julio</option>
-                                    <option value="Agosto">Agosto</option>
-                                    <option value="Septiembre">Septiembre</option>
-                                    <option value="Octubre">Octubre</option>
-                                    <option value="Noviembre">Noviembre</option>
-                                    <option value="Diciembre">Diciembre</option>
-                                </select>
+                                <input type="date" id="start_date" name="start_date" class="form-control" min="{{ $hoy }}" required>
                             </div>
-
+                            <span id="dates-error" class="hidden span-error">La fecha de inicio debe ser menor a la fecha fin.</span>
                             <div class="form-group">
                                 <label>Fin *</label>
-                                <select class="form-control" name="end" id="end" required>
-                                    <option value="">Seleccionar mes</option>
-                                    <option value="Enero">Enero</option>
-                                    <option value="Febrero">Febrero</option>
-                                    <option value="Marzo">Marzo</option>
-                                    <option value="Abril">Abril</option>
-                                    <option value="Mayo">Mayo</option>
-                                    <option value="Junio">Junio</option>
-                                    <option value="Julio">Julio</option>
-                                    <option value="Agosto">Agosto</option>
-                                    <option value="Septiembre">Septiembre</option>
-                                    <option value="Octubre">Octubre</option>
-                                    <option value="Noviembre">Noviembre</option>
-                                    <option value="Diciembre">Diciembre</option>
-                                </select>
+                                <input type="date" id="end_date" name="end_date" class="form-control" min="{{ $hoy }}" required>
                             </div>
 
                         </div>
@@ -662,6 +634,15 @@
                 }
 
                 // Forbid suppressing "Warning" step if the user is to young
+                if (newIndex === 1 && Date.parse($('#end_date').val()) <= Date.parse($('#start_date').val()))
+                {
+                    $('#dates-error').removeClass('hidden');
+                    return false;
+                } else if (newIndex === 1 && Date.parse($('#end_date').val()) > Date.parse($('#start_date').val())) {
+                    $('#dates-error').addClass('hidden');
+                }
+
+                // Forbid suppressing "Warning" step if the user is to young
                 if (newIndex === 2 && $("#newAreasUl LI").length === 0)
                 {
                     $('#areaName-error').removeClass('hidden');
@@ -739,6 +720,9 @@
         });
         trUser = '';
         $('#groups').val(lista_grupos);
+
+        document.getElementById('start_date').valueAsDate = new Date();
+        document.getElementById('end_date').valueAsDate = new Date();
     });
 </script>
 <script type="text/javascript">
