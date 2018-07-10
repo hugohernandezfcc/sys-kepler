@@ -435,7 +435,7 @@
                                 <label>Inicio *</label>
                                 <input type="date" id="start_date" name="start_date" class="form-control" min="{{ $hoy }}" required>
                             </div>
-                            <span id="dates-error" class="hidden span-error">La fecha de inicio debe ser menor a la fecha fin.</span>
+                            <span id="dates-error" class="hidden span-error">La fecha de fin debe posterior a la fecha inicio.</span>
                             <div class="form-group">
                                 <label>Fin *</label>
                                 <input type="date" id="end_date" name="end_date" class="form-control" min="{{ $hoy }}" required>
