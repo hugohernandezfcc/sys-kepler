@@ -30,10 +30,22 @@ class GroupsController extends Controller
      */
     public function index()
     {
+        $records = [];
+        if (Auth::user()->type != "admin") {
+            $groups = Group::orderBy('created_at', 'desc')->get();
+            foreach ($groups as $group) {
+                foreach ($group->users as $user) {
+                    if (Auth::id() == $user->id) {
+                        $records[] = $group;
+                    }
+                }
+            }
+        } else {
+            $records = Group::orderBy('created_at', 'desc')->get();
+        }
         return view('groups', [
                 'typeView'  => 'list',
-                'records' => Group::orderBy('created_at', 'desc')
-                                ->get()
+                'records' => $records
             ]
         );
     }
