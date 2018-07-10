@@ -82,10 +82,13 @@
                         <div class="col-sm-10"><input type="date" id="start_date" name="start_date" class="form-control" value="{{ date('Y-m-d', strtotime($record->start_date)) }}" min="{{ $hoy }}" required></div>
                     </div>
                     <div class="hr-line-dashed"></div>
-
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Fin</label>
                         <div class="col-sm-10"><input type="date" id="end_date" name="end_date" class="form-control" value="{{ date('Y-m-d', strtotime($record->end_date)) }}" min="{{ $hoy }}" required></div>
+                    </div>
+                    <div class="form-group dates-error hidden">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-10"><span class="hidden span-error dates-error">La fecha de fin debe posterior a la fecha inicio.</span></div>
                     </div>
                     <div class="hr-line-dashed"></div>
 
@@ -107,6 +110,17 @@
         });
     </script>
     @endif
+<script type="text/javascript">
+    $('form').on('submit', function () {
+        if (Date.parse($('#end_date').val()) <= Date.parse($('#start_date').val())) {
+            $('.dates-error').removeClass('hidden');
+            return false;
+        } else if (Date.parse($('#end_date').val()) > Date.parse($('#start_date').val())) {
+            $('.dates-error').addClass('hidden');
+            return true;
+        }
+    });
+</script>
 @elseif($typeView == 'list')
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
