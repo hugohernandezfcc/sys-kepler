@@ -5,7 +5,7 @@
     </div>
     <div class="social-feed-box">
         <div class="social-avatar">
-            <a href="#">{{ $conversations['Question']->user->name }}</a><small class="text-muted"> - {{ $conversations['Question']->created_at->diffForHumans() }}</small>
+            <a href="/profile/user/{{ $conversations['Question']->user->id }}">{{ $conversations['Question']->user->name }}</a><small class="text-muted"> - {{ $conversations['Question']->created_at->diffForHumans() }}</small>
         </div>
         <div class="social-body">
             <p>{{ $conversations['Question']->name }}</p><br>
@@ -19,7 +19,7 @@
             <div class="social-comment">
                 <a href="" class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
                 <div class="media-body">
-                    <a href="#">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }}<br>
+                    <a href="/profile/user/{{ $itemConversation->user->id }}">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }}<br>
                     <div class="btn-group">
                         <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Comentar</a> - <small class="text-muted">{{ $itemConversation->created_at->diffForHumans() }}</small>
                     </div>
@@ -30,7 +30,7 @@
                 <div class="social-comment">
                     <a href="" class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
                     <div class="media-body">
-                        <a href="#">{{ $itemAnswer->user->name }}</a> {{ $itemAnswer->name }}<br><small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
+                        <a href="/profile/user/{{ $itemAnswer->user->id }}">{{ $itemAnswer->user->name }}</a> {{ $itemAnswer->name }}<br><small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
                     </div>
                 </div>
                 @endforeach

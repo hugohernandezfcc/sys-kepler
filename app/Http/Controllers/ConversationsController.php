@@ -65,6 +65,7 @@ class ConversationsController extends Controller {
         $itemConversation->conversation = $conversation->id;
         if($itemConversation->save()){
             $itemConversation->user_name = Auth::user()->name;
+            $itemConversation->user_id = Auth::user()->id;
             $itemConversation->tiempo = $itemConversation->created_at->diffForHumans();
             return response()->json($itemConversation);
         }

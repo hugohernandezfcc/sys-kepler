@@ -176,8 +176,8 @@
                 {{ method_field('DELETE') }}
                 <div class="form-group">
                     <div class="pull-right">
-                        <button type="button" class="btn btn-default btn-xs pull-right" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</button>
                         <a href="#redactarPregunta" id="toggle" data-toggle="modal" class="btn btn-primary btn-xs">Nueva pregunta</a>
+                        <a href="#confirmDelete" class="btn btn-default btn-xs" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</a>
                     </div>
                 </div>
             </form>
@@ -362,7 +362,7 @@
                                 </div>
                                 <div class="social-feed-box">
                                     <div class="social-avatar">
-                                        <a href="#">{{ $itemConversation->user->name }}</a><small class="text-muted"> - {{ $itemConversation->created_at->diffForHumans() }}</small>
+                                        <a href="/profile/user/{{ $itemConversation->user->id }}">{{ $itemConversation->user->name }}</a><small class="text-muted"> - {{ $itemConversation->created_at->diffForHumans() }}</small>
                                     </div>
                                     <div class="social-body">
                                         <p>{{ $itemConversation->name }}</p><br>
@@ -377,7 +377,7 @@
                                             <div class="social-comment">
                                                 <a href="" class="pull-left"><img class="img-circle" alt="image" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
                                                 <div class="media-body">
-                                                    <a href="#">{{ $itemAnswer->user->name }}</a>  {{ $itemAnswer->name }}<br> - <small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
+                                                    <a href="/profile/user/{{ $itemAnswer->user->id }}">{{ $itemAnswer->user->name }}</a>  {{ $itemAnswer->name }}<br> - <small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -496,12 +496,12 @@
                 if (result.type === 'Answer') {
                     var answer = "\'Answer to Answer\'";
                     var html = '<div class="hr-line-dashed"></div><div class="social-avatar"><a href=""><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
-                    <div class="social-feed-box"><div class="social-avatar"><a href="#">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
+                    <div class="social-feed-box"><div class="social-avatar"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
                     <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
                     <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div>';
                     $('#ultimo_comentario').before(html);
                 } else {
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
                     $('#comentario'+result.parent).before(html);
                 }
             },

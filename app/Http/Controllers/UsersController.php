@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Column;
 use App\Inscription;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Requests;
@@ -28,10 +29,19 @@ class UsersController extends Controller {
      * @param  \App\User  $userId
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index($userId = null) {
+        if ($userId !== null && $userId != Auth::user()->id) {
+            $edit = false;
+            $user = User::find($userId);
+        } else {
+            $edit = true;
+            $user = Auth::user();
+        }
         return view('profile', [
             'typeView' => 'view',
-            'camposUsers' => $this->camposUsers()
+            'camposUsers' => $this->camposUsers($userId),
+            'edit' => $edit,
+            'user' => $user
                 ]
         );
     }
@@ -141,10 +151,16 @@ class UsersController extends Controller {
      * 
      * @return array
      */
-    protected function camposUsers() {
+    protected function camposUsers($userId = null) {
         $camposUsers=[];
-        if(Auth::user()->inscription_id !== null) {
-            $inscription = Inscription::where('id', '=', Auth::user()->inscription_id)->first();
+        if ($userId !== null) {
+            $aux = User::where('id', '=', $userId)->first();
+            $inscriptionId = $aux->inscription_id;
+        } else {
+            $inscriptionId = Auth::user()->inscription_id;
+        }
+        if($inscriptionId !== null) {
+            $inscription = Inscription::where('id', '=', $inscriptionId)->first();
             $columnsRequired = Column::where('required', '=', true)->get();
             $columnsAditional = Column::whereIn('name', explode('-', $inscription->columns_name))->get();
             $camposUsers = $columnsRequired->merge($columnsAditional);

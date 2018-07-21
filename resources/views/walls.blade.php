@@ -219,7 +219,7 @@
                                 </div>
                                 <div class="social-feed-box">
                                     <div class="social-avatar">
-                                        <a href="#">{{ $post->user->name }}</a><small class="text-muted"> - {{ $post->created_at->diffForHumans() }}</small>
+                                        <a href="/profile/user/{{ $post->user->id }}">{{ $post->user->name }}</a><small class="text-muted"> - {{ $post->created_at->diffForHumans() }}</small>
                                     </div>
                                     <div class="social-body">
                                         {!! $post->body !!}<br>
@@ -242,7 +242,7 @@
                                         <div class="social-comment">
                                             <a href="" class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
                                             <div class="media-body">
-                                                <a href="#">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }}<br>
+                                                <a href="/profile/user/{{ $itemConversation->user->id }}">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }}<br>
                                                 <div class="btn-group">
                                                     <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Responder</a> - <small class="text-muted">{{ $itemConversation->created_at->diffForHumans() }}</small>
                                                 </div>
@@ -253,7 +253,7 @@
                                             <div class="social-comment">
                                                 <a href="" class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
                                                 <div class="media-body">
-                                                    <a href="#">{{ $itemAnswer->user->name }}</a> {{ $itemAnswer->name }}<br><small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
+                                                    <a href="/profile/user/{{ $itemAnswer->user->id }}">{{ $itemAnswer->user->name }}</a> {{ $itemAnswer->name }}<br><small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
                                                 </div>
                                             </div>
                                             @endforeach
@@ -383,16 +383,14 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Lista de usuarios con acceso al muro</h5>
-                    <div class="ibox-tools">
-                        <form id="form-delete" method="post" action="/walls/{{ $record->id }}">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-default btn-xs pull-right" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</button>
-                                <a href="/walls" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
-                            </div>
-                        </form>
-                    </div>
+                    <form id="form-delete" method="post" action="/walls/{{ $record->id }}">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                        <div class="pull-right">
+                            <a href="/walls" class="btn btn-white btn-xs"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                            <a href="#confirmDelete" class="btn btn-default btn-xs" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</a>
+                        </div>
+                    </form>
                 </div>
                 <div class="ibox-content">
                     @include('layouts._spinner_code')
@@ -503,17 +501,17 @@
                 if (result.type === 'Question') {
                     var answer = "\'Answer\'";
                     var html = '<div class="social-avatar"><a href=""><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
-                    <div class="social-feed-box"><div class="social-avatar"><a href="#">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
+                    <div class="social-feed-box"><div class="social-avatar"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
                     <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
                     <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div>';
                     $('#ultimo_comentario').before(html);
                 } else if (result.type === 'Answer') {
                     var answer = "\'Answer to Answer\'";
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Responder</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Responder</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
                     <div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"> <img alt="image" class="img-circle" src="'+imagenUsuario+'"> </a><div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe una respuesta..."></textarea></div></div></div>';
                     $('#comentario'+result.parent).before(html);
                 } else {
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="#">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
+                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
                     $('#comentario'+result.parent).before(html);
                 }
             },
