@@ -645,6 +645,12 @@ Route::group(['prefix' => 'profile'], function() {
         'as' => 'index'
             ]
     );
+
+    Route::get('/user/{userId}', [
+        'uses' => 'UsersController@index',
+        'as' => 'index'
+            ]
+    );
     
     Route::get('/inscriptions', [
         'uses' => 'UsersController@inscriptions',

@@ -188,8 +188,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="m-b-md">
-                        <a href="/links" class="btn btn-white btn-xs pull-right"> <i class="fa fa-chevron-left"></i> Regresar</a>
-                        <a href="/links/edit/{{ $record->id }}" class="btn btn-white btn-xs pull-right"> <i class="fa fa-pencil"></i> Editar</a>
+                        <div class="pull-right">
+                            <a href="/links/edit/{{ $record->id }}" class="btn btn-white btn-xs"> <i class="fa fa-pencil"></i> Editar</a>
+                            <a href="/links" class="btn btn-white btn-xs"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                        </div>
                         <h2>Titulo: {{$record->name}}</h2>
                     </div>
                     @if($record->created_at->diffInMinutes() < 2)

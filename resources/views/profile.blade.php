@@ -32,9 +32,11 @@
     </div>
     <div class="col-sm-6">
         @if($typeView == 'view')
-        <div class="title-action">
-            <a href="/profile/edit" class="btn btn-primary btn-sm">Editar mis datos</a>
-        </div>
+            @if($edit)
+                <div class="title-action">
+                    <a href="/profile/edit" class="btn btn-primary btn-sm">Editar mis datos</a>
+                </div>
+            @endif
 
         @elseif($typeView == 'form')
 
@@ -170,17 +172,19 @@
                         <div class="col-lg-12">
                             <div class="m-b-md">
                                 <div class="btn-group">
-                                    <img id="profileImage" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" alt="image" class="img-circle" width="40%"><br>
-                                    <a href="#" class="btn btn-primary btn-xs" data-target="#modal" data-toggle="modal">Cambiar imagen</a>
+                                    <img id="profileImage" src="{{ asset('uploads/avatars/'. $user->avatar) }}" alt="image" class="img-circle" width="40%"><br>
+                                    @if($edit)
+                                        <a href="#" class="btn btn-primary btn-xs" data-target="#modal" data-toggle="modal">Cambiar imagen</a>
+                                    @endif
                                 </div>
-                                <h2>Nombre y apellido: {{Auth::user()->name}}</h2>
+                                <h2>Nombre y apellido: {{ $user->name}}</h2>
                                 @foreach ($camposUsers as $column)
                                     @php($valorCampo = $column->name)
                                     @if($column->type == 'string' OR $column->type == 'integer')
-                                        {{ucfirst(($column->label != '') ? $column->label : str_replace('_', ' ', $valorCampo))}}: {{Auth::user()->$valorCampo}} <br>
+                                        {{ucfirst(($column->label != '') ? $column->label : str_replace('_', ' ', $valorCampo))}}: {{ $user->$valorCampo }} <br>
                                     @else
-                                        @if(Auth::user()->$valorCampo !== null)
-                                            {{ucfirst(($column->label != '') ? $column->label : str_replace('_', ' ', $valorCampo))}}: {{date('d-m-Y', strtotime(Auth::user()->$valorCampo))}} <br>
+                                        @if($user->$valorCampo !== null)
+                                            {{ucfirst(($column->label != '') ? $column->label : str_replace('_', ' ', $valorCampo))}}: {{date('d-m-Y', strtotime( $user->$valorCampo ))}} <br>
                                         @else
                                             {{ucfirst(($column->label != '') ? $column->label : str_replace('_', ' ', $valorCampo))}}: <br>
                                         @endif
