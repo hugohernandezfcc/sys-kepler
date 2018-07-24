@@ -1,14 +1,17 @@
 <div class="social-feed-separated">
     @foreach ($comments as $conversations)
-    <div class="social-avatar">
+    <div class="social-avatar question-{{ $conversations['Question']->id }}">
         <a href=""><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $conversations['Question']->user->avatar) }}"></a>
     </div>
-    <div class="social-feed-box">
+    <div class="social-feed-box question-{{ $conversations['Question']->id }}">
         <div class="social-avatar">
             <a href="/profile/user/{{ $conversations['Question']->user->id }}">{{ $conversations['Question']->user->name }}</a><small class="text-muted"> - {{ $conversations['Question']->created_at->diffForHumans() }}</small>
+            @if ($conversations['Question']->user->id === Auth::user()->id)
+                <span class="deleteConversation pull-right" onclick="deleteConversation('question-{{ $conversations['Question']->id }}', {{ $conversations['Question']->id }})">×</span>
+            @endif
         </div>
         <div class="social-body">
-            <p>{{ $conversations['Question']->name }}</p><br>
+            <p id="question-{{ $conversations['Question']->id }}">{{ $conversations['Question']->name }}</p><br>
             <div class="btn-group">
                 <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $conversations['Question']->id }})"><i class="fa fa-comments"></i> Comentar</a>
             </div>
@@ -55,7 +58,7 @@
         </div>
     </div>
 
-    <div class="hr-line-dashed"></div>
+    <div class="hr-line-dashed question-{{ $conversations['Question']->id }}"></div>
 
     @endforeach 
 
@@ -68,3 +71,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    function deleteConversation(idTexto, idConversation) {
+        if (true) {
+            $('.' + idTexto).remove();
+        }
+    }
+</script>
