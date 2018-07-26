@@ -98,7 +98,7 @@ class ItemsConversationsController extends Controller {
                 }
                 $result = 'delete';
             } else {
-                $itemConversation->name = "este comentario se ha eliminado";
+                $itemConversation->name = "Este comentario se ha eliminado";
                 if ($itemConversation->update()) {
                     $result = 'update';
                     $time = $itemConversation->updated_at->diffForHumans();
@@ -110,7 +110,7 @@ class ItemsConversationsController extends Controller {
                 ItemConversation::destroy($itemConversation->id);
                 $result = 'delete';
             } else {
-                $itemConversation->name = "este comentario se ha eliminado";
+                $itemConversation->name = "Este comentario se ha eliminado";
                 if ($itemConversation->update()) {
                     $result = 'update';
                     $time = $itemConversation->updated_at->diffForHumans();
@@ -129,8 +129,8 @@ class ItemsConversationsController extends Controller {
                 $result = 'delete';
             } else {
                 $post = Post::where('id', '=', $itemConversation->name)->first();
-                $post->body = "este comentario se ha eliminado";
-                $itemConversation->name = "este comentario se ha eliminado";
+                $post->body = "Este comentario se ha eliminado";
+                $itemConversation->name = "Este comentario se ha eliminado";
                 if ($post->update()) {
                     $result = 'update';
                     $time = $post->updated_at->diffForHumans();

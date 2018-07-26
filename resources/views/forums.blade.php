@@ -363,12 +363,12 @@
                                 <div class="social-feed-box answer-{{ $itemConversation->id }}">
                                     <div class="social-avatar">
                                         <a href="/profile/user/{{ $itemConversation->user->id }}">{{ $itemConversation->user->name }}</a><small class="text-muted" id="time-{{ $itemConversation->id }}"> - {{ $itemConversation->updated_at->diffForHumans() }}</small>
-                                        @if ($itemConversation->user->id === Auth::user()->id AND $itemConversation->name !== 'este comentario se ha eliminado')
+                                        @if ($itemConversation->user->id === Auth::user()->id AND $itemConversation->name !== 'Este comentario se ha eliminado')
                                             <button type="button" id="delete-{{ $itemConversation->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="{{ $itemConversation->id }}" data-typeConversation="AnswerForum" data-textSelector="answer-{{ $itemConversation->id }}" title="Eliminar comentario">×</button>
                                         @endif
                                     </div>
                                     <div class="social-body">
-                                        @if ($itemConversation->name !== 'este comentario se ha eliminado')
+                                        @if ($itemConversation->name !== 'Este comentario se ha eliminado')
                                             <p id="answer-{{ $itemConversation->id }}">{{ $itemConversation->name }}</p><br>
                                         @else
                                             <p id="answer-{{ $itemConversation->id }}" class="font-italic">{{ $itemConversation->name }}</p><br>
