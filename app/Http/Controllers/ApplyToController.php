@@ -75,7 +75,7 @@ class ApplyToController extends Controller
      */
     public function edit(ApplyTo $applyTo)
     {
-        return view('nombre_vista')->with(['applyTo', $applyTo])
+        return view('nombre_vista')->with(['applyTo', $applyTo]);
     }
 
     /**

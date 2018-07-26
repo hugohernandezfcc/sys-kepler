@@ -499,6 +499,14 @@ Route::group(['prefix' => 'conversations'], function() {
     );
 });
 
+Route::group(['prefix' => 'itemsconversations'], function() {
+    Route::post('/destroy', [
+        'uses' => 'ItemsConversationsController@destroy',
+        'as' => 'destroy'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'questionsforums'], function() {
     Route::post('/store', [
         'uses' => 'QuestionsForumsController@store',
