@@ -59,6 +59,8 @@ class PostsController extends Controller
             $itemConversation->conversation = $conversation->id;
             if($itemConversation->save()){
                 $post->user_name = Auth::user()->name;
+                $post->user_id = Auth::user()->id;
+                $post->item = $itemConversation->id;
                 $post->tiempo = $post->created_at->diffForHumans();
                 return response()->json($post);
             }
