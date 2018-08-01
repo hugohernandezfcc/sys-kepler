@@ -491,6 +491,26 @@ Route::group(['prefix' => 'groups'], function() {
     );
 });
 
+Route::group(['prefix' => 'favorites'], function() {
+    Route::post('/index', [
+        'uses' => 'FavoritesController@index',
+        'as' => 'index'
+            ]
+    );
+
+    Route::post('/store', [
+        'uses' => 'FavoritesController@store',
+        'as' => 'store'
+            ]
+    );
+
+    Route::post('/destroy', [
+        'uses' => 'FavoritesController@destroy',
+        'as' => 'destroy'
+            ]
+    );
+});
+
 Route::group(['prefix' => 'conversations'], function() {
     Route::post('/store', [
         'uses' => 'ConversationsController@store',
