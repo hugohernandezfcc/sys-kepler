@@ -221,13 +221,13 @@
                                     <div class="social-feed-box question-{{ $conversations['Question']->id }}">
                                         <div class="social-avatar">
                                             <a href="/profile/user/{{ $post->user->id }}">{{ $post->user->name }}</a><small class="text-muted" id="time-{{ $conversations['Question']->id }}"> - {{ $post->updated_at->diffForHumans() }}</small>
-                                            @if ($conversations['Question']->user->id === Auth::user()->id AND $post->body !== 'este comentario se ha eliminado')
+                                            @if ($conversations['Question']->user->id === Auth::user()->id AND $post->body !== 'Este comentario se ha eliminado')
                                                 <button type="button" id="delete-{{ $conversations['Question']->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="{{ $conversations['Question']->id }}" data-typeConversation="QuestionWall" data-textSelector="question-{{ $conversations['Question']->id }}" title="Eliminar comentario">×</button>
                                             @endif
                                         </div>
                                         <div class="social-body">
                                             <br>
-                                            @if ($post->body !== 'este comentario se ha eliminado')
+                                            @if ($post->body !== 'Este comentario se ha eliminado')
                                                 <div id="question-{{ $conversations['Question']->id }}">{!! $post->body !!}</div><br>
                                             @else
                                                 <div id="question-{{ $conversations['Question']->id }}" class="font-italic">{!! $post->body !!}</div><br>

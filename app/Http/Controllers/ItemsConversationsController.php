@@ -88,8 +88,7 @@ class ItemsConversationsController extends Controller {
         $result = $time = '';
         $itemConversation = ItemConversation::find($request->itemConversationId);
         if ($request->type === 'Question') {
-            $children = ItemConversation::where('parent', '=', $itemConversation->id)->get();
-            if ($children->count() === 0) {
+            if ($itemConversation->children()->count() === 0) {
                 $aux = $itemConversation->conversation;
                 ItemConversation::destroy($itemConversation->id);
                 $conversations = ItemConversation::where('conversation', '=', $aux);
@@ -98,27 +97,47 @@ class ItemsConversationsController extends Controller {
                 }
                 $result = 'delete';
             } else {
-                $itemConversation->name = "este comentario se ha eliminado";
-                if ($itemConversation->update()) {
-                    $result = 'update';
-                    $time = $itemConversation->updated_at->diffForHumans();
+                $cont = 0;
+                foreach ($itemConversation->children as $item) {
+                    if ($item->name === "Este comentario se ha eliminado") {
+                        ++$cont;
+                    }
+                }
+                if (($cont/$itemConversation->children()->count()) <= 0.5) {
+                    $itemConversation->name = "Este comentario se ha eliminado";
+                    if ($itemConversation->update()) {
+                        $result = 'update';
+                        $time = $itemConversation->updated_at->diffForHumans();
+                    }
+                } else {
+                    foreach ($itemConversation->children as $item) {
+                        foreach ($item->children as $itemAnswer) {
+                            $itemAnswer->delete();
+                        }
+                        $item->delete();
+                    }
+                    $aux = $itemConversation->conversation;
+                    ItemConversation::destroy($itemConversation->id);
+                    $conversations = ItemConversation::where('conversation', '=', $aux);
+                    if ($conversations->count() === 0) {
+                        $conversation = Conversation::destroy($aux);
+                    }
+                    $result = 'delete';
                 }
             }
         } elseif ($request->type === 'AnswerForum') {
-            $children = ItemConversation::where('parent', '=', $itemConversation->id)->get();
-            if ($children->count() === 0) {
+            if ($itemConversation->children()->count() === 0) {
                 ItemConversation::destroy($itemConversation->id);
                 $result = 'delete';
             } else {
-                $itemConversation->name = "este comentario se ha eliminado";
+                $itemConversation->name = "Este comentario se ha eliminado";
                 if ($itemConversation->update()) {
                     $result = 'update';
                     $time = $itemConversation->updated_at->diffForHumans();
                 }
             }
         } elseif ($request->type === 'QuestionWall') {
-            $children = ItemConversation::where('parent', '=', $itemConversation->id)->get();
-            if ($children->count() === 0) {
+            if ($itemConversation->children()->count() === 0) {
                 $post = Post::where('id', '=', $itemConversation->name)->first();
                 ItemConversation::destroy($itemConversation->id);
                 $likes = $post->likes()->get();
@@ -129,15 +148,57 @@ class ItemsConversationsController extends Controller {
                 $result = 'delete';
             } else {
                 $post = Post::where('id', '=', $itemConversation->name)->first();
-                $post->body = "este comentario se ha eliminado";
-                $itemConversation->name = "este comentario se ha eliminado";
+                $post->body = "Este comentario se ha eliminado";
+                $itemConversation->name = "Este comentario se ha eliminado";
                 if ($post->update()) {
                     $result = 'update';
                     $time = $post->updated_at->diffForHumans();
                 }
             }
-        } else {
-
+        } elseif ($request->type === 'Answer') {
+            if ($itemConversation->children()->count() === 0) {
+                ItemConversation::destroy($itemConversation->id);
+                $result = 'delete';
+            } elseif ($itemConversation->oneparent->name === "Este comentario se ha eliminado") {
+                $cont = 1;
+                $parent = $itemConversation->oneparent;
+                foreach ($parent->children->where('id', '!=', $itemConversation->id) as $item) {
+                    if ($item->name === "Este comentario se ha eliminado") {
+                        ++$cont;
+                    }
+                }
+                if (($cont/$parent->children->count()) <= 0.5) {
+                    $itemConversation->name = "Este comentario se ha eliminado";
+                    if ($itemConversation->update()) {
+                        $result = 'update';
+                        $time = $itemConversation->updated_at->diffForHumans();
+                    }
+                } else {
+                    foreach ($parent->children as $item) {
+                        foreach ($item->children as $itemAnswer) {
+                            $itemAnswer->delete();
+                        }
+                        $item->delete();
+                    }
+                    $itemConversation = $parent;
+                    $aux = $parent->conversation;
+                    ItemConversation::destroy($parent->id);
+                    $conversations = ItemConversation::where('conversation', '=', $aux);
+                    if ($conversations->count() === 0) {
+                        $conversation = Conversation::destroy($aux);
+                    }
+                    $result = 'delete';
+                }
+            } else {
+                $itemConversation->name = "Este comentario se ha eliminado";
+                if ($itemConversation->update()) {
+                    $result = 'update';
+                    $time = $itemConversation->updated_at->diffForHumans();
+                }
+            }
+        } elseif ($request->type === 'AnswerTo') {
+            ItemConversation::destroy($itemConversation->id);
+            $result = 'delete';
         }
 
         return Response()->json(array('result' => $result, 'itemConversation' => $itemConversation, 'time' => $time));

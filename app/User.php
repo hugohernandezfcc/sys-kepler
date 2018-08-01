@@ -46,6 +46,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Exam');
     }
 
+    public function favorites()
+    {
+        return $this->hasMany('App\Favorite');
+    }
+
     public function modules()
     {
         return $this->hasMany('App\Module');

@@ -16,7 +16,7 @@ class ItemConversation extends Model
         return $this->hasMany( 'App\ItemConversation', 'parent', 'id' );
     }
 
-    public function parent() {
+    public function oneparent() {
         return $this->hasOne( 'App\ItemConversation', 'id', 'parent' );
     }
     
