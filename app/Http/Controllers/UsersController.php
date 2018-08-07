@@ -20,7 +20,7 @@ class UsersController extends Controller {
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('storeGuest');
     }
 
     /**
@@ -75,6 +75,46 @@ class UsersController extends Controller {
             'camposUsers' => $this->camposUsers()
                 ]
         );
+    }
+
+    /**
+     * StoreGuest a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeGuest(Request $request)
+    {
+        $userFind = User::where('email', '=', $request->email)->first();
+        $result = 'unauthorized';
+        if ($userFind === null) {
+            #Nuevo usuario invitado
+            $user = new User();
+            
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt('Kepler123');
+            $user->avatar = 'default.jpg';
+
+            if ($user->save()) {
+                $result = 'new';
+                /*if(Auth::attempt(['email' => $request->email, 'password' => 'Kepler123'])){
+                    $user = Auth::user();
+                    $success['token'] =  $request->_token;
+                    #return response()->json(['success' => $success], 200);
+                }*/
+            }
+        } else {
+            if ($userFind->type === null) {
+                #Usuario invitado existente
+                $result = 'exists';
+                $user = $userFind;
+            } else {
+                #Usuario del sistema (debe autenticarse)
+                $user = (object)['name' => '', 'email' => '', 'id' => null, 'avatar' => ''];
+            }
+        }
+        return Response()->json(array('result' => $result, 'user' => $user));
     }
 
     /**

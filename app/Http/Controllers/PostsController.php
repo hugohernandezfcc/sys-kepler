@@ -19,7 +19,7 @@ class PostsController extends Controller
     * @return void
     */
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('storeGuest');
     }
 
     /**
@@ -30,6 +30,30 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+        return $this->storePost($request, $user);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeGuest(Request $request)
+    {
+        $user = (object) $request->user;
+        return $this->storePost($request, $user);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storePost($request, $user)
+    {
         $idRecord = $request->id_record;
         $table = $request->table;
         $wall = Wall::find($idRecord);
@@ -37,7 +61,7 @@ class PostsController extends Controller
         $post = new Post();
         $post->name = $wall->name;
         $post->body = $request->comentario;
-        $post->created_by = Auth::id();
+        $post->created_by = $user->id;
         $post->wall_id = $wall->id;
         if ($post->save()) {
             $conversation_aux = Conversation::where('table', '=', $table)->where('id_record', '=', $idRecord)->get();
@@ -55,11 +79,11 @@ class PostsController extends Controller
             $itemConversation->type = $request->type;
             $itemConversation->parent = ($itemConversation->type === 'Question') ? null : $request->parent;
             $itemConversation->name = $post->id;
-            $itemConversation->by = Auth::id();
+            $itemConversation->by = $user->id;
             $itemConversation->conversation = $conversation->id;
             if($itemConversation->save()){
-                $post->user_name = Auth::user()->name;
-                $post->user_id = Auth::user()->id;
+                $post->user_name = $user->name;
+                $post->user_id = $user->id;
                 $post->item = $itemConversation->id;
                 $post->tiempo = $post->created_at->diffForHumans();
                 return response()->json($post);

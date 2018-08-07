@@ -21,7 +21,7 @@ class WallsController extends Controller
     * @return void
     */
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('show');;
     }
 
     /**
@@ -119,6 +119,10 @@ class WallsController extends Controller
         }
     }
 
+    #$user = new App\User(['id' => 10, 'avatar' => 'default.jpg', 'email' => 'prueba@uno.com', 'password' => '12345']);
+    #Auth::guard()->login($user);
+    #var_dump($user);
+    
     /**
      * Display the specified resource.
      *

@@ -4,22 +4,34 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> 
-                        <span>
-                            <img alt="image" id="leftAvatar" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" width="45%" />
-                        </span>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="clear"> 
-                            <span class="block m-t-xs"> <strong class="font-bold">Sys Kepler</strong></span> 
-                            <span class="text-muted text-xs block">Opciones <b class="caret"></b></span>
-                        </span>
-                        </a>
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="/profile"><i class="fa fa-btn fa-user"></i>  Perfil</a></li>
-                            <li><a href="contacts.html">Contacts</a></li>
-                            <li><a href="mailbox.html">Mailbox</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/logout"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
-                        </ul>
+                        @if (Auth::check())
+                            @if (Auth::user()->type !== null)
+                                <span>
+                                    <img alt="image" id="leftAvatar" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}" width="45%" />
+                                </span>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear"> 
+                                    <span class="block m-t-xs"> <strong class="font-bold">Sys Kepler</strong></span> 
+                                    <span class="text-muted text-xs block">Opciones <b class="caret"></b></span>
+                                </span>
+                                </a>
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a href="/profile"><i class="fa fa-btn fa-user"></i>  Perfil</a></li>
+                                    <li><a href="contacts.html">Contacts</a></li>
+                                    <li><a href="mailbox.html">Mailbox</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/logout"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
+                                </ul>
+                            @endif
+                        @else
+                            <span>
+                                <img alt="image" id="leftAvatar" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}" width="45%" />
+                            </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle">
+                            <span class="clear"> 
+                                <span class="block m-t-xs"> <strong class="font-bold">Sys Kepler</strong></span>
+                            </span>
+                        @endif
                     </div>
                     <div class="logo-element">
                         Kepler
@@ -35,6 +47,7 @@
                         <li><a href="dashboard_5.html">Dashboard v.5 </a></li>
                     </ul>
                 </li> -->
+            @if (Auth::check())
                 @if (Auth::user()->type == "admin")
                 <li><a href="/"><i class="fa fa-home"></i> <span class="nav-label">Inicio</span></a></li>
                 <li><a href="/groups"><i class="fa fa-group"></i> <span class="nav-label">Grupos</span></a></li>
@@ -78,6 +91,7 @@
                 <li class="special_link">
                     <a href="/logout"><i class="fa fa-sign-out"></i> <span class="nav-label">Cerrar sesión</span></a>
                 </li>
+            @endif
 
                 <!-- <li>
                     <a href="mailbox.html"><i class="fa fa-envelope"></i> <span class="nav-label">Mailbox </span><span class="label label-warning pull-right">16/24</span></a>

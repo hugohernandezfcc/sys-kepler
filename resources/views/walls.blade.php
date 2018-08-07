@@ -178,10 +178,11 @@
         <div class="wrapper wrapper-content animated fadeInUp">
             <div class="ibox">
                 <div class="ibox-content">
-                    @include('layouts._spinner_code')
+                    <input id="nameUserGuest" type="hidden" value="">
+                    @include('layouts._spinner_code')      
                     <div class="ibox-tools">
                         <div class="pull-right">
-                            <a href="#redactarPublicacion" id="toggle" data-toggle="modal" class="btn btn-primary btn-xs">Nueva publicación</a>
+                            <a onClick="nuevaPublicacion()" id="toggle" data-toggle="modal" class="btn btn-primary btn-xs">Nueva publicación</a>
                         </div>
                     </div>
                     <div class="modal fade" id="redactarPublicacion">
@@ -193,7 +194,11 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="social-avatar inline">
-                                        <a href="#"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
+                                    @if (Auth::check())
+                                        <a><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
+                                    @else
+                                        <a><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"></a>
+                                    @endif
                                     </div>
                                     <div data-sample="1" id="publicacion" class="well inline" style="width: 80%"></div>
                                 </div>
@@ -221,8 +226,10 @@
                                     <div class="social-feed-box question-{{ $conversations['Question']->id }}">
                                         <div class="social-avatar">
                                             <a href="/profile/user/{{ $post->user->id }}">{{ $post->user->name }}</a><small class="text-muted" id="time-{{ $conversations['Question']->id }}"> - {{ $post->updated_at->diffForHumans() }}</small>
-                                            @if ($conversations['Question']->user->id === Auth::user()->id AND $post->body !== 'Este comentario se ha eliminado')
-                                                <button type="button" id="delete-{{ $conversations['Question']->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="{{ $conversations['Question']->id }}" data-typeConversation="QuestionWall" data-textSelector="question-{{ $conversations['Question']->id }}" title="Eliminar comentario">×</button>
+                                            @if (Auth::check())
+                                                @if ($conversations['Question']->user->id === Auth::user()->id AND $post->body !== 'Este comentario se ha eliminado')
+                                                    <button type="button" id="delete-{{ $conversations['Question']->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="{{ $conversations['Question']->id }}" data-typeConversation="QuestionWall" data-textSelector="question-{{ $conversations['Question']->id }}" title="Eliminar comentario">×</button>
+                                                @endif
                                             @endif
                                         </div>
                                         <div class="social-body">
@@ -234,10 +241,14 @@
                                             @endif
                                             <div class="btn-group">
                                                 @if($post->likes->count() > 0)
-                                                    @if($post->likes->firstWhere('created_by', Auth::user()->id) !== null)
-                                                        <a class="btn btn-white btn-xs" onclick="likeDislike(this, {{ $post->id }})"><i class="fa fa-thumbs-up"></i> <span>{{ $post->likes->count() }} Ya no me gusta</span></a>
+                                                    @if (Auth::check())
+                                                        @if($post->likes->firstWhere('created_by', Auth::user()->id) !== null)
+                                                            <a class="btn btn-white btn-xs" onclick="likeDislike(this, {{ $post->id }})"><i class="fa fa-thumbs-up"></i> <span>{{ $post->likes->count() }} Ya no me gusta</span></a>
+                                                        @else
+                                                            <a class="btn btn-white btn-xs" onclick="likeDislike(this, {{ $post->id }})"><i class="fa fa-thumbs-up"></i> <span>{{ $post->likes->count() }} Me gusta</span></a>
+                                                        @endif
                                                     @else
-                                                        <a class="btn btn-white btn-xs" onclick="likeDislike(this, {{ $post->id }})"><i class="fa fa-thumbs-up"></i> <span>{{ $post->likes->count() }} Me gusta</span></a>
+                                                        <a class="btn btn-white btn-xs"><i class="fa fa-thumbs-up"></i> <span>{{ $post->likes->count() }} Me gusta</span></a>
                                                     @endif
                                                 @else
                                                     <a class="btn btn-white btn-xs" onclick="likeDislike(this, {{ $post->id }})"><i class="fa fa-thumbs-up"></i> <span>Me gusta</span></a>
@@ -269,7 +280,11 @@
                                                 @endif
 
                                                 <div class="social-comment hidden" id="comentario{{ $itemConversation->id }}">
+                                                @if (Auth::check())
                                                     <a href="" class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
+                                                @else
+                                                    <a href="" class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"> </a>
+                                                @endif
                                                     <div class="media-body">
                                                         <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer to Answer', {{ $itemConversation->id }})" placeholder="Escribe una respuesta..."></textarea>
                                                     </div>
@@ -278,7 +293,11 @@
                                             @endforeach
                                             @endif
                                             <div class="social-comment hidden" id="comentario{{ $conversations['Question']->id }}">
-                                                <a href="" class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
+                                                @if (Auth::check())
+                                                    <a href="" class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
+                                                @else
+                                                    <a href="" class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"> </a>
+                                                @endif
                                                 <div class="media-body">
                                                     <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer', {{ $conversations['Question']->id }})" placeholder="Escribe un comentario..."></textarea>
                                                 </div>
@@ -307,6 +326,39 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal fade" id="guestDataUser" tabindex="-1" role="dialog" data-typeconversation="" data-idcampo="">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">Ingrese sus datos</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="form-group">
+                                                <label>Nombre:</label>
+                                                <input type="text" id="nameGuest" class="form-control" maxlength="200" required>
+                                                <span id="nameguest-error" class="hidden span-error">Por favor coloque su nombre.</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Correo:</label>
+                                                <input type="email" id="emailGuest" class="form-control" maxlength="200" required>
+                                                <span id="emailguest-error" class="hidden span-error">Por favor coloque su correo.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <h5 class="text-right font-italic">*Su dirección de correo no será publicada.</h5>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="confirmUserData" onclick="" class="btn btn-primary primary">Aceptar</a>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -316,6 +368,20 @@
     @endif
 <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
 <script>
+    $('#guestDataUser').on('show.bs.modal', function (event) {
+        var idCampo = $('#guestDataUser').data('idcampo');
+        var typeConversation = $('#guestDataUser').data('typeconversation');
+        $("#confirmUserData").removeAttr('onclick');
+        $('#confirmUserData').attr('onClick', 'registerGuest("'+ typeConversation +'", "'+ idCampo +'");');
+    });
+
+    $("#guestDataUser").on('hidden.bs.modal', function () {
+        $('#nameguest-error').addClass('hidden');
+        $('#emailguest-error').addClass('hidden');
+        $('#nameGuest').val('');
+        $('#emailGuest').val('');
+    });
+
 	(function () {
 		var isEditingEnabled,
             toggle = document.getElementById( 'toggle' ),
@@ -366,39 +432,61 @@
         publicacion.innerHTML = '';
     });
 
+    function nuevaPublicacion() {
+        @if(Auth::check())
+            $('#redactarPublicacion').modal('show');
+        @else
+            if ($('#nameUserGuest').val() !== '') {
+                $('#redactarPublicacion').modal('show');
+            } else {
+                $('#guestDataUser').data('typeconversation', 'post');
+                $('#guestDataUser').data('idcampo', '');
+                $('#guestDataUser').modal('show');
+            }
+        @endif
+    }
+
     function savePost() {
         if (publicacion.innerHTML !== '<p><br></p>') {
-            post = publicacion.innerHTML;
+            var post = publicacion.innerHTML;
             publicacion.innerHTML = '';
-            idRecord = $('#idRecord').val();
+            var idRecord = $('#idRecord').val();
             var imagenUsuario = '';
-            imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
-            $.ajax({
-                url: "/post/store",
-                data: { 
-                    "table":'walls',
-                    "id_record":idRecord,
-                    "comentario":post,
-                    "type":'Question',
-                    "parent":null,
-                    "_token": "{{ csrf_token() }}"
+            @if(Auth::check())    
+                imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
+                var url = "/post/store";
+                var user = new Object();
+            @else
+                imagenUsuario = '{{ asset("uploads/avatars/default.jpg") }}';
+                var url = "/post/storeGuest";
+                var user = $('#nameUserGuest').data('user');
+            @endif
+                $.ajax({
+                    url: url,
+                    data: { 
+                        "table":'walls',
+                        "id_record":idRecord,
+                        "comentario":post,
+                        "user":user,
+                        "type":'Question',
+                        "parent":null,
+                        "_token": "{{ csrf_token() }}"
+                        },
+                    dataType: "json",
+                    method: "POST",
+                    success: function(result)
+                    {
+                        var answer = "\'Answer\'";
+                        var html = '<div class="social-avatar question-'+result.item+'"><a href="#"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
+                        <div class="social-feed-box question-'+result.item+'"><div class="social-avatar"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a><small class="text-muted" id="time-'+result.item+'"> - '+result.tiempo+'</small><button type="button" id="delete-'+result.item+'" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="'+result.item+'" data-typeConversation="QuestionWall" data-textSelector="question-'+result.item+'" title="Eliminar comentario">×</button></div>\n\
+                        <div class="social-body"><div id="question-'+result.item+'">'+result.body+'</div><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="likeDislike(this, '+result.id+')"><i class="fa fa-thumbs-up"></i> <span>Me gusta</span></a><a class="btn btn-white btn-xs space-button-left" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
+                        <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div><div class="hr-line-dashed question-'+result.item+'"></div>';
+                        $('#firstPost').after(html);
                     },
-                dataType: "json",
-                method: "POST",
-                success: function(result)
-                {
-                    var answer = "\'Answer\'";
-                    var html = '<div class="social-avatar question-'+result.item+'"><a href="#"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
-                    <div class="social-feed-box question-'+result.item+'"><div class="social-avatar"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a><small class="text-muted" id="time-'+result.item+'"> - '+result.tiempo+'</small><button type="button" id="delete-'+result.item+'" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="'+result.item+'" data-typeConversation="QuestionWall" data-textSelector="question-'+result.item+'" title="Eliminar comentario">×</button></div>\n\
-                    <div class="social-body"><div id="question-'+result.item+'">'+result.body+'</div><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="likeDislike(this, '+result.id+')"><i class="fa fa-thumbs-up"></i> <span>Me gusta</span></a><a class="btn btn-white btn-xs space-button-left" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
-                    <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div><div class="hr-line-dashed question-'+result.item+'"></div>';
-                    $('#firstPost').after(html);
-                },
-                error: function () {
-                //alert("fallo");
-                }
-                
-            });
+                    error: function () {
+                    //alert("fallo");
+                    }
+                });
         }
     }
 
@@ -522,9 +610,16 @@
     });
 </script>
 @endif
-
+<!-- Toastr -->
+<script src="{{ asset('inspinia/js/plugins/toastr/toastr.min.js') }}"></script>
 <script>
     $(function () {
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            showMethod: 'slideDown',
+            timeOut: 4000
+        };
         $('#side-menu li.active').removeClass('active');
         var url = jQuery(location).attr('href').split('/')[3];
         $("#side-menu [href='/" + url +"']").parent().parent().parent().parent().parent().addClass('active');
@@ -546,15 +641,24 @@
     function agregarComentario(tabla, comentario, tipoComentario, idParent) {
         idRecord = $('#idRecord').val();
         var imagenUsuario = '';
-        imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
+        @if(Auth::check())    
+            imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
+            var url = "/conversations/store";
+            var user = new Object();
+        @else
+            imagenUsuario = '{{ asset("uploads/avatars/default.jpg") }}';
+            var url = "/conversations/storeGuest";
+            var user = $('#nameUserGuest').data('user');
+        @endif
         $.ajax({
-            url: "/conversations/store",
+            url: url,
             data: { 
                 "table":tabla,
                 "id_record":idRecord,
                 "comentario":comentario,
                 "type":tipoComentario,
                 "parent":idParent,
+                "user":user,
                 "_token": "{{ csrf_token() }}"
                 },
             dataType: "json",
@@ -586,14 +690,76 @@
     }
     
     function habilitarComentario(idCampo) {
-        if ($('#comentario'+idCampo).hasClass("hidden")) {
-            $('#comentario'+idCampo).removeClass("hidden");
+        @if(Auth::check())
+            if ($('#comentario'+idCampo).hasClass("hidden")) {
+                $('#comentario'+idCampo).removeClass("hidden");
+            }
+            $('#comentario'+idCampo+' textarea').focus();
+        @else
+            if ($('#nameUserGuest').val() !== '') {
+                if ($('#comentario'+idCampo).hasClass("hidden")) {
+                    $('#comentario'+idCampo).removeClass("hidden");
+                }
+                $('#comentario'+idCampo+' textarea').focus();
+            } else {
+                $('#guestDataUser').data('typeconversation', 'comment');
+                $('#guestDataUser').data('idcampo', idCampo);
+                $('#guestDataUser').modal('show');
+            }
+        @endif
+    }
+
+    function registerGuest(typeConversation, idCampo) {
+        if ($('#nameGuest').val() === '') {
+            $('#nameguest-error').removeClass('hidden');
+            return false;
+        } else if ($('#emailGuest').val() === '') {
+            $('#emailguest-error').removeClass('hidden');
+            return false;
+        } else {
+            $('#nameguest-error').addClass('hidden');
+            $('#emailguest-error').addClass('hidden');
+            var name = $('#nameGuest').val();
+            var email = $('#emailGuest').val();
+            $.ajax({
+                url: "/registerguest",
+                data: { 
+                    "name":name,
+                    "email":email,
+                    "_token": "{{ csrf_token() }}"
+                    },
+                dataType: "json",
+                method: "POST",
+                success: function(result)
+                {
+                    if (result.result !== 'unauthorized') {
+                        $('#nameUserGuest').val(result.user.name);
+                        $('#nameUserGuest').data().user = result.user;
+                        $('#nameGuest').val('');
+                        $('#emailGuest').val('');
+                        $('#guestDataUser').modal('hide');
+                        if (typeConversation === 'comment') {
+                            habilitarComentario(idCampo);
+                        } else if (typeConversation === 'post') {
+                            setTimeout(function(){
+                                $('#redactarPublicacion').modal('show');
+                            }, 1500);
+                        }
+                        if (result.result === 'new') {
+                            toastr.success('Sigue trabajando.', 'Gracias ' + name + ' tus datos, se han almacenado.');
+                        }
+                    } else {
+                        toastr.warning('Correo registrado.', 'El correo '+ email +' ya existe, debes loguearte.');
+                    }
+                },
+                error: function () {
+                //alert("fallo");
+                }
+            });
         }
-        $('#comentario'+idCampo+' textarea').focus();    
     }
 
     function likeDislike(element, idPost) {
-        //$(element).children('span').text(' 2 Ya no me gusta');
         $.ajax({
             url: "/post/storeLike",
             data: { 

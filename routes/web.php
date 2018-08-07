@@ -517,6 +517,12 @@ Route::group(['prefix' => 'conversations'], function() {
         'as' => 'store'
             ]
     );
+
+    Route::post('/storeGuest', [
+        'uses' => 'ConversationsController@storeGuest',
+        'as' => 'storeGuest'
+            ]
+    );
 });
 
 Route::group(['prefix' => 'itemsconversations'], function() {
@@ -547,6 +553,12 @@ Route::group(['prefix' => 'post'], function() {
     Route::post('/store', [
         'uses' => 'PostsController@store',
         'as' => 'store'
+            ]
+    );
+
+    Route::post('/storeGuest', [
+        'uses' => 'PostsController@storeGuest',
+        'as' => 'storeGuest'
             ]
     );
 
@@ -666,6 +678,8 @@ Route::group(['prefix' => 'wizard'], function() {
             ]
     );
 });
+
+Route::post('/registerguest', 'UsersController@storeGuest');
 
 Route::group(['prefix' => 'profile'], function() {
     Route::get('/', [
