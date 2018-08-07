@@ -1,86 +1,99 @@
 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-        <div role="form" class="navbar-form-custom">
-            <div class="form-group">
-                <input type="text" placeholder="¿Buscas algo?" onkeypress="globalSearch(event)" class="form-control input-sm" name="topSearch" id="topSearch">
+        @if (Auth::check())
+            @if (Auth::user()->type !== null)
+            <div role="form" class="navbar-form-custom">
+                <div class="form-group">
+                    <input type="text" placeholder="¿Buscas algo?" onkeypress="globalSearch(event)" class="form-control input-sm" name="topSearch" id="topSearch">
+                </div>
             </div>
-        </div>
+            @endif
+        @endif
     </div>
     <ul class="nav navbar-top-links navbar-right">
-        <li>
+        @if (Auth::check())
+            <li>
             <span class="m-r-sm text-muted welcome-message">Bienvenido {{ Auth::user()->name }}</span>
-        </li>
-        @if (Auth::user()->type !== "master")
-        <li class="dropdown">
-            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
-            </a>
-            <ul class="dropdown-menu dropdown-messages">
-                <li>
-                    <div class="dropdown-messages-box">
-                        <a href="profile.html" class="pull-left">
-                            <img alt="image" class="img-circle" src="inspinia/img/a7.jpg">
-                        </a>
-                        <div class="media-body">
-                            <small class="pull-right">46h ago</small>
-                            <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
-                            <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-                        </div>
-                    </div>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <div class="dropdown-messages-box">
-                        <a href="profile.html" class="pull-left">
-                            <img alt="image" class="img-circle" src="inspinia/img/a4.jpg">
-                        </a>
-                        <div class="media-body ">
-                            <small class="pull-right text-navy">5h ago</small>
-                            <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                            <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                        </div>
-                    </div>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <div class="dropdown-messages-box">
-                        <a href="profile.html" class="pull-left">
-                            <img alt="image" class="img-circle" src="inspinia/img/profile.jpg">
-                        </a>
-                        <div class="media-body ">
-                            <small class="pull-right">23h ago</small>
-                            <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-                            <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-                        </div>
-                    </div>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <div class="text-center link-block">
-                        <a href="mailbox.html">
-                            <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </li>
+        @else
+            <li class="p-t-10">
+            <span class="m-r-sm text-muted welcome-message">Bienvenido invitado</span>
         @endif
-        <li class="dropdown">
-            <a class="dropdown-toggle count-info" id="siteFav" data-toggle="dropdown" href="#">
-                <i class="fa fa-star-o"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-alerts" id="miniListFav">
-                <li>
-                    <div class="text-center link-block" id="addDelFav">
-                        <a href="#confirmFavorites" data-toggle="modal" data-target="#confirmFavorites">
-                            <i class="fa fa-star"></i>
-                            <strong>Agregar a favoritos</strong>
-                        </a>
-                    </div>
-                </li>
-            </ul>
         </li>
+        @if (Auth::check())
+            @if (Auth::user()->type !== "master" AND Auth::user()->type !== null)
+            <li class="dropdown">
+                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                    <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                </a>
+                <ul class="dropdown-menu dropdown-messages">
+                    <li>
+                        <div class="dropdown-messages-box">
+                            <a href="profile.html" class="pull-left">
+                                <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}">
+                            </a>
+                            <div class="media-body">
+                                <small class="pull-right">46h ago</small>
+                                <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
+                                <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <div class="dropdown-messages-box">
+                            <a href="profile.html" class="pull-left">
+                                <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}">
+                            </a>
+                            <div class="media-body ">
+                                <small class="pull-right text-navy">5h ago</small>
+                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
+                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <div class="dropdown-messages-box">
+                            <a href="profile.html" class="pull-left">
+                                <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}">
+                            </a>
+                            <div class="media-body ">
+                                <small class="pull-right">23h ago</small>
+                                <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
+                                <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <div class="text-center link-block">
+                            <a href="mailbox.html">
+                                <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            @endif
+            @if (Auth::user()->type !== null)
+            <li class="dropdown">
+                <a class="dropdown-toggle count-info" id="siteFav" data-toggle="dropdown" href="#">
+                    <i class="fa fa-star-o"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-alerts" id="miniListFav">
+                    <li>
+                        <div class="text-center link-block" id="addDelFav">
+                            <a href="#confirmFavorites" data-toggle="modal" data-target="#confirmFavorites">
+                                <i class="fa fa-star"></i>
+                                <strong>Agregar a favoritos</strong>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            @endif
+        @endif
     </ul>
 </nav>
 
@@ -165,7 +178,7 @@
 
                     if (favorites[type][i].link == link ) {
                         iconSiteFav = '<i class="fa fa-star"></i>';
-                        boton = '<li><div class="text-center link-block"><a href="#" onclick="deleteFavorites()"><i class="fa fa-star-o"></i> <strong> Quitar de favoritos</strong></a></div></li>';
+                        boton = '<li><div class="text-center link-block"><a onclick="deleteFavorites()"><i class="fa fa-star-o"></i> <strong> Quitar de favoritos</strong></a></div></li>';
                     }
                 }
                 $('#tableFavorites tbody').append(register);
@@ -176,6 +189,7 @@
         $('#siteFav').html(iconSiteFav); 
     }
 
+    @if(Auth::check())
     $(function () {
         $.ajax({
             url: "/favorites/index",
@@ -193,6 +207,7 @@
             }
         });
     });
+    @endif
 
     function iconFav(domain) {
         switch(domain) {

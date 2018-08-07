@@ -16,7 +16,7 @@ class ConversationsController extends Controller {
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('storeGuest');
     }
 
     /**
@@ -44,6 +44,28 @@ class ConversationsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        $user = Auth::user();
+        return $this->storeConversation($request, $user);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeGuest(Request $request) {
+        $user = (object) $request->user;
+        return $this->storeConversation($request, $user);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeConversation($request, $user) {
         $id_record = $request->id_record;
         $table = $request->table;
         $conversation_aux = Conversation::where('table', '=', $table)->where('id_record', '=', $id_record)->get();
@@ -61,11 +83,11 @@ class ConversationsController extends Controller {
         $itemConversation->type = $request->type;
         $itemConversation->parent = ($itemConversation->type === 'Question') ? null : $request->parent;
         $itemConversation->name = $request->comentario;
-        $itemConversation->by = Auth::id();
+        $itemConversation->by = $user->id;
         $itemConversation->conversation = $conversation->id;
         if($itemConversation->save()){
-            $itemConversation->user_name = Auth::user()->name;
-            $itemConversation->user_id = Auth::user()->id;
+            $itemConversation->user_name = $user->name;
+            $itemConversation->user_id = $user->id;
             $itemConversation->tiempo = $itemConversation->created_at->diffForHumans();
             return response()->json($itemConversation);
         }
