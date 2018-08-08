@@ -545,6 +545,12 @@ Route::group(['prefix' => 'questionsforums'], function() {
         'as' => 'store'
             ]
     );
+
+    Route::post('/storeGuest', [
+        'uses' => 'QuestionsForumsController@storeGuest',
+        'as' => 'storeGuest'
+            ]
+    );
 });
 
 Route::group(['prefix' => 'votes'], function() {

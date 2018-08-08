@@ -168,7 +168,7 @@
                 success: function(result)
                 {
                     if (result.result !== 'unauthorized') {
-                        $('#nameUserGuest').val(result.user.name);
+                        $('#nameUserGuest').val(result.user.id);
                         $('#nameUserGuest').data().user = result.user;
                         $('#nameGuest').val('');
                         $('#emailGuest').val('');
@@ -178,6 +178,10 @@
                         } else if (typeConversation === 'post') {
                             setTimeout(function(){
                                 $('#redactarPublicacion').modal('show');
+                            }, 1500);
+                        } else if (typeConversation === 'question') {
+                            setTimeout(function(){
+                                $('#redactarPregunta').modal('show');
                             }, 1500);
                         }
                         if (result.result === 'new') {
