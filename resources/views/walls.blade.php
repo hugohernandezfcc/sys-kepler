@@ -220,24 +220,24 @@
                                         $id = $conversations['Question']->name;
                                         $post = $record->posts->firstWhere('id', $id);
                                     @endphp
-                                    <div class="social-avatar question-{{ $conversations['Question']->id }}">
-                                        <a href=""><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $conversations['Question']->user->avatar) }}"></a>
+                                    <div class="social-avatar item-{{ $conversations['Question']->id }}">
+                                        <a><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $conversations['Question']->user->avatar) }}"></a>
                                     </div>
-                                    <div class="social-feed-box question-{{ $conversations['Question']->id }}">
+                                    <div class="social-feed-box item-{{ $conversations['Question']->id }}">
                                         <div class="social-avatar">
                                             <a href="/profile/user/{{ $post->user->id }}">{{ $post->user->name }}</a><small class="text-muted" id="time-{{ $conversations['Question']->id }}"> - {{ $post->updated_at->diffForHumans() }}</small>
                                             @if (Auth::check())
-                                                @if ($conversations['Question']->user->id === Auth::user()->id AND $post->body !== 'Este comentario se ha eliminado')
-                                                    <button type="button" id="delete-{{ $conversations['Question']->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="{{ $conversations['Question']->id }}" data-typeConversation="QuestionWall" data-textSelector="question-{{ $conversations['Question']->id }}" title="Eliminar comentario">×</button>
+                                                @if ($conversations['Question']->user->id === Auth::user()->id AND $post->body !== 'Esta publicación se ha eliminado')
+                                                    <button type="button" id="delete-{{ $conversations['Question']->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationid="{{ $conversations['Question']->id }}" data-typeconversation="QuestionWall" title="Eliminar publicación">×</button>
                                                 @endif
                                             @endif
                                         </div>
                                         <div class="social-body">
                                             <br>
-                                            @if ($post->body !== 'Este comentario se ha eliminado')
-                                                <div id="question-{{ $conversations['Question']->id }}">{!! $post->body !!}</div><br>
+                                            @if ($post->body !== 'Esta publicación se ha eliminado')
+                                                <div id="item-{{ $conversations['Question']->id }}">{!! $post->body !!}</div><br>
                                             @else
-                                                <div id="question-{{ $conversations['Question']->id }}" class="font-italic">{!! $post->body !!}</div><br>
+                                                <div id="item-{{ $conversations['Question']->id }}" class="font-italic">{{ $post->body }}</div><br>
                                             @endif
                                             <div class="btn-group">
                                                 @if($post->likes->count() > 0)
@@ -259,21 +259,37 @@
                                         <div class="social-footer">
                                             @if (count($conversations['Answer'][0]) > 0)
                                             @foreach ($conversations['Answer'][0] as $itemConversation)
-                                            <div class="social-comment">
-                                                <a href="" class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
+                                            <div class="social-comment item-{{ $itemConversation->id }}">
+                                                <a class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
                                                 <div class="media-body">
-                                                    <a href="/profile/user/{{ $itemConversation->user->id }}">{{ $itemConversation->user->name }}</a>  {{ $itemConversation->name }}<br>
+                                                    <a href="/profile/user/{{ $itemConversation->user->id }}">{{ $itemConversation->user->name }}</a><small class="text-muted" id="time-{{ $itemConversation->id }}"> - {{ $itemConversation->updated_at->diffForHumans() }}</small>
+                                                    @if (Auth::check())
+                                                        @if ($itemConversation->user->id === Auth::user()->id AND $itemConversation->name !== 'Este comentario se ha eliminado')
+                                                            <button type="button" id="delete-{{ $itemConversation->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationid="{{ $itemConversation->id }}" data-typeconversation="AnswerWall" title="Eliminar comentario">×</button>
+                                                        @endif
+                                                    @endif
+                                                    @if ($itemConversation->name !== 'Este comentario se ha eliminado')
+                                                        <div id="item-{{ $itemConversation->id }}">{{ $itemConversation->name }}</div>
+                                                    @else
+                                                        <div id="item-{{ $itemConversation->id }}" class="font-italic">{{ $itemConversation->name }}</div>
+                                                    @endif
                                                     <div class="btn-group">
-                                                        <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Responder</a> - <small class="text-muted">{{ $itemConversation->updated_at->diffForHumans() }}</small>
+                                                        <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Comentar</a>
                                                     </div>
                                                 </div>
 
                                                 @if (count($itemConversation['AnswerToAnswer']) > 0)
                                                 @foreach ($itemConversation['AnswerToAnswer'] as $itemAnswer)
-                                                <div class="social-comment">
-                                                    <a href="" class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
+                                                <div class="social-comment item-{{ $itemAnswer->id }}">
+                                                    <a class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
+                                                    @if (Auth::check())
+                                                        @if ($itemAnswer->user->id === Auth::user()->id AND $itemAnswer->name !== 'Este comentario se ha eliminado')
+                                                            <button type="button" id="delete-{{ $itemAnswer->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationid="{{ $itemAnswer->id }}" data-typeconversation="AnswerTo" title="Eliminar comentario">×</button>
+                                                        @endif
+                                                    @endif
                                                     <div class="media-body">
-                                                        <a href="/profile/user/{{ $itemAnswer->user->id }}">{{ $itemAnswer->user->name }}</a> {{ $itemAnswer->name }}<br><small class="text-muted">{{ $itemAnswer->updated_at->diffForHumans() }}</small>
+                                                        <a href="/profile/user/{{ $itemAnswer->user->id }}">{{ $itemAnswer->user->name }}</a> - <small class="text-muted" id="time-{{ $itemAnswer->id }}">{{ $itemAnswer->updated_at->diffForHumans() }}</small>
+                                                        <div>{{ $itemAnswer->name }}</div>
                                                     </div>
                                                 </div>
                                                 @endforeach
@@ -281,9 +297,9 @@
 
                                                 <div class="social-comment hidden" id="comentario{{ $itemConversation->id }}">
                                                 @if (Auth::check())
-                                                    <a href="" class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
+                                                    <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
                                                 @else
-                                                    <a href="" class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"> </a>
+                                                    <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"> </a>
                                                 @endif
                                                     <div class="media-body">
                                                         <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer to Answer', {{ $itemConversation->id }})" placeholder="Escribe una respuesta..."></textarea>
@@ -294,9 +310,9 @@
                                             @endif
                                             <div class="social-comment hidden" id="comentario{{ $conversations['Question']->id }}">
                                                 @if (Auth::check())
-                                                    <a href="" class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
+                                                    <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
                                                 @else
-                                                    <a href="" class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"> </a>
+                                                    <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"> </a>
                                                 @endif
                                                 <div class="media-body">
                                                     <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer', {{ $conversations['Question']->id }})" placeholder="Escribe un comentario..."></textarea>
@@ -304,7 +320,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="hr-line-dashed question-{{ $conversations['Question']->id }}"></div>
+                                    <div class="hr-line-dashed item-{{ $conversations['Question']->id }}"></div>
                                 @endforeach
                             </div>
                         </div>
@@ -367,21 +383,8 @@
     </div>
     @endif
 <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+@include('layouts._script_comentarios_guest')
 <script>
-    $('#guestDataUser').on('show.bs.modal', function (event) {
-        var idCampo = $('#guestDataUser').data('idcampo');
-        var typeConversation = $('#guestDataUser').data('typeconversation');
-        $("#confirmUserData").removeAttr('onclick');
-        $('#confirmUserData').attr('onClick', 'registerGuest("'+ typeConversation +'", "'+ idCampo +'");');
-    });
-
-    $("#guestDataUser").on('hidden.bs.modal', function () {
-        $('#nameguest-error').addClass('hidden');
-        $('#emailguest-error').addClass('hidden');
-        $('#nameGuest').val('');
-        $('#emailGuest').val('');
-    });
-
 	(function () {
 		var isEditingEnabled,
             toggle = document.getElementById( 'toggle' ),
@@ -477,10 +480,10 @@
                     success: function(result)
                     {
                         var answer = "\'Answer\'";
-                        var html = '<div class="social-avatar question-'+result.item+'"><a href="#"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
-                        <div class="social-feed-box question-'+result.item+'"><div class="social-avatar"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a><small class="text-muted" id="time-'+result.item+'"> - '+result.tiempo+'</small><button type="button" id="delete-'+result.item+'" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="'+result.item+'" data-typeConversation="QuestionWall" data-textSelector="question-'+result.item+'" title="Eliminar comentario">×</button></div>\n\
-                        <div class="social-body"><div id="question-'+result.item+'">'+result.body+'</div><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="likeDislike(this, '+result.id+')"><i class="fa fa-thumbs-up"></i> <span>Me gusta</span></a><a class="btn btn-white btn-xs space-button-left" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
-                        <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div><div class="hr-line-dashed question-'+result.item+'"></div>';
+                        var html = '<div class="social-avatar item-'+result.item+'"><a><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
+                        <div class="social-feed-box item-'+result.item+'"><div class="social-avatar"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a><small class="text-muted" id="time-'+result.item+'"> - '+result.tiempo+'</small><button type="button" id="delete-'+result.item+'" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationid="'+result.item+'" data-typeConversation="QuestionWall" title="Eliminar publicación">×</button></div>\n\
+                        <div class="social-body"><div id="item-'+result.item+'">'+result.body+'</div><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="likeDislike(this, '+result.item+')"><i class="fa fa-thumbs-up"></i> <span>Me gusta</span></a><a class="btn btn-white btn-xs space-button-left" onclick="habilitarComentario('+result.item+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.item+'"><a class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
+                        <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.item+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div><div class="hr-line-dashed item-'+result.item+'"></div>';
                         $('#firstPost').after(html);
                     },
                     error: function () {
@@ -488,43 +491,6 @@
                     }
                 });
         }
-    }
-
-    $('#confirmDeleteConversation').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var textSelector = button.data('textselector');
-        var conversationId = button.data('conversationid');
-        var typeConversation = button.data('typeconversation');
-        $("#buttonConfirmDelete").removeAttr('onclick');
-        $('#buttonConfirmDelete').attr('onClick', 'deleteConversation("'+ textSelector +'", "'+ conversationId +'", "'+ typeConversation +'");');
-    });
-
-    function deleteConversation(textSelector, conversationId, typeConversation) {
-        $.ajax({
-            url: "/itemsconversations/destroy",
-            data: { 
-                "itemConversationId":conversationId,
-                "type":typeConversation,
-                "_token": "{{ csrf_token() }}"
-            },
-            dataType: "json",
-            method: "POST",
-            success: function(result)
-            {
-                if (result.result === 'delete') {
-                    $('.' + textSelector).remove();
-                } else if (result.result === 'update') {
-                    $('#' + textSelector).css('font-style', 'italic');
-                    $('#' + textSelector).html(result.itemConversation.name);
-                    $('#time-' + conversationId).html(' - ' + result.time);
-                    $('#delete-' + conversationId).remove();
-                }
-                $('#confirmDeleteConversation').modal('hide'); 
-            },
-            error: function () {
-            //alert("fallo");
-            }
-        });
     }
 </script>
 @elseif($typeView == 'detail')
@@ -610,23 +576,7 @@
     });
 </script>
 @endif
-<!-- Toastr -->
-<script src="{{ asset('inspinia/js/plugins/toastr/toastr.min.js') }}"></script>
 <script>
-    $(function () {
-        toastr.options = {
-            closeButton: true,
-            progressBar: true,
-            showMethod: 'slideDown',
-            timeOut: 4000
-        };
-        $('#side-menu li.active').removeClass('active');
-        var url = jQuery(location).attr('href').split('/')[3];
-        $("#side-menu [href='/" + url +"']").parent().parent().parent().parent().parent().addClass('active');
-        $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
-        $("#side-menu [href='/" + url +"']").parent().addClass('active');
-    });
-
     function pulsar(textarea, e, tipoComentario, idParent) {
         if (e.keyCode === 13 && !e.shiftKey) {
             e.preventDefault();
@@ -635,127 +585,6 @@
                 $(textarea).val('');
                 agregarComentario('walls', comentario, tipoComentario, idParent);
             }
-        }
-    }
-    
-    function agregarComentario(tabla, comentario, tipoComentario, idParent) {
-        idRecord = $('#idRecord').val();
-        var imagenUsuario = '';
-        @if(Auth::check())    
-            imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
-            var url = "/conversations/store";
-            var user = new Object();
-        @else
-            imagenUsuario = '{{ asset("uploads/avatars/default.jpg") }}';
-            var url = "/conversations/storeGuest";
-            var user = $('#nameUserGuest').data('user');
-        @endif
-        $.ajax({
-            url: url,
-            data: { 
-                "table":tabla,
-                "id_record":idRecord,
-                "comentario":comentario,
-                "type":tipoComentario,
-                "parent":idParent,
-                "user":user,
-                "_token": "{{ csrf_token() }}"
-                },
-            dataType: "json",
-            method: "POST",
-            success: function(result)
-            {
-                if (result.type === 'Question') {
-                    var answer = "\'Answer\'";
-                    var html = '<div class="social-avatar"><a href=""><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
-                    <div class="social-feed-box"><div class="social-avatar"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a><small class="text-muted"> - '+result.tiempo+'</small></div>\n\
-                    <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
-                    <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div>';
-                    $('#ultimo_comentario').before(html);
-                } else if (result.type === 'Answer') {
-                    var answer = "\'Answer to Answer\'";
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a>  '+  result.name+'<br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Responder</a> - <small class="text-muted">'+result.tiempo+'</small></div></div>\n\
-                    <div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"> <img alt="image" class="img-circle" src="'+imagenUsuario+'"> </a><div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe una respuesta..."></textarea></div></div></div>';
-                    $('#comentario'+result.parent).before(html);
-                } else {
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
-                    $('#comentario'+result.parent).before(html);
-                }
-            },
-            error: function () {
-               //alert("fallo");
-            }
-            
-        });
-    }
-    
-    function habilitarComentario(idCampo) {
-        @if(Auth::check())
-            if ($('#comentario'+idCampo).hasClass("hidden")) {
-                $('#comentario'+idCampo).removeClass("hidden");
-            }
-            $('#comentario'+idCampo+' textarea').focus();
-        @else
-            if ($('#nameUserGuest').val() !== '') {
-                if ($('#comentario'+idCampo).hasClass("hidden")) {
-                    $('#comentario'+idCampo).removeClass("hidden");
-                }
-                $('#comentario'+idCampo+' textarea').focus();
-            } else {
-                $('#guestDataUser').data('typeconversation', 'comment');
-                $('#guestDataUser').data('idcampo', idCampo);
-                $('#guestDataUser').modal('show');
-            }
-        @endif
-    }
-
-    function registerGuest(typeConversation, idCampo) {
-        if ($('#nameGuest').val() === '') {
-            $('#nameguest-error').removeClass('hidden');
-            return false;
-        } else if ($('#emailGuest').val() === '') {
-            $('#emailguest-error').removeClass('hidden');
-            return false;
-        } else {
-            $('#nameguest-error').addClass('hidden');
-            $('#emailguest-error').addClass('hidden');
-            var name = $('#nameGuest').val();
-            var email = $('#emailGuest').val();
-            $.ajax({
-                url: "/registerguest",
-                data: { 
-                    "name":name,
-                    "email":email,
-                    "_token": "{{ csrf_token() }}"
-                    },
-                dataType: "json",
-                method: "POST",
-                success: function(result)
-                {
-                    if (result.result !== 'unauthorized') {
-                        $('#nameUserGuest').val(result.user.name);
-                        $('#nameUserGuest').data().user = result.user;
-                        $('#nameGuest').val('');
-                        $('#emailGuest').val('');
-                        $('#guestDataUser').modal('hide');
-                        if (typeConversation === 'comment') {
-                            habilitarComentario(idCampo);
-                        } else if (typeConversation === 'post') {
-                            setTimeout(function(){
-                                $('#redactarPublicacion').modal('show');
-                            }, 1500);
-                        }
-                        if (result.result === 'new') {
-                            toastr.success('Sigue trabajando.', 'Gracias ' + name + ' tus datos, se han almacenado.');
-                        }
-                    } else {
-                        toastr.warning('Correo registrado.', 'El correo '+ email +' ya existe, debes loguearte.');
-                    }
-                },
-                error: function () {
-                //alert("fallo");
-                }
-            });
         }
     }
 

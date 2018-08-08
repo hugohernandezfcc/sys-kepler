@@ -98,17 +98,18 @@ class UsersController extends Controller {
 
             if ($user->save()) {
                 $result = 'new';
-                /*if(Auth::attempt(['email' => $request->email, 'password' => 'Kepler123'])){
-                    $user = Auth::user();
-                    $success['token'] =  $request->_token;
-                    #return response()->json(['success' => $success], 200);
-                }*/
             }
         } else {
             if ($userFind->type === null) {
                 #Usuario invitado existente
-                $result = 'exists';
-                $user = $userFind;
+                if ($userFind->name == $request->name) {
+                    #Si coincide su nombre y correo se permite comentar
+                    $result = 'exists';
+                    $user = $userFind;
+                } else {
+                    #Sino coincide su nombre y correo, no se permite comentar
+                    $user = (object)['name' => '', 'email' => '', 'id' => null, 'avatar' => ''];
+                }
             } else {
                 #Usuario del sistema (debe autenticarse)
                 $user = (object)['name' => '', 'email' => '', 'id' => null, 'avatar' => ''];

@@ -16,7 +16,7 @@ class ItemsConversationsController extends Controller {
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('destroyGuest');
     }
 
     /**
@@ -85,6 +85,26 @@ class ItemsConversationsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request) {
+        return $this->destroyConversation($request);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\ItemConversation  $itemConversation
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyGuest(Request $request) {
+        return $this->destroyConversation($request);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\ItemConversation  $itemConversation
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyConversation($request) {
         $result = $time = '';
         $itemConversation = ItemConversation::find($request->itemConversationId);
         if ($request->type === 'Question') {
@@ -97,13 +117,13 @@ class ItemsConversationsController extends Controller {
                 }
                 $result = 'delete';
             } else {
-                $cont = 0;
+                $contDelete = 0;
                 foreach ($itemConversation->children as $item) {
                     if ($item->name === "Este comentario se ha eliminado") {
-                        ++$cont;
+                        ++$contDelete;
                     }
                 }
-                if (($cont/$itemConversation->children()->count()) <= 0.5) {
+                if (($contDelete/$itemConversation->children()->count()) <= 0.5) {
                     $itemConversation->name = "Este comentario se ha eliminado";
                     if ($itemConversation->update()) {
                         $result = 'update';
@@ -148,11 +168,53 @@ class ItemsConversationsController extends Controller {
                 $result = 'delete';
             } else {
                 $post = Post::where('id', '=', $itemConversation->name)->first();
-                $post->body = "Este comentario se ha eliminado";
-                $itemConversation->name = "Este comentario se ha eliminado";
+                $post->body = "Esta publicación se ha eliminado";
+                $itemConversation->name = "Esta publicación se ha eliminado"; #solo para usar en la vista, no se almacena
                 if ($post->update()) {
                     $result = 'update';
                     $time = $post->updated_at->diffForHumans();
+                }
+            }
+        } elseif ($request->type === 'AnswerWall') {
+            if ($itemConversation->children()->count() === 0) {
+                ItemConversation::destroy($itemConversation->id);
+                $result = 'delete';
+            } elseif (Post::where('id', '=', $itemConversation->oneparent->name)->first()->body === "Esta publicación se ha eliminado") {
+                $contDelete = 1;
+                $parent = $itemConversation->oneparent;
+                foreach ($parent->children->where('id', '!=', $itemConversation->id) as $item) {
+                    if ($item->name === "Este comentario se ha eliminado") {
+                        ++$contDelete;
+                    }
+                }
+                if (($contDelete/$parent->children->count()) <= 0.5) {
+                    $itemConversation->name = "Este comentario se ha eliminado";
+                    if ($itemConversation->update()) {
+                        $result = 'update';
+                        $time = $itemConversation->updated_at->diffForHumans();
+                    }
+                } else {
+                    $post = Post::where('id', '=', $itemConversation->oneparent->name)->first();
+                    foreach ($parent->children as $item) {
+                        foreach ($item->children as $itemAnswer) {
+                            $itemAnswer->delete();
+                        }
+                        $item->delete();
+                    }
+                    ItemConversation::destroy($itemConversation->id);
+                    $likes = $post->likes()->get();
+                    foreach ($likes as $like) {
+                        Like::destroy($like->id);
+                    }
+                    Post::destroy($post->id);
+                    $itemConversation->id = $itemConversation->parent; #para eliminar de la vista la publicacion completa
+                    $result = 'delete';
+                }
+            } else {
+                $itemConversation->name = "Este comentario se ha eliminado";
+                if ($itemConversation->update()) {
+                    $result = 'update';
+                    $time = $itemConversation->updated_at->diffForHumans();
                 }
             }
         } elseif ($request->type === 'Answer') {
@@ -160,14 +222,14 @@ class ItemsConversationsController extends Controller {
                 ItemConversation::destroy($itemConversation->id);
                 $result = 'delete';
             } elseif ($itemConversation->oneparent->name === "Este comentario se ha eliminado") {
-                $cont = 1;
+                $contDelete = 1;
                 $parent = $itemConversation->oneparent;
                 foreach ($parent->children->where('id', '!=', $itemConversation->id) as $item) {
                     if ($item->name === "Este comentario se ha eliminado") {
-                        ++$cont;
+                        ++$contDelete;
                     }
                 }
-                if (($cont/$parent->children->count()) <= 0.5) {
+                if (($contDelete/$parent->children->count()) <= 0.5) {
                     $itemConversation->name = "Este comentario se ha eliminado";
                     if ($itemConversation->update()) {
                         $result = 'update';
