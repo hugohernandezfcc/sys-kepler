@@ -27,9 +27,8 @@
                             <span>
                                 <img alt="image" id="leftAvatar" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}" width="45%" />
                             </span>
-                            <a data-toggle="dropdown" class="dropdown-toggle">
                             <span class="clear"> 
-                                <span class="block m-t-xs"> <strong class="font-bold">Sys Kepler</strong></span>
+                                <span class="block m-t-xs"> <strong class="font-bold text-white">Sys Kepler</strong></span>
                             </span>
                         @endif
                     </div>

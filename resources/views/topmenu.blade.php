@@ -16,7 +16,7 @@
             <li>
             <span class="m-r-sm text-muted welcome-message">Bienvenido {{ Auth::user()->name }}</span>
         @else
-            <li class="p-t-10">
+            <li class="p-sm">
             <span class="m-r-sm text-muted welcome-message">Bienvenido invitado</span>
         @endif
         </li>
@@ -169,7 +169,7 @@
                 for (var i = 0; i < favorites[type].length; i++) {
                     if (i < 1) {
                         let icon = iconFav(favorites[type][i].domain);
-                        minilist += '<li><a href="#listFavorites" data-toggle="modal" data-target="#listFavorites"><div>'+icon+' '+favorites[type].length+' '+type+'<span class="pull-right text-muted small">'+favorites[type][i].time+'</span></div></a></li><li class="divider"></li>';
+                        minilist += '<li><a href="#listFavorites" data-toggle="modal" data-target="#listFavorites"><div><span class="badge badge-primary">'+ favorites[type].length +'</span> '+ icon + '  ' + type+'<span class="pull-right text-muted small">'+favorites[type][i].time+'</span></div></a></li><li class="divider"></li>';
                     } else {
                         register += '<tr>';
                     }

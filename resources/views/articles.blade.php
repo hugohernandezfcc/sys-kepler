@@ -28,7 +28,7 @@
         </ol>
     </div>
     <div class="col-sm-6">
-        @if($typeView != 'form')
+        @if($typeView != 'form' AND Auth::check())
         <div class="title-action">
             <a href="/articles/create" class="btn btn-primary btn-sm">Agregar Artículo</a>
         </div>
@@ -211,22 +211,183 @@
         <div class="col-lg-10 col-lg-offset-1">
             <div class="ibox">
                 <div class="ibox-content">
+                    <input id="nameUserGuest" type="hidden" value="">
                     @include('layouts._spinner_code')
-                    <div class="pull-right">
-                        <a href="/articles/edit/{{ $record->id }}" class="btn btn-white btn-xs"> <i class="fa fa-pencil"></i> Editar</a>
-                        <a href="/articles" class="btn btn-white btn-xs"> <i class="fa fa-chevron-left"></i> Regresar</a>
-                    </div>
+                    @if (Auth::check())
+                        <div class="pull-right">
+                            <a href="/articles/edit/{{ $record->id }}" class="btn btn-white btn-xs"> <i class="fa fa-pencil"></i> Editar</a>
+                            <a href="/articles" class="btn btn-white btn-xs"> <i class="fa fa-chevron-left"></i> Regresar</a>
+                        </div>
+                    @endif
                     <div class="text-center article-title">
                         <span class="text-muted"><i class="fa fa-clock-o"></i> {{ $record->created_at->diffForHumans() }}</span>
                         <h1>{{$record->name}}</h1>
                     </div>
                     {!! $record->contenido !!}
                     <br>
+                    <a class="btn btn-white btn-xs space-button-left" onclick='habilitarComentario("_ultimo")'><i class="fa fa-comments"></i> Comentar</a>
                     <div class="hr-line-dashed"></div>
                     <div class="row">
                         <div class="col-lg-12">
                             <h3>Comentarios:</h3>
-                            @include('layouts._conversations')
+                                <div class="social-feed-separated">
+                                    @foreach ($comments as $conversations)
+                                    <div class="social-avatar item-{{ $conversations['Question']->id }}">
+                                        <a><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $conversations['Question']->user->avatar) }}"></a>
+                                    </div>
+                                    <div class="social-feed-box item-{{ $conversations['Question']->id }}">
+                                        <div class="social-avatar">
+                                            <a href="/profile/user/{{ $conversations['Question']->user->id }}">{{ $conversations['Question']->user->name }}</a><small class="text-muted" id="time-{{ $conversations['Question']->id }}"> - {{ $conversations['Question']->updated_at->diffForHumans() }}</small>
+                                            @if (Auth::check())
+                                                @if ($conversations['Question']->user->id === Auth::user()->id AND $conversations['Question']->name !== 'Este comentario se ha eliminado')
+                                                    <button type="button" id="delete-{{ $conversations['Question']->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationid="{{ $conversations['Question']->id }}" data-typeconversation="Question" title="Eliminar comentario">×</button>
+                                                @endif
+                                            @endif
+                                        </div>
+                                        <div class="social-body">
+                                            @if ($conversations['Question']->name !== 'Este comentario se ha eliminado')
+                                                <p id="item-{{ $conversations['Question']->id }}">{{ $conversations['Question']->name }}</p><br>
+                                            @else
+                                                <p id="item-{{ $conversations['Question']->id }}" class="font-italic">{{ $conversations['Question']->name }}</p><br>
+                                            @endif
+                                            <div class="btn-group">
+                                                <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $conversations['Question']->id }})"><i class="fa fa-comments"></i> Comentar</a>
+                                            </div>
+                                        </div>
+                                        <div class="social-footer">
+                                            @if (count($conversations['Answer'][0]) > 0)
+                                            @foreach ($conversations['Answer'][0] as $itemConversation)
+                                            <div class="social-comment item-{{ $itemConversation->id }}">
+                                                <a class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
+                                                <div class="media-body">
+                                                    <a href="/profile/user/{{ $itemConversation->user->id }}">{{ $itemConversation->user->name }}</a> - <small class="text-muted" id="time-{{ $itemConversation->id }}">{{ $itemConversation->updated_at->diffForHumans() }}</small>
+                                                    @if (Auth::check())
+                                                        @if ($itemConversation->user->id === Auth::user()->id AND $itemConversation->name !== 'Este comentario se ha eliminado')
+                                                            <button type="button" id="delete-{{ $itemConversation->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationid="{{ $itemConversation->id }}" data-typeconversation="AnswerWall" title="Eliminar comentario">×</button>
+                                                        @endif
+                                                    @endif
+                                                    @if ($itemConversation->name !== 'Este comentario se ha eliminado')
+                                                        <div id="item-{{ $itemConversation->id }}">{{ $itemConversation->name }}</div>
+                                                    @else
+                                                        <div id="item-{{ $itemConversation->id }}" class="font-italic">{{ $itemConversation->name }}</div>
+                                                    @endif
+                                                    <div class="btn-group">
+                                                        <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Comentar</a>
+                                                    </div>
+                                                </div>
+
+                                                @if (count($itemConversation['AnswerToAnswer']) > 0)
+                                                @foreach ($itemConversation['AnswerToAnswer'] as $itemAnswer)
+                                                <div class="social-comment item-{{ $itemAnswer->id }}">
+                                                    <a class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
+                                                    @if (Auth::check())
+                                                        @if ($itemAnswer->user->id === Auth::user()->id AND $itemAnswer->name !== 'Este comentario se ha eliminado')
+                                                            <button type="button" id="delete-{{ $itemAnswer->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationid="{{ $itemAnswer->id }}" data-typeconversation="AnswerTo" title="Eliminar comentario">×</button>
+                                                        @endif
+                                                    @endif
+                                                    <div class="media-body">
+                                                        <a href="/profile/user/{{ $itemAnswer->user->id }}">{{ $itemAnswer->user->name }}</a> - <small class="text-muted" id="time-{{ $itemAnswer->id }}">{{ $itemAnswer->updated_at->diffForHumans() }}</small>
+                                                        <div>{{ $itemAnswer->name }}</div>
+                                                    </div>
+                                                </div>
+                                                @endforeach
+                                                @endif
+
+                                                <div class="social-comment hidden" id="comentario{{ $itemConversation->id }}">
+                                                    @if (Auth::check())
+                                                        <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
+                                                    @else
+                                                        <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"> </a>
+                                                    @endif
+                                                    <div class="media-body">
+                                                        <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer to Answer', {{ $itemConversation->id }})" placeholder="Escribe un comentario..."></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @endforeach
+                                            @endif
+                                            <div class="social-comment hidden" id="comentario{{ $conversations['Question']->id }}">
+                                                @if (Auth::check())
+                                                    <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
+                                                @else
+                                                    <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"> </a>
+                                                @endif
+                                                <div class="media-body">
+                                                    <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer', {{ $conversations['Question']->id }})" placeholder="Escribe un comentario..."></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed item-{{ $conversations['Question']->id }}"></div>
+
+                                    @endforeach 
+
+                                    <div id='comentario_ultimo' class="hidden">
+                                        <div class="social-avatar">
+                                            @if (Auth::check())
+                                                <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
+                                            @else
+                                                <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"> </a>
+                                            @endif
+                                        </div>
+                                        <div class="media-body">
+                                            <textarea class="form-control" onkeypress="pulsar(this, event, 'Question', null)" placeholder="Escribe un comentario..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="confirmDeleteConversation" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">Confirmar</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h3 class="text-center">¿Esta seguro que desea eliminar el comentario?</h3>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="buttonConfirmDelete" onclick="" class="btn btn-primary primary">Aceptar</a>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="guestDataUser" tabindex="-1" role="dialog" data-typeconversation="" data-idcampo="">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">Ingrese sus datos</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-sm">
+                                                        <div class="form-group">
+                                                            <label>Nombre:</label>
+                                                            <input type="text" id="nameGuest" class="form-control" maxlength="200" required>
+                                                            <span id="nameguest-error" class="hidden span-error">Por favor coloque su nombre.</span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Correo:</label>
+                                                            <input type="email" id="emailGuest" class="form-control" maxlength="200" required>
+                                                            <span id="emailguest-error" class="hidden span-error">Por favor coloque su correo.</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <h5 class="text-right font-italic">*Su dirección de correo no será publicada.</h5>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="confirmUserData" onclick="" class="btn btn-primary primary">Aceptar</a>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -234,17 +395,10 @@
         </div>
     </div>
 </div>
+@include('layouts._script_comentarios_guest')
 @endif
 
 <script>
-    $(function () {
-        $('#side-menu li.active').removeClass('active');
-        var url = jQuery(location).attr('href').split('/')[3];
-        $("#side-menu [href='/" + url +"']").parent().parent().parent().parent().parent().addClass('active');
-        $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
-        $("#side-menu [href='/" + url +"']").parent().addClass('active');
-    });
-    
     function pulsar(textarea, e, tipoComentario, idParent) {
         if (e.keyCode === 13 && !e.shiftKey) {
             e.preventDefault();
