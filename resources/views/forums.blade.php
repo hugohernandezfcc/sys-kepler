@@ -497,7 +497,7 @@
                                 <div class="hr-line-dashed item-{{ $itemConversation->id }}"></div>
                             @endforeach
                             @endif
-                            
+
                             <div id='comentario_ultimo' class="hidden">
                                 <div class="social-avatar">
                                     @if (Auth::check())
@@ -621,6 +621,53 @@
                 agregarComentario('forums', comentario, tipoComentario, idParent);
             }
         }
+    }
+
+    function agregarComentario(tabla, comentario, tipoComentario, idParent) {
+        idRecord = $('#idRecord').val();
+        var imagenUsuario = '';
+        @if(Auth::check())    
+            imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
+            var url = "/conversations/store";
+            var user = new Object();
+        @else
+            imagenUsuario = '{{ asset("uploads/avatars/default.jpg") }}';
+            var url = "/conversations/storeGuest";
+            var user = $('#nameUserGuest').data('user');
+        @endif
+        $.ajax({
+            url: url,
+            data: { 
+                "table":tabla,
+                "id_record":idRecord,
+                "comentario":comentario,
+                "type":tipoComentario,
+                "parent":idParent,
+                "user":user,
+                "_token": "{{ csrf_token() }}"
+                },
+            dataType: "json",
+            method: "POST",
+            success: function(result)
+            {
+                if (result.type === 'Answer') {
+                    var answer = "\'Answer to Answer\'";
+                    var html = '<div class="social-avatar item-'+result.id+'"><a href=""><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
+                    <div class="social-feed-box item-'+result.id+'"><div class="social-avatar"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a><small class="text-muted" id="time-'+result.id+'"> - '+result.tiempo+'</small><button type="button" id="delete-'+result.id+'" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationid="'+result.id+'" data-typeconversation="Question" data-textSelector="question-'+result.id+'" title="Eliminar comentario">×</button></div>\n\
+                    <div class="social-body"><p id="item-'+result.id+'">'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Responder</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
+                    <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div><div class="hr-line-dashed item-'+result.id+'"></div>';
+                    $('#comentario_ultimo').before(html);
+                } else {
+                    var html = '<div class="social-comment item-'+result.id+'"><a class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a><small class="text-muted" id="time-'+result.id+'"> - '+result.tiempo+'</small><button type="button" id="delete-'+result.id+'" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationid="'+result.id+'" data-typeconversation="AnswerTo" title="Eliminar comentario">×</button>\n\
+                    <div>'+  result.name+'</div></div></div>';
+                    $('#comentario'+result.parent).before(html);
+                }
+            },
+            error: function () {
+               //alert("fallo");
+            }
+            
+        });
     }
 </script>
 @include('layouts._script_spinner_code')
