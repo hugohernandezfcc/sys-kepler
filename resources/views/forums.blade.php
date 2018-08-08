@@ -176,8 +176,10 @@
                 {{ method_field('DELETE') }}
                 <div class="form-group">
                     <div class="pull-right">
-                        <a href="#redactarPregunta" id="toggle" data-toggle="modal" class="btn btn-primary btn-xs">Nueva pregunta</a>
-                        <a href="#confirmDelete" class="btn btn-default btn-xs" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</a>
+                        <a onClick="nuevaPregunta()" class="btn btn-primary btn-xs">Nueva pregunta</a>
+                        @if(Auth::check())
+                            <a href="#confirmDelete" class="btn btn-default btn-xs" id="submitBtn" data-toggle="modal" data-target="#confirmDelete"> <i class="fa fa-remove"></i> Eliminar</a>
+                        @endif
                     </div>
                 </div>
             </form>
@@ -189,8 +191,12 @@
                             <h4 class="modal-title">Formular pregunta</h4>
                         </div>
                         <div class="modal-body">
-
+                            @if(Auth::check())
                             <form method="post" action="/questionsforums/store" id="form-create" class="form-horizontal">
+                            @else
+                            <form method="post" action="/questionsforums/storeGuest" id="form-create" class="form-horizontal">
+                            <input id="nameUserGuest" name="nameUserGuest" type="hidden" value="">
+                            @endif
                                 {{ csrf_field() }}
                                 <input type="hidden" id="idRecord" name="forumId" value="{{ $record->id }}">
                                 <div class="form-group">
@@ -216,6 +222,40 @@
             <br>
         </div>
     </div>
+    
+    <div class="modal fade" id="guestDataUser" tabindex="-1" role="dialog" data-typeconversation="" data-idcampo="">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Ingrese sus datos</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <label>Nombre:</label>
+                                <input type="text" id="nameGuest" class="form-control" maxlength="200" required>
+                                <span id="nameguest-error" class="hidden span-error">Por favor coloque su nombre.</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Correo:</label>
+                                <input type="email" id="emailGuest" class="form-control" maxlength="200" required>
+                                <span id="emailguest-error" class="hidden span-error">Por favor coloque su correo.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h5 class="text-right font-italic">*Su dirección de correo no será publicada.</h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="confirmUserData" onclick="" class="btn btn-primary primary">Aceptar</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     @foreach($questionsForums as $question)
         @php
@@ -231,42 +271,54 @@
             <div class="row">
                 <div class="col-md-10">
                     <div class="vote-actions">
-                        @if($question->created_by === Auth::user()->id)
-                        <button class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='No puedes votar por tu pregunta'>
-                            <i class="fa fa-chevron-up"> </i>
-                        </button>
-                        @elseif($question->votes->where('type', '=', 'Positivo')->firstwhere('by', '=', Auth::user()->id) === null)
-                        <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" id="Positivo{{$question->id}}" title='Esta pregunta es útil'>
-                            <i class="fa fa-chevron-up"> </i>
-                        </button>
+                        @if (Auth::check())
+                            @if($question->created_by === Auth::user()->id)
+                                <button class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='No puedes votar por tu pregunta'>
+                                    <i class="fa fa-chevron-up"> </i>
+                                </button>
+                            @elseif($question->votes->where('type', '=', 'Positivo')->firstwhere('by', '=', Auth::user()->id) === null)
+                                <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" id="Positivo{{$question->id}}" title='Esta pregunta es útil'>
+                                    <i class="fa fa-chevron-up"> </i>
+                                </button>
+                            @else
+                                <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='Ya has votado positivamente por esta pregunta'>
+                                    <i class="fa fa-chevron-up"> </i>
+                                </button>
+                            @endif
                         @else
-                        <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='Ya has votado positivamente por esta pregunta'>
-                            <i class="fa fa-chevron-up"> </i>
-                        </button>
+                            <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='Solo los usuarios registrados pueden votar'>
+                                <i class="fa fa-chevron-up"> </i>
+                            </button>
                         @endif
-                        <div><span id="votes{{$question->id}}">{{$question->cantVotes}}</span></div>
-                        @if($question->created_by === Auth::user()->id)
-                        <button class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='No puedes votar por tu pregunta'>
-                            <i class="fa fa-chevron-down"> </i>
-                        </button>
-                        @elseif($question->votes->where('type', '=', 'Negativo')->firstwhere('by', '=', Auth::user()->id) === null)
-                        <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" id="Negativo{{$question->id}}" title='Esta pregunta no es útil'>
-                            <i class="fa fa-chevron-down"> </i>
-                        </button>
+                            <div><span id="votes{{$question->id}}">{{$question->cantVotes}}</span></div>
+                        @if (Auth::check())
+                            @if($question->created_by === Auth::user()->id)
+                                <button class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='No puedes votar por tu pregunta'>
+                                    <i class="fa fa-chevron-down"> </i>
+                                </button>
+                            @elseif($question->votes->where('type', '=', 'Negativo')->firstwhere('by', '=', Auth::user()->id) === null)
+                                <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" id="Negativo{{$question->id}}" title='Esta pregunta no es útil'>
+                                    <i class="fa fa-chevron-down"> </i>
+                                </button>
+                            @else
+                                <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='Ya has votado negativamente por esta pregunta'>
+                                    <i class="fa fa-chevron-down"> </i>
+                                </button>
+                            @endif
                         @else
-                        <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='Ya has votado negativamente por esta pregunta'>
-                            <i class="fa fa-chevron-down"> </i>
-                        </button>
+                            <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='Solo los usuarios registrados pueden votar'>
+                                <i class="fa fa-chevron-down"> </i>
+                            </button>
                         @endif
                     </div>
                     <a href="/forums/{{$record->name}}/question/{{$question->id}}" class="vote-title">
                         {{$question->name}}
                     </a>
                     <div class="vote-info">
-                        <i class="fa fa-comments-o"></i> <a href="#">Respuestas ({{ $cantComments }})</a>
+                        <i class="fa fa-comments-o"></i> <a>Respuestas ({{ $cantComments }})</a>
                         @if($lastComment !== null)
-                            <i class="fa fa-clock-o"></i> <a href="#">{{ $lastComment->created_at->diffForHumans() }}</a>
-                            <i class="fa fa-user"></i> <a href="#">{{ $lastComment->user->name }}</a>
+                            <i class="fa fa-clock-o"></i> <a>{{ $lastComment->created_at->diffForHumans() }}</a>
+                            <i class="fa fa-user"></i> <a href="/profile/user/{{ $lastComment->user->id }}">{{ $lastComment->user->name }}</a>
                         @endif
                     </div>
                 </div>
@@ -274,9 +326,27 @@
         </div>
     @endforeach
 </div>
+@include('layouts._script_comentarios_guest')
+<script>
+    function nuevaPregunta() {
+        @if(Auth::check())
+            $('#redactarPregunta').modal('show');
+        @else
+            if ($('#nameUserGuest').val() !== '') {
+                $('#redactarPregunta').modal('show');
+            } else {
+                $('#guestDataUser').data('typeconversation', 'question');
+                $('#guestDataUser').data('idcampo', '');
+                $('#guestDataUser').modal('show');
+            }
+        @endif
+    }
+
+</script>
 @elseif($typeView == 'question')
 <input type="hidden" id="idRecord" value="{{ $record->id }}">
 <input type="hidden" id="idQuestion" value="{{ $question->id }}">
+<input id="nameUserGuest" type="hidden" value="">
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="ibox">
         <div class="ibox-content">
@@ -288,33 +358,45 @@
                         $votes = $question->votes->where('type', '=', 'Positivo')->count() - $question->votes->where('type', '=', 'Negativo')->count();
                     @endphp
                     <div class="vote-actions">
+                    @if (Auth::check())
                         @if($question->created_by === Auth::user()->id)
-                        <button class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='No puedes votar por tu pregunta'>
-                            <i class="fa fa-chevron-up"> </i>
-                        </button>
+                            <button class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='No puedes votar por tu pregunta'>
+                                <i class="fa fa-chevron-up"> </i>
+                            </button>
                         @elseif($question->votes->where('type', '=', 'Positivo')->firstwhere('by', '=', Auth::user()->id) === null)
-                        <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" id="Positivo{{$question->id}}" title='Esta pregunta es útil'>
-                            <i class="fa fa-chevron-up"> </i>
-                        </button>
+                            <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" id="Positivo{{$question->id}}" title='Esta pregunta es útil'>
+                                <i class="fa fa-chevron-up"> </i>
+                            </button>
                         @else
-                        <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='Ya has votado positivamente por esta pregunta'>
+                            <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='Ya has votado positivamente por esta pregunta'>
+                                <i class="fa fa-chevron-up"> </i>
+                            </button>
+                        @endif
+                    @else
+                        <button onclick="vote('Positivo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Positivo{{$question->id}}" title='Solo los usuarios registrados pueden votar'>
                             <i class="fa fa-chevron-up"> </i>
                         </button>
-                        @endif
+                    @endif
                         <div><span id="votes{{$question->id}}">{{$votes}}</span></div>
+                    @if (Auth::check())
                         @if($question->created_by === Auth::user()->id)
-                        <button class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='No puedes votar por tu pregunta'>
-                            <i class="fa fa-chevron-down"> </i>
-                        </button>
+                            <button class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='No puedes votar por tu pregunta'>
+                                <i class="fa fa-chevron-down"> </i>
+                            </button>
                         @elseif($question->votes->where('type', '=', 'Negativo')->firstwhere('by', '=', Auth::user()->id) === null)
-                        <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" id="Negativo{{$question->id}}" title='Esta pregunta no es útil'>
-                            <i class="fa fa-chevron-down"> </i>
-                        </button>
+                            <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" id="Negativo{{$question->id}}" title='Esta pregunta no es útil'>
+                                <i class="fa fa-chevron-down"> </i>
+                            </button>
                         @else
-                        <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='Ya has votado negativamente por esta pregunta'>
+                            <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='Ya has votado negativamente por esta pregunta'>
+                                <i class="fa fa-chevron-down"> </i>
+                            </button>
+                        @endif
+                    @else
+                        <button onclick="vote('Negativo', {{$question->id}})" class="btn btn-xs btn-link" disabled id="Negativo{{$question->id}}" title='Solo los usuarios registrados pueden votar'>
                             <i class="fa fa-chevron-down"> </i>
                         </button>
-                        @endif
+                    @endif
                     </div>
                 </div>
                 <div class="col-lg-10">
@@ -343,12 +425,13 @@
                             <dt>Creado por:</dt> <dd>{{$question->user->name}}</dd>
                             <dt>Creada:</dt> <dd>{{$question->created_at->diffForHumans()}}</dd>
                             <dd><div class="social-avatar">
-                                <a href=""><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $question->user->avatar) }}"></a>
+                                <a><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $question->user->avatar) }}"></a>
                             </div></dd>
                         </dl>
                     </div>
                 </div>
             </div>
+            <a class="btn btn-white btn-xs" onclick='habilitarComentario("_ultimo")'><i class="fa fa-comments"></i> Redactar una respuesta</a>
             <div class="hr-line-dashed"></div>
             <div class="panel blank-panel">
                 <div class="panel-body">
@@ -357,21 +440,23 @@
                                 
                             @if (count($conversations['Answer'][0]) > 0)
                             @foreach ($conversations['Answer'][0] as $itemConversation)
-                                <div class="social-avatar answer-{{ $itemConversation->id }}">
-                                    <a href=""><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
+                                <div class="social-avatar item-{{ $itemConversation->id }}">
+                                    <a><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemConversation->user->avatar) }}"></a>
                                 </div>
-                                <div class="social-feed-box answer-{{ $itemConversation->id }}">
+                                <div class="social-feed-box item-{{ $itemConversation->id }}">
                                     <div class="social-avatar">
                                         <a href="/profile/user/{{ $itemConversation->user->id }}">{{ $itemConversation->user->name }}</a><small class="text-muted" id="time-{{ $itemConversation->id }}"> - {{ $itemConversation->updated_at->diffForHumans() }}</small>
-                                        @if ($itemConversation->user->id === Auth::user()->id AND $itemConversation->name !== 'Este comentario se ha eliminado')
-                                            <button type="button" id="delete-{{ $itemConversation->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="{{ $itemConversation->id }}" data-typeConversation="AnswerForum" data-textSelector="answer-{{ $itemConversation->id }}" title="Eliminar comentario">×</button>
+                                        @if(Auth::check())
+                                            @if ($itemConversation->user->id === Auth::user()->id AND $itemConversation->name !== 'Este comentario se ha eliminado')
+                                                <button type="button" id="delete-{{ $itemConversation->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="{{ $itemConversation->id }}" data-typeConversation="AnswerForum" data-textSelector="answer-{{ $itemConversation->id }}" title="Eliminar comentario">×</button>
+                                            @endif
                                         @endif
                                     </div>
                                     <div class="social-body">
                                         @if ($itemConversation->name !== 'Este comentario se ha eliminado')
-                                            <p id="answer-{{ $itemConversation->id }}">{{ $itemConversation->name }}</p><br>
+                                            <p id="item-{{ $itemConversation->id }}">{{ $itemConversation->name }}</p><br>
                                         @else
-                                            <p id="answer-{{ $itemConversation->id }}" class="font-italic">{{ $itemConversation->name }}</p><br>
+                                            <p id="item-{{ $itemConversation->id }}" class="font-italic">{{ $itemConversation->name }}</p><br>
                                         @endif
                                         <div class="btn-group">
                                             <a class="btn btn-white btn-xs" onclick="habilitarComentario({{ $itemConversation->id }})"><i class="fa fa-comments"></i> Responder</a>
@@ -381,17 +466,27 @@
 
                                         @if (count($itemConversation['AnswerToAnswer']) > 0)
                                         @foreach ($itemConversation['AnswerToAnswer'] as $itemAnswer)
-                                            <div class="social-comment">
-                                                <a href="" class="pull-left"><img class="img-circle" alt="image" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
+                                            <div class="social-comment item-{{ $itemAnswer->id }}">
+                                                <a class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. $itemAnswer->user->avatar) }}"></a>
+                                                @if (Auth::check())
+                                                    @if ($itemAnswer->user->id === Auth::user()->id AND $itemAnswer->name !== 'Este comentario se ha eliminado')
+                                                        <button type="button" id="delete-{{ $itemAnswer->id }}" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationid="{{ $itemAnswer->id }}" data-typeconversation="AnswerTo" title="Eliminar comentario">×</button>
+                                                    @endif
+                                                @endif
                                                 <div class="media-body">
-                                                    <a href="/profile/user/{{ $itemAnswer->user->id }}">{{ $itemAnswer->user->name }}</a>  {{ $itemAnswer->name }}<br> - <small class="text-muted">{{ $itemAnswer->created_at->diffForHumans() }}</small>
+                                                    <a href="/profile/user/{{ $itemAnswer->user->id }}">{{ $itemAnswer->user->name }}</a><small class="text-muted" id="time-{{ $itemAnswer->id }}"> - {{ $itemAnswer->updated_at->diffForHumans() }}</small>
+                                                    <div>{{ $itemAnswer->name }}</div>
                                                 </div>
                                             </div>
                                         @endforeach
                                         @endif
 
                                         <div class="social-comment hidden" id="comentario{{ $itemConversation->id }}">
-                                            <a href="" class="pull-left"><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
+                                                @if (Auth::check())
+                                                    <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"> </a>
+                                                @else
+                                                    <a class="pull-left"> <img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"> </a>
+                                                @endif
                                             <div class="media-body">
                                                 <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer to Answer', {{ $itemConversation->id }})" placeholder="Escribe una respuesta..."></textarea>
                                             </div>
@@ -399,18 +494,23 @@
                                     
                                     </div>
                                 </div>
-                                <div class="hr-line-dashed answer-{{ $itemConversation->id }}"></div>
+                                <div class="hr-line-dashed item-{{ $itemConversation->id }}"></div>
                             @endforeach
                             @endif
                             
-                            <input type="hidden" id="ultimo_comentario">
-                            <div class="social-avatar">
-                                <a href=""><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
-                            </div>
-                            <div class="social-feed-box">
-                                <div class="social-footer">
-                                    <div class="media-body">
-                                    <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer', {{ $conversations['Question']->id }})" placeholder="Redacta una respuesta..."></textarea>
+                            <div id='comentario_ultimo' class="hidden">
+                                <div class="social-avatar">
+                                    @if (Auth::check())
+                                        <a><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/'. Auth::user()->avatar) }}"></a>
+                                    @else
+                                        <a><img alt="image" class="img-circle" src="{{ asset('uploads/avatars/default.jpg') }}"></a>
+                                    @endif
+                                </div>
+                                <div class="social-feed-box">
+                                    <div class="social-footer">
+                                        <div class="media-body">
+                                        <textarea class="form-control" onkeypress="pulsar(this, event, 'Answer', {{ $conversations['Question']->id }})" placeholder="Redacta una respuesta..."></textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -435,59 +535,46 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="guestDataUser" tabindex="-1" role="dialog" data-typeconversation="" data-idcampo="">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Ingrese sus datos</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <label>Nombre:</label>
+                                        <input type="text" id="nameGuest" class="form-control" maxlength="200" required>
+                                        <span id="nameguest-error" class="hidden span-error">Por favor coloque su nombre.</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Correo:</label>
+                                        <input type="email" id="emailGuest" class="form-control" maxlength="200" required>
+                                        <span id="emailguest-error" class="hidden span-error">Por favor coloque su correo.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h5 class="text-right font-italic">*Su dirección de correo no será publicada.</h5>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="confirmUserData" onclick="" class="btn btn-primary primary">Aceptar</a>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<script>
-    $('#confirmDeleteConversation').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var textSelector = button.data('textselector');
-        var conversationId = button.data('conversationid');
-        var typeConversation = button.data('typeconversation');
-        $("#buttonConfirmDelete").removeAttr('onclick');
-        $('#buttonConfirmDelete').attr('onClick', 'deleteConversation("'+ textSelector +'", "'+ conversationId +'", "'+ typeConversation +'");');
-    });
-
-    function deleteConversation(textSelector, conversationId, typeConversation) {
-        $.ajax({
-            url: "/itemsconversations/destroy",
-            data: { 
-                "itemConversationId":conversationId,
-                "type":typeConversation,
-                "_token": "{{ csrf_token() }}"
-            },
-            dataType: "json",
-            method: "POST",
-            success: function(result)
-            {
-                if (result.result === 'delete') {
-                    $('.' + textSelector).remove();
-                } else if (result.result === 'update') {
-                    $('#' + textSelector).css('font-style', 'italic');
-                    $('#' + textSelector).html(result.itemConversation.name);
-                    $('#time-' + conversationId).html(' - ' + result.time);
-                    $('#delete-' + conversationId).remove();
-                }
-                $('#confirmDeleteConversation').modal('hide'); 
-            },
-            error: function () {
-            //alert("fallo");
-            }
-        });
-    }
-</script>
+@include('layouts._script_comentarios_guest')
 @endif
 
 <script>
-    $(function () {
-        $('#side-menu li.active').removeClass('active');
-        var url = jQuery(location).attr('href').split('/')[3];
-        $("#side-menu [href='/" + url +"']").parent().parent().parent().parent().parent().addClass('active');
-        $("#side-menu [href='/" + url +"']").parent().parent().parent().addClass('active');
-        $("#side-menu [href='/" + url +"']").parent().addClass('active');
-    });
-
     function vote(option, questionId) {
         idRecord = $('#idRecord').val();
         $.ajax({
@@ -534,50 +621,6 @@
                 agregarComentario('forums', comentario, tipoComentario, idParent);
             }
         }
-    }
-    
-    function agregarComentario(tabla, comentario, tipoComentario, idParent) {
-        idRecord = $('#idRecord').val();
-        var imagenUsuario = '';
-        imagenUsuario = '{{ asset("uploads/avatars/". Auth::user()->avatar) }}';
-        $.ajax({
-            url: "/conversations/store",
-            data: { 
-                "table":tabla,
-                "id_record":idRecord,
-                "comentario":comentario,
-                "type":tipoComentario,
-                "parent":idParent,
-                "_token": "{{ csrf_token() }}"
-                },
-            dataType: "json",
-            method: "POST",
-            success: function(result)
-            {
-                if (result.type === 'Answer') {
-                    var answer = "\'Answer to Answer\'";
-                    var html = '<div class="social-avatar question-'+result.id+'"><a href=""><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a></div>\n\
-                    <div class="social-feed-box question-'+result.id+'"><div class="social-avatar"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a><small class="text-muted" id="time-'+result.id+'"> - '+result.tiempo+'</small><button type="button" id="delete-'+result.id+'" class="deleteConversation pull-right btn-default" data-toggle="modal" data-target="#confirmDeleteConversation" data-conversationId="'+result.id+'" data-typeConversation="Question" data-textSelector="question-'+result.id+'" title="Eliminar comentario">×</button></div>\n\
-                    <div class="social-body"><p>'+result.name+'</p><br><div class="btn-group"><a class="btn btn-white btn-xs" onclick="habilitarComentario('+result.id+')"><i class="fa fa-comments"></i> Comentar</a></div></div><div class="social-footer"><div class="social-comment hidden" id="comentario'+result.id+'"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a>\n\
-                    <div class="media-body"><textarea class="form-control" onkeypress="pulsar(this, event, '+answer+', '+result.id+')" placeholder="Escribe un comentario..."></textarea></div></div></div></div><div class="hr-line-dashed question-'+result.id+'"></div>';
-                    $('#ultimo_comentario').before(html);
-                } else {
-                    var html = '<div class="social-comment"><a href="" class="pull-left"><img alt="image" class="img-circle" src="'+imagenUsuario+'"></a><div class="media-body"><a href="/profile/user/'+result.user_id+'">'+result.user_name+'</a>  '+  result.name+'<br><small class="text-muted">'+result.tiempo+'</small></div></div>';
-                    $('#comentario'+result.parent).before(html);
-                }
-            },
-            error: function () {
-               //alert("fallo");
-            }
-            
-        });
-    }
-    
-    function habilitarComentario(idCampo) {
-        if ($('#comentario'+idCampo).hasClass("hidden")) {
-            $('#comentario'+idCampo).removeClass("hidden");
-        }
-        $('#comentario'+idCampo+' textarea').focus();    
     }
 </script>
 @include('layouts._script_spinner_code')
