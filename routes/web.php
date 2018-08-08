@@ -531,6 +531,12 @@ Route::group(['prefix' => 'itemsconversations'], function() {
         'as' => 'destroy'
             ]
     );
+
+    Route::post('/destroyGuest', [
+        'uses' => 'ItemsConversationsController@destroyGuest',
+        'as' => 'destroyGuest'
+            ]
+    );
 });
 
 Route::group(['prefix' => 'questionsforums'], function() {

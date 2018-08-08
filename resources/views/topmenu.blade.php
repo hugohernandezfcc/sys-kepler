@@ -116,7 +116,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="buttonConfirmDelete" onclick="addFavorites()" class="btn btn-primary primary">Aceptar</a>
+                <button type="button" onclick="addFavorites()" class="btn btn-primary primary">Aceptar</a>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             </div>
         </div>

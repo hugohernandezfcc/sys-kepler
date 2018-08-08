@@ -118,10 +118,6 @@ class WallsController extends Controller
             }
         }
     }
-
-    #$user = new App\User(['id' => 10, 'avatar' => 'default.jpg', 'email' => 'prueba@uno.com', 'password' => '12345']);
-    #Auth::guard()->login($user);
-    #var_dump($user);
     
     /**
      * Display the specified resource.
@@ -140,6 +136,7 @@ class WallsController extends Controller
 
                 $comments = $this->obtenerComentarios($questions, $conversation);
             }
+            #dd($comments);
             return view('walls', [
                 'typeView' => 'view',
                 'record' => $wall,
@@ -161,13 +158,6 @@ class WallsController extends Controller
     public function showdetail($wallName) {
         $wall = Wall::where('name', '=', $wallName)->first();
         if($wall) {
-           /* foreach ($wall->module->subject->groups as $group){
-                dd($group);
-                foreach ($group->users as $groupUser) {
-                    var_dump($groupUser);
-                }
-            }
-            dd('strop'); */
             return view('walls', [
                 'typeView'  => 'detail',
                 'record' => $wall
