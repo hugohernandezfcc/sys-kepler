@@ -109,6 +109,12 @@
     <script src="{{ asset('inspinia/js/plugins/iCheck/icheck.min.js') }}"></script>
 
     <script type="text/javascript">
+        @if(!Auth::check())
+        $(function () {
+            $('.navbar-minimalize.minimalize-styl-2').click();
+        });
+        @endif
+
         $(function () {
             var url = jQuery(location).attr('href').split('/')[3];
             if (url === 'home') {

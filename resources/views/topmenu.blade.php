@@ -1,6 +1,6 @@
 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
-        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary"><i class="fa fa-bars"></i> </a>
         @if (Auth::check())
             @if (Auth::user()->type !== null)
             <div role="form" class="navbar-form-custom">
@@ -174,7 +174,7 @@
                         register += '<tr>';
                     }
                     register += '<td>' + favorites[type][i].name +'</td>';
-                    register += '<td><a href="' + favorites[type][i].link +'">' + favorites[type][i].link +'</td></tr>';
+                    register += '<td><a href="' + favorites[type][i].link +'"> Ir a ' + favorites[type][i].name +'</td></tr>';
 
                     if (favorites[type][i].link == link ) {
                         iconSiteFav = '<i class="fa fa-star"></i>';
