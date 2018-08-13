@@ -2,6 +2,12 @@
 <script src="{{ asset('inspinia/js/plugins/toastr/toastr.min.js') }}"></script>
 <script>
     $(function () {
+        if (sessionStorage.getItem('user') !== null) {
+            let user = JSON.parse(sessionStorage.getItem('user'));
+            $('.text-muted.welcome-message').html('Bienvenido ' + user.name);
+            $('#nameUserGuest').val(user.id);
+            $('#nameUserGuest').data().user = user;
+        }
         toastr.options = {
             closeButton: true,
             progressBar: true,
@@ -114,6 +120,8 @@
                 success: function(result)
                 {
                     if (result.result !== 'unauthorized') {
+                        sessionStorage.setItem('user', JSON.stringify(result.user));
+                        $('.text-muted.welcome-message').html('Bienvenido ' + result.user.name);
                         $('#nameUserGuest').val(result.user.id);
                         $('#nameUserGuest').data().user = result.user;
                         $('#nameGuest').val('');
